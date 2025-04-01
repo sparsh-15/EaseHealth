@@ -1,0 +1,217 @@
+.navbar {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
+  /* background-color: #0277bd !important; */
+ 
+}
+
+.navbar .nav-link {
+  color: white !important;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #f1c40f !important; /* Adding a gold color for hover */
+  transform: translateY(-2px);
+}
+
+/* ===== Specific Modal Enhancements ===== */
+
+.modal-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+  border-bottom: none; /* Remove default border */
+  padding: 1.5rem;
+}
+
+.modal-header .modal-title {
+  font-size: 1.5rem; /* Increase title size */
+  font-weight: 600; /* Make title bold */
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8; /* Slightly transparent */
+  transition: opacity 0.2s ease;
+}
+.modal-body {
+  padding: 1.2rem; /* Increase padding for better spacing */
+  background-color: #f8f9fa; /* Light background for contrast */
+}
+
+.modal-body p {
+  font-size: 1rem;
+  color: #333; /* Darker text for readability */
+}
+
+.modal-body .form-control {
+  border-radius: 8px; /* Rounded corners for inputs */
+  border: 1px solid #ddd; /* Light border for inputs */
+  padding: 0.6rem; /* Increase padding for inputs */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-body .form-control:focus {
+  border-color: #3498db; /* Highlight input border on focus */
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Add a focus ring */
+}
+
+/* Modal Footer */
+.modal-footer {
+  border-top: none; /* Remove default border */
+  background-color: #f8f9fa; /* Match body background */
+  padding: 1rem 1.5rem; /* Increase padding for better spacing */
+}
+
+.modal-footer .btn {
+  border-radius: 8px; /* Rounded corners for buttons */
+  padding: 0.5rem 1.25rem; /* Increase padding for buttons */
+  font-weight: 500; /* Medium font weight for buttons */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d; /* Gray background for secondary button */
+  border-color: #6c757d;
+  color: white;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+  border-color: #5a6268;
+  transform: translateY(-2px); /* Lift button on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+
+.modal-footer .btn-primary {
+  background-color: #3498db; /* Primary button color */
+  border-color: #3498db;
+  color: white;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  border-color: #2980b9;
+  transform: translateY(-2px); /* Lift button on hover */
+  box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2); /* Add shadow on hover */
+}
+
+
+/* ===== Specific Modal Enhancements ===== */
+
+.user_type {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.user_type:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3) !important; /* Enhanced shadow */
+}
+
+.offcanvas-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+}
+
+/* Custom button colors to match our theme */
+.btn-custom-primary {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-custom-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4); /* Adding a shadow on hover */
+}
+
+.btn-custom-secondary {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-custom-secondary:hover {
+  background-color: #34495e;
+  border-color: #34495e;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4); /* Adding a shadow on hover */
+}
+
+/* Alert custom styling */
+.custom-alert-success {
+  background-color: #2ecc71;
+  border-color: #27ae60;
+  color: white;
+}
+
+/* Message Box Modal */
+#message_box .modal-body {
+  text-align: center; /* Center align content */
+}
+
+#message_box .material-icons {
+  color: #e74c3c; /* Red color for error icon */
+  font-size: 3rem; /* Increase icon size */
+  margin-bottom: 1rem; /* Add spacing below icon */
+}
+
+#message_box #message {
+  font-size: 1.1rem; /* Increase message font size */
+  color: #555; /* Dark gray for message text */
+}
+
+/* Signup Box Modal */
+#signupbox .modal-content {
+  max-width: 800px; /* Increase max width for larger modal */
+}
+
+#signupbox .card {
+  transition: all 0.3s ease; /* Smooth transitions for cards */
+  cursor: pointer; /* Pointer cursor for clickable cards */
+}
+
+#signupbox .card:hover {
+  transform: translateY(-5px); /* Lift card on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Add shadow on hover */
+}
+
+
+
+#signupbox .card-title {
+  font-size: 1.25rem; /* Increase card title size */
+  font-weight: 600; /* Bold card title */
+}
+
+/* Signup Form Modal */
+#signup_form .modal-content {
+  max-width: 500px; /* Limit width for better readability */
+}
+
+#signup_form .modal-body {
+  background-color: white; /* White background for form */
+}
+
+#signup_form .form-label {
+  font-weight: 500; /* Medium font weight for labels */
+  color: #333; /* Dark gray for labels */
+}
+
+/* Signin Form Modal */
+#signin_form .modal-content {
+  max-width: 400px; /* Limit width for better readability */
+}
+
+#signin_form .modal-body {
+  background-color: white; /* White background for form */
+}
+
+#signin_form .form-label {
+  font-weight: 500; /* Medium font weight for labels */
+  color: #333; /* Dark gray for labels */
+}

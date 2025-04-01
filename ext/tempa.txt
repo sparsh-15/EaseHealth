@@ -1,0 +1,41 @@
+Test Data 1
+Name: Paracetamol
+Description: Used to relieve mild to moderate pain and reduce fever.
+Ingredients: Paracetamol 500mg
+Effective Body Part: Head, Body
+Side Effects: Nausea, Liver damage (high dose)
+Warnings: Do not exceed the recommended dose. Avoid alcohol.
+
+Test Data 2
+Name: Ibuprofen
+Description: A nonsteroidal anti-inflammatory drug (NSAID) used for pain relief and inflammation.
+Ingredients: Ibuprofen 400mg
+Effective Body Part: Joints, Muscles, Head
+Side Effects: Stomach pain, Heartburn, Dizziness
+Warnings: Avoid taking on an empty stomach. May cause kidney issues in high doses.
+
+Test Data 3
+Name: Amoxicillin
+Description: An antibiotic used to treat bacterial infections.
+Ingredients: Amoxicillin 250mg
+Effective Body Part: Lungs, Throat, Urinary Tract
+Side Effects: Diarrhea, Skin rash, Nausea
+Warnings: Complete full course of medication. Avoid if allergic to penicillin.
+
+Test Data 4
+Name: Cetirizine
+Description: An antihistamine used to relieve allergy symptoms.
+Ingredients: Cetirizine 10mg
+Effective Body Part: Nose, Eyes, Skin
+Side Effects: Drowsiness, Dry mouth
+Warnings: Avoid alcohol. Do not operate machinery if drowsy.
+
+Test Data 5
+Name: Metformin
+Description: Used to control blood sugar levels in type 2 diabetes.
+Ingredients: Metformin 500mg
+Effective Body Part: Pancreas, Bloodstream
+Side Effects: Stomach upset, Lactic acidosis (rare)
+Warnings: Monitor kidney function. Take with food
+
+
