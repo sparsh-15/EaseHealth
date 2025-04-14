@@ -14,13 +14,13 @@
         </div>
         <div class="modal-body">
           <div>
-            <span class="material-icons d-block fs-3 ms-5 mb-2">cancel</span>
+            <span class="material-icons d-block fs-3 ms-5 mb-2" id="signup-msg-icon">cancel</span>
             <p id="message"></p>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="msg_btn" data-bs-toggle="modal"
+          <button type="button" class="btn btn-primary" id="signup_msg_btn" data-bs-toggle="modal"
             data-bs-target="#signupbox">SignUp</button>
         </div>
       </div>
@@ -98,38 +98,44 @@
   <!-- #signup form Step-2 ~~~~ start -->
   <div class="modal fade" id="signup_form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content p-3 rounded-4 border-0 shadow-lg">
         <form action="signup.do" method="post" id="signup_inner_form">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="signup_title">SignUp ------</h1>
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-4 fw-bold " id="signup_title">Create Your Account</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <input type="hidden" name="user_type_id" id="utype">
+  
             <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" name="name" id="name" required>
+              <label for="name" class="form-label fw-semibold">Full Name</label>
+              <input type="text" class="form-control rounded-pill px-3" name="name" id="name" required>
             </div>
+  
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" autocomplete="on" class="form-control" name="email" id="email" required>
+              <label for="email" class="form-label fw-semibold">Email</label>
+              <input type="email" autocomplete="on" class="form-control rounded-pill px-3" name="email" id="email" required>
             </div>
+  
             <div class="mb-3 position-relative">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" name="password" id="password"
-                placeholder="Enter your password" required>
-              <span class="position-absolute" onclick="togglePasswordVisibility('password')">
-                <i class="fas fa-eye"></i>
-              </span>
+              <label for="password" class="form-label fw-semibold">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control rounded-pill px-3 pe-5" name="password" id="password"
+                  placeholder="Enter your password" required>
+                <span class="position-absolute end-0 top-50 translate-middle-y me-3" onclick="togglePasswordVisibility('password')" style="cursor: pointer;">
+                  <i class="fas fa-eye-slash text-secondary" id="toggle-password-icon"></i>
+                </span>
+              </div>
             </div>
+  
             <div class="mb-3">
-              <label for="contact" class="form-label">Contact</label>
-              <input type="number" autocomplete="on" class="form-control" name="contact" id="contact" required>
+              <label for="contact" class="form-label fw-semibold">Contact Number</label>
+              <input type="number" autocomplete="on" class="form-control rounded-pill px-3" name="contact" id="contact" required>
             </div>
+  
             <div class="mb-3">
-              <label for="city" class="form-label">City</label>
-              <input list="city_list" autocomplete="off" type="text" class="form-control" name="city" id="city"
-                required>
+              <label for="city" class="form-label fw-semibold">City</label>
+              <input list="city_list" autocomplete="off" type="text" class="form-control rounded-pill px-3" name="city" id="city" required>
               <input type="hidden" name="city_id" id="city_id">
               <datalist id="city_list">
                 <c:forEach var="ct" items="${cities}">
@@ -138,14 +144,16 @@
               </datalist>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">SignUp</button>
+  
+          <div class="modal-footer border-0 d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Sign Up</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+  
 
   
   <!-- #signup form ~~~~ end -->
@@ -165,10 +173,16 @@
               <input type="email" autocomplete="off" class="form-control" name="signin_email" id="signin_email"
                 required>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
               <label for="signin_password" class="form-label">Password</label>
               <input type="password" class="form-control" name="signin_password" id="signin_password" required>
-            </div>
+              <span class="position-absolute end-0 top-50 transform: translateY(-50%); me-3" 
+                    onclick="togglePasswordVisibility('signin_password')" 
+                    style="cursor: pointer;">
+                  <i id="signin_eye" class="fas fa-eye"></i>
+              </span>
+          </div>
+          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -180,41 +194,6 @@
   </div>
   <!-- SignIn Step-1 Modal ---- end -->
 
-  <!-- User offcanvas ------ start -->
-  <!-- 
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="user_offcanvas" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div>
-        <li>
-          <span class="btn dropdown-item text-center">
-            <img src="static/media/images/user.png" height="100"><br>
-            <a href="profile.do">${user.email}</a>
-          </span>
-        </li>
-        <li>
-          <hr>
-          <a href="logout.do" class="btn btn-danger dropdown-item d-flex align-items-center">
-            <span class="material-icons ms-auto">logout</span>
-            <span class="ms-2 me-auto">Logout</span>
-          </a>
-        </li> -
-      </div>
-      <div class="dropdown mt-3">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          Dropdown button
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
 
   <div class="offcanvas offcanvas-end" tabindex="-1" id="user_offcanvas" aria-labelledby="userOffcanvasLabel">
     <div class="offcanvas-header border-bottom">
@@ -227,12 +206,16 @@
         <!-- Avatar with upload functionality -->
         <div class="position-relative d-inline-block mb-3">
           <input type="file" id="avatar-upload" class="d-none" accept="image/*">
-          <img src="static/media/images/user.png" alt="User Avatar" class="rounded-circle" height="80" width="80"
-            id="user-avatar" style="cursor: pointer;">
-          <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-1" style="cursor: pointer;">
-            <i class="material-icons text-white" style="font-size: 16px;">photo_camera</i>
+          
+          <!-- User Avatar Image -->
+          <img src="static/media/images/user.png" alt="click to add profile" 
+              class="rounded-circle" height="80" width="80" id="user-avatar" style="cursor: pointer;">
+      
+          <!-- Camera Icon -->
+          <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-1 upload-icon" style="cursor: pointer;">
+              <i class="material-icons text-white" style="font-size: 16px;">photo_camera</i>
           </div>
-        </div>
+      </div>
         <h6 class="mb-1">${user.name}</h6>
         <p class="text-muted small mb-3">${user.email}</p>
         <a href="profile.do" class="btn btn-sm btn-outline-primary">Edit Profile</a>

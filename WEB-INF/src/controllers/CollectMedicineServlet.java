@@ -29,6 +29,7 @@ public class CollectMedicineServlet extends HttpServlet {
             ArrayList<Medicine> medicines = Medicine.collectAllMedicines(pharmaDetails);
 
             MedicineFormat.collectAllMedicineFormat(medicines);
+            
 
             Gson gson = new Gson();
 

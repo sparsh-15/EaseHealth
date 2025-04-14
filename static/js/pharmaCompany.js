@@ -110,7 +110,7 @@ const collectAllMedicineFormat = async (medicineId) => {
     return result;
 }
 
-showAllMedicinesFormats = (medicineId) => {
+const showAllMedicinesFormats = (medicineId) => {
 
     collectAllMedicineFormat(medicineId).then((data) => {
         if (data != 'no') {
@@ -132,7 +132,10 @@ const createAlreadyAddedFormats = (fetchedFormatsdata, medicineId) => {
         return;
     }
 
-    let formatHTML = `<div class="d-inline flex-wrap gap-2 align-items-center">`;
+    let formatHTML = `
+    <div class="collapse " id="collapse_format_${medicineId}">
+        <div class="d-inline flex-wrap gap-2 align-items-center">
+`;
     const medicineFormatIds = [];
 
     fetchedFormatsdata.forEach((item) => {
@@ -213,7 +216,7 @@ const saveMedicineFormat = async () => {
 
 
 save_format_btn.addEventListener('click', () => {
-    medicineIdHidden = medicine_id_hidden.value;
+    let medicineIdHidden = medicine_id_hidden.value;
     console.log("~~~~~~~~~~~~~" + medicineIdHidden);
 
     saveMedicineFormat().then((data) => {
@@ -275,7 +278,7 @@ const collectMedicineDenomination = async (medicineFormatId) => {
     return result;
 }
 
-showMedicineDenomination = (medicineFormatId) => {
+const showMedicineDenomination = (medicineFormatId) => {
     collectMedicineDenomination(medicineFormatId).then((data) => {
         if (data == 'empty') {
             console.log('medicines denominations not fetched');
@@ -464,7 +467,20 @@ const showAllMedicines = () => {
                     '</div>' +
                     '</div>' +
                     '<div class="added-formats p-3">' +
-                    '<h6 class="fw-bold  mb-2">Available Formats:</h6>' +
+                    '<button ' +
+                    'class="format-button  w-100 mt-1 " ' +
+                    // 'style="background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" ' +
+                    'type="button" ' +
+                    'data-bs-toggle="collapse" ' +
+                    'data-bs-target="#collapse_format_' + next.medicineId + '" ' +
+                    'aria-expanded="false" ' +
+                    'aria-controls="collapse_format_' + next.medicineId + '" ' +
+                    'onclick="toggleFormatIcon(' + next.medicineId + ')" ' +
+                '>' +
+                    '<span><i class="fas fa-pills me-2"></i> Available Formats</span>' +
+                    '<i id="format-icon-' + next.medicineId + '" class="fas fa-chevron-down"></i>' +
+                '</button>' +
+                    // '<h6 class="fw-bold  mb-2">Available Formats:</h6>' +
                     '<div id="format_list_' + next.medicineId + '" >' +
                     '<!-- Formats will be added dynamically here as badges -->' +
                     '</div>' +
@@ -502,6 +518,20 @@ const showAllMedicines = () => {
 }
 
 showAllMedicines();
+function toggleFormatIcon(medicineId) {
+    let icon = document.getElementById("format-icon-" + medicineId);
+    if (!icon) return;
+
+    // Toggle between chevron up and down
+    if (icon.classList.contains("fa-chevron-down")) {
+        icon.classList.remove("fa-chevron-down");
+        icon.classList.add("fa-chevron-up");
+    } else {
+        icon.classList.remove("fa-chevron-up");
+        icon.classList.add("fa-chevron-down");
+    }
+}
+
 
 
 save_medicine_btn.addEventListener('click', () => {

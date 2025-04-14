@@ -32,6 +32,7 @@ public class DoctorServlet extends HttpServlet {
                     
                     session.setAttribute("details_report", "true");
                     session.setAttribute("doctor", doctor);
+                    doctor.updateClinicCount(doctor.getDoctorId());
                 }else{
                     session.setAttribute("details_report", "false");
                 }

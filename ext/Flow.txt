@@ -1,0 +1,13 @@
+Patient ===============
+
+
+1   Health tip is changing dynamically
+2   time and date is active
+3   Mood tracker works
+4   ** if we delete patient data or patient has'nt complete profile it will get limited access only 
+
+
+
+home page ===========
+    signin ============
+        login and if credentials wrong then after we refresh again due to url its again prompting @@@@@@

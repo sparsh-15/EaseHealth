@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import utils.DBConnect;
 
@@ -15,17 +16,15 @@ public class Doctor {
     private String gender;
     private Specialization specialization;
     private String qualification;
-    private String experience;
+    private Integer experience;
     private String certificate;
     private Integer clinicCount;
-
-    
 
     public Doctor(Integer doctorId) {
         this.doctorId = doctorId;
     }
 
-    public Doctor(User user, String gender, Specialization specialization, String qualification, String experience,
+    public Doctor(User user, String gender, Specialization specialization, String qualification, Integer experience,
             String certificate) {
         this.user = user;
         this.gender = gender;
@@ -35,8 +34,46 @@ public class Doctor {
         this.certificate = certificate;
     }
 
+    public Doctor(Integer doctorId, User user, String gender, Specialization specialization, String qualification,
+            Integer experience, String certificate, Integer clinicCount) {
+        this.doctorId = doctorId;
+        this.user = user;
+        this.gender = gender;
+        this.specialization = specialization;
+        this.qualification = qualification;
+        this.experience = experience;
+        this.certificate = certificate;
+        this.clinicCount = clinicCount;
+    }
+
     public Doctor() {
-    }   
+    }
+
+    public static ArrayList<Doctor> collectAllDoctors() {
+        ArrayList<Doctor> doctors = new ArrayList<>();
+
+        Connection con = DBConnect.getConnection();
+        String query = "select * from doctors as d JOIN specializations as s on d.specialization_id=s.specialization_id JOIN users as u on u.user_id=d.user_id JOIN cities as ct on u.city_id=ct.city_id order by clinic_count desc";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                doctors.add(new Doctor(rs.getInt("doctor_id"),
+                        new User(rs.getString("name"), rs.getString("contact"), new City(rs.getString("city")),
+                                rs.getString("address"), rs.getString("profile_pic")),rs.getString("gender"),
+                        new Specialization(rs.getInt("specialization_id"), rs.getString("specialization")),
+                        rs.getString("qualification"), rs.getInt("experience"), rs.getString("certificate"),
+                        rs.getInt("clinic_count")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return doctors;
+    }
 
     public void updateClinicCount(int doctorId) {
         try {
@@ -49,7 +86,7 @@ public class Doctor {
             ps.setInt(2, doctorId);
 
             ps.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -66,7 +103,7 @@ public class Doctor {
             ps.setString(2, gender);
             ps.setInt(3, specialization.getSpecializationId());
             ps.setString(4, qualification);
-            ps.setString(5, experience);
+            ps.setInt(5, experience);
             ps.setString(6, certificate);
 
             int res = ps.executeUpdate();
@@ -81,7 +118,6 @@ public class Doctor {
     }
 
     public Doctor fetchCheckDoctorDetails(User user) {
-        
         try {
             Connection con = DBConnect.getConnection();
 
@@ -96,7 +132,7 @@ public class Doctor {
                 gender = rs.getString("gender");
                 specialization = new Specialization(rs.getInt("specialization_id"));
                 qualification = rs.getString("qualification");
-                experience = rs.getString("experience");
+                experience = rs.getInt("experience");
                 certificate = rs.getString("certificate");
                 clinicCount = rs.getInt("clinic_count");
 
@@ -148,11 +184,11 @@ public class Doctor {
         this.qualification = qualification;
     }
 
-    public String getExperience() {
+    public Integer getExperience() {
         return experience;
     }
 
-    public void setExperience(String experience) {
+    public void setExperience(Integer experience) {
         this.experience = experience;
     }
 

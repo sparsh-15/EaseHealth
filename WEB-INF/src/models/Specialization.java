@@ -10,13 +10,13 @@ import utils.DBConnect;
 
 public class Specialization {
     private Integer specializationId;
-    private String name;
+    private String specialization;
 
     
 
-    public Specialization(Integer specializationId, String name) {
+    public Specialization(Integer specializationId, String specialization) {
         this.specializationId = specializationId;
-        this.name = name;
+        this.specialization = specialization;
     }
 
     
@@ -39,7 +39,7 @@ public class Specialization {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                specializations.add(new Specialization(rs.getInt("specialization_id"), rs.getString("name")));
+                specializations.add(new Specialization(rs.getInt("specialization_id"), rs.getString("specialization")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,12 +48,12 @@ public class Specialization {
         return specializations;
     }
 
-    public String getName() {
-        return name;
+    public String getspecialization() {
+        return specialization;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setspecialization(String specialization) {
+        this.specialization = specialization;
     }
 
     public Integer getSpecializationId() {

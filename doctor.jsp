@@ -529,6 +529,48 @@
             }
 
             /* Dropdown menu styling~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~` */
+
+            .carousel-control-prev,
+            .carousel-control-next {
+
+                transition: all 0.3s ease-in-out;
+            }
+
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                filter: invert(100%);
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            /* 🟡 Hover Effect: Increases size & adds glow */
+            .carousel-control-prev:hover,
+            .carousel-control-next:hover {
+                background: rgba(255, 255, 255, 0.3);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+                transform: scale(1.1);
+            }
+
+            .list-group-item {
+                background-color: #f8f9fa;
+                border: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+
+            .clinic-shifts-section .btn {
+                transition: all 0.2s ease;
+                font-weight: 500;
+            }
+
+            .clinic-shifts-section .btn:hover {
+                background-color: #0d6efd;
+                color: #fff;
+            }
+
+            .clinic-shifts-section .btn:hover {
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+}
+
         </style>
     </head>
 
@@ -548,7 +590,7 @@
                         <h5 class="modal-title" id="clinicShiftsModalLabel">Clinic Shifts</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="save_clinic_shifts.do">
+                    <form id="save_clinic_shift_form">
                         <div class="modal-body">
                             <div class="card">
                                 <div class="card-header bg-light fw-bold">Clinic Shifts</div>
@@ -556,17 +598,20 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label for="startTime" class="form-label">Start Time</label>
-                                            <input type="time" class="form-control" id="startTime" name="start_time"
+                                            <input type="time" class="form-control" id="start_time" name="start_time"
                                                 required>
                                         </div>
+
+                                        <input type="hidden" name="clinic_id" id="clinic_id_hidden_modal">
+
                                         <div class="col-md-6">
                                             <label for="endTime" class="form-label">End Time</label>
-                                            <input type="time" class="form-control" id="endTime" name="end_time"
+                                            <input type="time" class="form-control" id="end_time" name="end_time"
                                                 required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="maxAppointment" class="form-label">Max Appointments</label>
-                                            <input type="number" class="form-control" id="maxAppointment"
+                                            <input type="number" class="form-control" id="max_appointment"
                                                 name="max_appointment" required>
                                         </div>
                                     </div>
@@ -576,7 +621,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" onclick="saveShift()">Save changes</button>
+                            <button type="button" class="btn btn-primary" id="save_clinic_shift_btn">Save
+                                changes</button>
                         </div>
                     </form>
                 </div>
@@ -631,8 +677,8 @@
 
                                         <div class="col-md-6">
                                             <label for="contactNumber" class="form-label">Contact Number</label>
-                                            <input type="number" class="form-control" id="contactNumber" name="contact"
-                                                minlength="10" required>
+                                            <input type="text" class="form-control" id="contactNumber" name="contact"
+                                                pattern="\d{10}" title="Enter a valid 10-digit number" required>
                                         </div>
                                     </div>
                                 </div>
@@ -671,7 +717,7 @@
 
                         <div class="modal-footer bg-light">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Update Clinic</button>
+                            <button type="submit" class="btn btn-primary">Save Clinic</button>
                         </div>
                     </form>
                 </div>
@@ -822,7 +868,7 @@
                     </div>
 
                     <!-- Clinics Grid -->
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 clinic_containers">
                         <!-- Clinic Card 1 -->
                         <div class="col">
                             <div class="clinic-card">
@@ -835,6 +881,7 @@
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
+                                            <input type="hidden" id="clinic_id">
                                             <ul class="dropdown-menu dropdown-menu-end clinic-dropdown-menu"
                                                 aria-labelledby="clinicOptionsMenu">
                                                 <li><a class="dropdown-item schedule btn" data-bs-toggle="modal"
@@ -845,8 +892,8 @@
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-                                                <li><a class="dropdown-item delete btn" href="#"><i
-                                                            class="fas fa-trash"></i>Delete</a></li>
+                                                <li><a class="dropdown-item delete btn" id="delete_clinic_btn"
+                                                        href="#"><i class="fas fa-trash"></i>Delete</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -873,6 +920,7 @@
                                     </div>
 
                                     <div class="mt-3 mb-3">
+
                                         <span class="badge-day">Mon</span>
                                         <span class="badge-day">Tue</span>
                                         <span class="badge-day">Wed</span>
@@ -938,117 +986,7 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            const profileIncompleteToastBtn = document.getElementById("profileIncompleteToastBtn");
-            const profileIncompleteToast = document.getElementById("profileIncompleteToast");
-
-            const dayButtons = document.querySelectorAll('.day-btn');
-
-            const collectClinicDetails = async()=> {
-                let response = await fetch("collect_clinics.do");
-                let result = await response.json();
-
-                return result;
-            }
-
-            const showClinics = () => {
-                collectClinicDetails().then((data) => {
-                    if(data!="empty"){
-                        console.log(data);
-                    }
-                })
-                .catch((err)=> {
-                    console.log(err);
-                })
-            }
-
-            showClinics();
-
-
-
-            dayButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    btn.classList.toggle('active');
-
-                    // Select the hidden checkbox associated with the button
-                    const checkbox = btn.querySelector('input');
-                    checkbox.checked = !checkbox.checked;
-                });
-            });
-
-            function saveShift() {
-                const startTime = document.getElementById('startTime').value;
-                const endTime = document.getElementById('endTime').value;
-                const maxAppointment = document.getElementById('maxAppointment').value;
-                const errorMessage = document.getElementById('errorMessage');
-
-              
-
-                // Close the modal
-                let modal = bootstrap.Modal.getInstance(document.getElementById('clinicShiftsModal'));
-                modal.hide();
-
-                // Reset form fields
-                document.getElementById('startTime').value = '';
-                document.getElementById('endTime').value = '';
-                document.getElementById('maxAppointment').value = '';
-
-            }
-
-
-            document.addEventListener("DOMContentLoaded", () => {
-                const dayButtons = document.querySelectorAll(".day-btn");
-
-                dayButtons.forEach(btn => {
-                    btn.addEventListener("click", () => {
-                        const checkbox = btn.querySelector("input[type='checkbox']");
-                        checkbox.checked = !checkbox.checked;
-                        btn.classList.toggle("active", checkbox.checked);
-                    });
-                });
-            });
-
-
-            // Image preview functionality
-            // Image Preview Function
-            function previewImage(event) {
-                const imagePreview = document.getElementById('imagePreview');
-                const files = event.target.files;
-
-                if (files.length > 0) {
-                    Array.from(files).forEach(file => {
-                        const reader = new FileReader();
-
-                        reader.onload = function (e) {
-                            const imgElement = document.createElement('img');
-                            imgElement.src = e.target.result;
-                            imgElement.classList.add('img-thumbnail', 'm-2');
-                            imgElement.style.width = '150px';   // Set preview size
-                            imgElement.style.height = '150px';
-
-                            imagePreview.appendChild(imgElement);
-                        };
-
-                        reader.readAsDataURL(file);
-                    });
-                }
-            }
-
-            // Form submission handling (placeholder - would connect to backend in real implementation)
-
-
-            if (profileIncompleteToastBtn) {
-                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(profileIncompleteToast)
-                profileIncompleteToastBtn.addEventListener('click', () => {
-                    toastBootstrap.show();
-                })
-                document.getElementById("completeProfileBtn").addEventListener('click', () => {
-                    toastBootstrap.hide();
-                })
-            }
-
-
-        </script>
+        <script src="static/js/doctor.js"></script>
     </body>
 
     </html>

@@ -238,6 +238,8 @@ create table users
  update users set activation_code=null,status_id=4 where email=? and activation_code=?
   update users set status_id=4 where user_id=16;
 
+ select u.*, ct.city AS city_name, s.state AS state_name from users AS u JOIN cities as ct on u.city_id = ct.city_id JOIN states as s on ct.state_id = s.state_id WHERE u.user_id=18;
+
 create table pharma_companies
 (
     pharma_company_id int auto_increment primary key,
@@ -304,6 +306,7 @@ create table doctors
     constraint fk_doctors_specializations foreign key (specialization_id) references specializations (specialization_id)
 );
 
+select * from doctors as d JOIN specializations as s on d.specialization_id=s.specialization_id JOIN users as u on u.user_id=d.user_id order by clinic_count desc
 create table clinics
 (
     clinic_id int auto_increment primary key,
@@ -329,6 +332,8 @@ create table clinic_shifts
     constraint fk_clinic_shifts_clinics foreign key (clinic_id) references clinics (clinic_id)
 );
 
+insert into clinic_shifts(clinic_id,start_time,end_time,max_appointment) values(?,?,?,?);
+
 create table clinic_days
 (
     clinic_day_id int auto_increment primary key,
@@ -339,6 +344,8 @@ create table clinic_days
 );
 
  insert into clinic_days(clinic_id,day_id) values(?,?);
+
+ select * from clinic_days as cd JOIN days as d on cd.day_id=d.day_id where clinic_id=14;
  
 create table clinic_pics
 (

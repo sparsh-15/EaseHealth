@@ -12,7 +12,7 @@ public class Day {
     private Integer dayId;
     private String name;
 
-    
+        
 
     public Day(Integer dayId, String name) {
         this.dayId = dayId;

@@ -275,7 +275,60 @@
         transition: all .1s linear;
       }
 
-    
+
+
+      .quiz-card {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .quiz-option {
+        display: inline-block;
+        margin: 10px;
+        padding: 15px;
+        border-radius: 15px;
+        background: var(--light-bg);
+        cursor: pointer;
+        transition: var(--transition);
+        width: 110px;
+      }
+
+      .quiz-option:hover {
+        background: var(--primary-light);
+        transform: translateY(-5px);
+      }
+
+      .quiz-option i {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      /* Virtual pet */
+      .virtual-pet {
+        position: relative;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .pet-status {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .pet-stat {
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .pet-stat i {
+        color: var(--primary);
+      }
+
 
       /*~~~~~~~~~~~~~~~~~~~~~~~~~~ pic designn ~ end */
 
@@ -670,64 +723,118 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <!-- From Uiverse.io by Lakshay-art -->
-            <div class="bo">
-              <div class="face">
-                <div class="earL"></div>
-                <div class="earR"></div>
-                <div class="eyeL"></div>
-                <div class="eyeR"></div>
-                <div class="hairs"></div>
-                <div class="nose"></div>
-                <div class="mouth"></div>
-                <div class="smileL">
-                  <svg xml:space="preserve" viewBox="0 0 65 65" xmlns="http://www.w3.org/2000/svg">
-                    <filter id="blurMe">
-                      <feGaussianBlur in="SourceGraphic" stdDeviation="2"></feGaussianBlur>
-                    </filter>
-                    <path
-                      d="M25 19c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                    <path
-                      d="M35 35c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                    <path
-                      d="M45 50c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                  </svg>
+        <div class="container my-3">
+          <div class="row align-items-center">
+            <div class="col-md-5 text-center d-flex flex-column justify-content-center">
+              <div class="character-box p-3  bg-light rounded shadow d-flex align-items-center">
+                <!-- From Uiverse.io by Lakshay-art -->
+                <div class="bo m-4">
+                  <div class="face">
+                    <div class="earL"></div>
+                    <div class="earR"></div>
+                    <div class="eyeL"></div>
+                    <div class="eyeR"></div>
+                    <div class="hairs"></div>
+                    <div class="nose"></div>
+                    <div class="mouth"></div>
+                    <div class="smileL">
+                      <svg xml:space="preserve" viewBox="0 0 65 65" xmlns="http://www.w3.org/2000/svg">
+                        <filter id="blurMe">
+                          <feGaussianBlur in="SourceGraphic" stdDeviation="2"></feGaussianBlur>
+                        </filter>
+                        <path
+                          d="M25 19c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                        <path
+                          d="M35 35c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                        <path
+                          d="M45 50c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                      </svg>
+                    </div>
+                    <div class="smileR">
+                      <svg xml:space="preserve" viewBox="0 0 65 65" xmlns="http://www.w3.org/2000/svg">
+                        <filter id="blurMe">
+                          <feGaussianBlur in="SourceGraphic" stdDeviation="2"></feGaussianBlur>
+                        </filter>
+                        <path
+                          d="M25 19c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                        <path
+                          d="M35 35c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                        <path
+                          d="M45 50c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
+                          fill="#EF7F71" filter="url(#blurMe)"></path>
+                      </svg>
+                    </div>
+
+                    <div class="snow">
+                      <div class="mountain-cap-1"></div>
+                      <div class="mountain-cap-2"></div>
+                      <div class="mountain-cap-3"></div>
+                      <div class="mountain-cap-4"></div>
+                      <div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="smileR">
-                  <svg xml:space="preserve" viewBox="0 0 65 65" xmlns="http://www.w3.org/2000/svg">
-                    <filter id="blurMe">
-                      <feGaussianBlur in="SourceGraphic" stdDeviation="2"></feGaussianBlur>
-                    </filter>
-                    <path
-                      d="M25 19c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                    <path
-                      d="M35 35c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                    <path
-                      d="M45 50c-6 2-12 4-18 5-2 0-4-2-6-3 1-1 2-3 3-4 11-3 22-7 32-10 2-1 4 1 6 2-1 1-2 4-3 4-4 2-9 4-14 6z"
-                      fill="#EF7F71" filter="url(#blurMe)"></path>
-                  </svg>
+                <div class="p-3">
+                  <h5 class="fw-bold mb-1 text-gradient" style="font-size: 1.3rem; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-heartbeat me-2" style="color: #f94c66;"></i> Your Health Buddy
+                  </h5>
+                  <p class="text-muted small mb-0" style="font-size: 0.9rem; font-style: italic;">
+                    Tap, hold, or hover to explore my healthy moods!
+                  </p>
+                </div>
+                
+              </div>
+            </div>
+            <div class="col-md-7 mt-2">
+              <div class="row g-3">
+                <!-- Mood Card 1 -->
+                <div class="col-md-6">
+                  <div class="card text-center p-3 h-100 shadow-sm">
+                    <i class="fa-regular fa-face-smile fa-2x mb-2 text-primary"></i>
+                    <h5>Smile Boost</h5>
+                    <p class="text-muted small">Hold my cheeks to make me smile - it's good for mental health!</p>
+                  </div>
                 </div>
 
-                <div class="snow">
-                  <div class="mountain-cap-1"></div>
-                  <div class="mountain-cap-2"></div>
-                  <div class="mountain-cap-3"></div>
-                  <div class="mountain-cap-4"></div>
-                  <div>
+                <!-- Mood Card 2 -->
+                <div class="col-md-6">
+                  <div class="card text-center p-3 h-100 shadow-sm">
+                    <i class="fa-solid fa-wind fa-2x mb-2 text-info"></i>
+                    <h5>Nose Stretch</h5>
+                    <p class="text-muted small">Hover over my nose to stretch it - deep breathing helps, y'know?</p>
+                  </div>
+                </div>
+
+                <!-- Mood Card 3 -->
+                <div class="col-md-6">
+                  <div class="card text-center p-3 h-100 shadow-sm">
+                    <i class="fa-solid fa-circle-notch fa-spin fa-2x mb-2 text-danger"></i>
+                    <h5>Dizzy Drill</h5>
+                    <p class="text-muted small">Hold my nose to feel the dizziness - like a spinning BP check!</p>
+                  </div>
+                </div>
+
+                <!-- Mood Card 4 -->
+                <div class="col-md-6">
+                  <div class="card text-center p-3 h-100 shadow-sm">
+                    <i class="fa-solid fa-handshake fa-2x mb-2 text-success"></i>
+                    <h5>Friendly Shake</h5>
+                    <p class="text-muted small">Pull my hand to shake - doctor's handshake style!</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          
+
+
+
         </div>
 
       </div>
@@ -1041,7 +1148,6 @@
                   illness and infection.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center">
-                    <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Author">
                     <small class="text-muted">Dr. Lisa Chen</small>
                   </div>
                   <a href="#" class="text-primary">Read More</a>
@@ -1095,7 +1201,6 @@
                   for all fitness levels.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center">
-                    <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Author">
                     <small class="text-muted">Dr. Michael Brown</small>
                   </div>
                   <a href="#" class="text-primary">Read More</a>
@@ -1314,7 +1419,8 @@
 
       <script src="static/js/nav.js"></script>
 
-    
+
+
   </body>
 
   </html>

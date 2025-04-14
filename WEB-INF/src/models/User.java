@@ -25,11 +25,20 @@ public class User {
     private UserType userType;
     private String activationCode;
 
-    
-
     static StrongPasswordEncryptor spe = new StrongPasswordEncryptor();
 
-    public User(String name, String email, String password, City city, String contact, UserType userType, String activationCode) {
+    
+
+    public User(String name, String contact, City city, String address, String profilePic) {
+        this.name = name;
+        this.contact = contact;
+        this.city = city;
+        this.address = address;
+        this.profilePic = profilePic;
+    }
+
+    public User(String name, String email, String password, City city, String contact, UserType userType,
+            String activationCode) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -58,11 +67,11 @@ public class User {
             ps.setString(2, activationCode);
 
             int res = ps.executeUpdate();
-            if(res == 1)
+            if (res == 1)
                 flag = true;
 
             con.close();
-        } catch(SQLException|ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -71,68 +80,68 @@ public class User {
 
     public Boolean saveUser() {
         Boolean flag = false;
-        try{
+        try {
             Connection con = DBConnect.getConnection();
-            if(con!=null) {
+            if (con != null) {
                 String query = "insert into users (name, email, password,city_id,contact ,user_type_id,activation_code) value (?,?,?,?,?,?,?)";
                 PreparedStatement ps = con.prepareStatement(query);
 
                 ps.setString(1, name);
                 ps.setString(2, email);
                 ps.setString(3, spe.encryptPassword(password));
-                ps.setInt(4,city.getCityId());
+                ps.setInt(4, city.getCityId());
                 ps.setString(5, contact);
                 ps.setInt(6, userType.getUserTypeId());
-                ps.setString(7,activationCode);
-                
+                ps.setString(7, activationCode);
+
                 int res = ps.executeUpdate();
 
-                if(res==1)
+                if (res == 1)
                     flag = true;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return flag;
     }
 
     public void signinUser() {
-        status = new Status(-1);  //-1 no account with the given email...
+        status = new Status(-1); // -1 no account with the given email...
 
-        try{
+        try {
             Connection con = DBConnect.getConnection();
 
-            String query = "select * from users where email=?";
+            // String query = "select * from users where email=?";
+            String query = "select u.*, ct.city AS city_name, s.state AS state_name from users AS u JOIN cities as ct on u.city_id = ct.city_id JOIN states as s on ct.state_id = s.state_id WHERE u.email=?";
 
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, email);
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {
-                if(spe.checkPassword(password,rs.getString("password"))){
+            if (rs.next()) {
+                if (spe.checkPassword(password, rs.getString("password"))) {
                     name = rs.getString("name");
                     status = new Status(rs.getInt("status_id"));
                     userId = rs.getInt("user_id");
-                    city = new City(rs.getInt("city_id"));
+                    city = new City(rs.getString("city_name"),new State(rs.getString("state_name")));
                     contact = rs.getString("contact");
                     profilePic = rs.getString("profile_pic");
-                    userType = new UserType(rs.getInt("user_type_id"));   
+                    userType = new UserType(rs.getInt("user_type_id"));
 
                 } else {
                     status = new Status(0); // password mismatched
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-    
+
     public Integer getUserId() {
         return userId;
     }
@@ -144,7 +153,7 @@ public class User {
     public String getName() {
         return name;
     }
-    
+
     public String getEmail() {
         return email;
     }
@@ -224,6 +233,5 @@ public class User {
     public void setCity(City city) {
         this.city = city;
     }
-    
-    
+
 }

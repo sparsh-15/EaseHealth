@@ -8,6 +8,14 @@ public class State {
 
     }
 
+    
+
+    public State(String state) {
+        this.state = state;
+    }
+
+
+
     public State(Integer stateId, String state) {
         this.stateId = stateId;
         this.state = state;

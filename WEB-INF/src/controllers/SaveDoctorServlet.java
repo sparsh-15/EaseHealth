@@ -36,7 +36,7 @@ public class SaveDoctorServlet extends HttpServlet{
                 String gender = null;
                 Integer specializationId = null;
                 String qualification = null;
-                String experience = null;
+                Integer experience = null;
                 String certificate = null;
                 if (ServletFileUpload.isMultipartContent(request)) {
                     DiskFileItemFactory dfif = new DiskFileItemFactory();
@@ -56,7 +56,7 @@ public class SaveDoctorServlet extends HttpServlet{
                                         qualification = fileItem.getString();
                                         break;
                                     case "experience":
-                                        experience = fileItem.getString();
+                                        experience = Integer.parseInt(fileItem.getString());
                                         break;
                                 }
                             } else {

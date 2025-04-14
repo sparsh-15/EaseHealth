@@ -78,8 +78,6 @@ public class MedicineFormat {
                 e.printStackTrace();
             }
         }
-        
-
         return flag;
     }
 

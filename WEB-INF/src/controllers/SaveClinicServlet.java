@@ -32,7 +32,6 @@ public class SaveClinicServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         Doctor doctorExist = (Doctor) session.getAttribute("doctor");
 
-        String flag = "no";
 
         if (user != null) {
             if (user.getUserType().getUserTypeId() == 2 && doctorExist != null) {
@@ -50,17 +49,17 @@ public class SaveClinicServlet extends HttpServlet {
                     ServletFileUpload sfu = new ServletFileUpload(dfif);
                     try {
                         List<FileItem> dfi = sfu.parseRequest(request);
-
+                        String clinicNameFolder = "";
                         for (FileItem fileItem : dfi) {
                             if (fileItem.isFormField()) {
                                 switch (fileItem.getFieldName()) {
                                     case "clinic_name":
                                         clinicName = fileItem.getString();
+                                        clinicNameFolder = clinicName.replaceAll("\\s+", "_");
                                         System.out.println(clinicName);
                                         break;
                                     case "address":
                                         clinicAddress = fileItem.getString();
-                                        // System.out.println(clinicAddress);
                                         break;
                                     case "city_id":
                                         cityId = Integer.parseInt(fileItem.getString());
@@ -79,27 +78,31 @@ public class SaveClinicServlet extends HttpServlet {
                                         break;
                                 }
                             } else if(fileItem.getFieldName().equals("clinic_image[]")) {
-                                String uploadPath = getServletContext()
-                                        .getRealPath("/WEB-INF/uploads/" + user.getUserId() + "_" + user.getEmail());
+                            
+                                    String uploadPath = getServletContext().getRealPath("/WEB-INF/uploads");
+                                    String clinicPath = user.getUserId()+"_"+user.getEmail()+ "/clinics/" + clinicNameFolder.replace("\\", "/"); ;
 
-                                String fileName = new File(fileItem.getName()).getName(); // Extract filename
+                                    String fileName = new File(fileItem.getName()).getName();
 
-                                if (fileName != null && !fileName.isEmpty()) {
-                                    File file = new File(uploadPath , fileName);
+                                    File clinicFolder = new File(uploadPath,clinicPath);
+                                    clinicFolder.mkdirs();
+
+                                    String thumbnail = clinicPath + "/" + fileName;
+
+                                    File file = new File(uploadPath, thumbnail);
 
                                     try {
                                         // Save the file
                                         fileItem.write(file);
 
                                         // Store the saved file path
-                                        clinicPics.add(file.getAbsolutePath());
+                                        clinicPics.add(thumbnail);
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
                             }
-                        }
                         System.out.println("Uploaded Files: " + clinicPics);
 
                         Clinic clinic = new Clinic(clinicName,new Doctor(doctorId), clinicAddress, new City(cityId), contactNumber, consultationFee);
@@ -107,7 +110,7 @@ public class SaveClinicServlet extends HttpServlet {
                         System.out.println(clinicId);
 
                         ClinicPic.saveClinicPics(clinicId, clinicPics);
-
+                        doctorExist.updateClinicCount(doctorId);
                         ClinicDay.saveClinicDays(clinicId, clinicDays);
                     } catch (FileUploadException e) {
                         e.printStackTrace();
@@ -116,6 +119,5 @@ public class SaveClinicServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("doctor.do").forward(request, response);
-    }
-}
+    response.sendRedirect("doctor.do");
+}}

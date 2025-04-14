@@ -25,7 +25,7 @@ public class DashboardServlet extends HttpServlet {
 
             switch (userTypeId) {
                 case 1:
-                    nextPage = "patient.jsp";
+                    nextPage = "patient.do";
                     break;
                 case 2:
                     nextPage = "doctor.do";
@@ -34,12 +34,7 @@ public class DashboardServlet extends HttpServlet {
                     // ----
                     nextPage = "pharma_company.do";
                     break;
-                // case 4:
-                // nextPage = "pharma_comp_manager.jsp";
-                // break;
-                // case 5:
-                // nextPage = "clinic_manager.jsp";
-                // break;
+             
             }
         }
 

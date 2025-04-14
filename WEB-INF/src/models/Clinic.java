@@ -17,6 +17,9 @@ public class Clinic {
     private String contact;
     private Integer consultationFee;
 
+    private ArrayList<ClinicDay> clinicDays;
+    private ArrayList<ClinicShift> clinicShifts;
+
     
     public static ArrayList<Clinic> collectClinics(int doctorId){
         ArrayList<Clinic> clinics = new ArrayList<>();
@@ -67,6 +70,26 @@ public class Clinic {
             e.printStackTrace();
         }
         return clinicId;
+    }
+
+    public Boolean deleteClinic(Clinic clinic) {
+        Boolean flag = false;
+        Connection con = DBConnect.getConnection();
+        String query = "delete from clinics where clinic_id=?";
+
+        try {   
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, clinic.getClinicId());
+
+            int res = ps.executeUpdate();
+            if(res==1){
+                flag = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return flag;
     }
 
     
@@ -148,6 +171,28 @@ public class Clinic {
     public void setClinicName(String clinicName) {
         this.clinicName = clinicName;
     }
+
+
+    public ArrayList<ClinicDay> getClinicDays() {
+        return clinicDays;
+    }
+
+
+    public void setClinicDays(ArrayList<ClinicDay> clinicDays) {
+        this.clinicDays = clinicDays;
+    }
+
+
+    public ArrayList<ClinicShift> getClinicShifts() {
+        return clinicShifts;
+    }
+
+
+    public void setClinicShifts(ArrayList<ClinicShift> clinicShifts) {
+        this.clinicShifts = clinicShifts;
+    }
+
+    
 
     
 }

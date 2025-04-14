@@ -14,134 +14,343 @@
   transform: translateY(-2px);
 }
 
-/* ===== Specific Modal Enhancements ===== */
+/* ===== Specific Modal Enhancements =====++++++++++ */
+/* Base Modal Styling with Neumorphic Elements */
+.modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
 
+/* Modern Gradient Header */
 .modal-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
   color: white;
-  border-bottom: none; /* Remove default border */
-  padding: 1.5rem;
+  border-bottom: none;
+  padding: 1.1rem;
+  position: relative;
+}
+
+.modal-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
 }
 
 .modal-header .modal-title {
-  font-size: 1.5rem; /* Increase title size */
-  font-weight: 600; /* Make title bold */
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.5px;
 }
 
 .modal-header .btn-close {
   filter: brightness(0) invert(1);
-  opacity: 0.8; /* Slightly transparent */
-  transition: opacity 0.2s ease;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  transform: scale(1);
 }
+
+.modal-header .btn-close:hover {
+  opacity: 1;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* Body with Subtle Texture */
 .modal-body {
-  padding: 1.2rem; /* Increase padding for better spacing */
-  background-color: #f8f9fa; /* Light background for contrast */
+  padding: 1.2rem;
+  background-color: #f8fafc;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239fa6b2' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .modal-body p {
-  font-size: 1rem;
-  color: #333; /* Darker text for readability */
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #334155;
+  margin-bottom: 1.0rem;
 }
 
+/* Enhanced Form Controls */
 .modal-body .form-control {
-  border-radius: 8px; /* Rounded corners for inputs */
-  border: 1px solid #ddd; /* Light border for inputs */
-  padding: 0.6rem; /* Increase padding for inputs */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  padding: 0.5rem 0.8rem;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
 }
 
 .modal-body .form-control:focus {
-  border-color: #3498db; /* Highlight input border on focus */
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Add a focus ring */
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px);
 }
 
-/* Modal Footer */
+.modal-body .form-label {
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Floating Footer */
 .modal-footer {
-  border-top: none; /* Remove default border */
-  background-color: #f8f9fa; /* Match body background */
-  padding: 1rem 1.5rem; /* Increase padding for better spacing */
+  border-top: none;
+  background-color: #f8fafc;
+  padding: 1rem 1.3rem;
+  position: relative;
 }
 
+.modal-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(226,232,240,0) 0%, rgba(226,232,240,1) 50%, rgba(226,232,240,0) 100%);
+}
+
+/* Animated Buttons */
 .modal-footer .btn {
-  border-radius: 8px; /* Rounded corners for buttons */
-  padding: 0.5rem 1.25rem; /* Increase padding for buttons */
-  font-weight: 500; /* Medium font weight for buttons */
-  transition: all 0.3s ease; /* Smooth transitions */
+  border-radius: 12px;
+  padding: 0.65rem 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-footer .btn-secondary {
-  background-color: #6c757d; /* Gray background for secondary button */
-  border-color: #6c757d;
-  color: white;
+.modal-footer .btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: -1;
 }
 
-.modal-footer .btn-secondary:hover {
-  background-color: #5a6268; /* Darker gray on hover */
-  border-color: #5a6268;
-  transform: translateY(-2px); /* Lift button on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+.modal-footer .btn:hover::after {
+  height: 100%;
 }
 
+.modal-footer .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Button Animation */
 .modal-footer .btn-primary {
-  background-color: #3498db; /* Primary button color */
-  border-color: #3498db;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border: none;
   color: white;
 }
 
 .modal-footer .btn-primary:hover {
-  background-color: #2980b9; /* Darker blue on hover */
-  border-color: #2980b9;
-  transform: translateY(-2px); /* Lift button on hover */
-  box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2); /* Add shadow on hover */
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
 }
 
+/* Secondary Button Animation */
+.modal-footer .btn-secondary {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  border: none;
+  color: white;
+}
 
-/* ===== Specific Modal Enhancements ===== */
+.modal-footer .btn-secondary:hover {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+}
 
+/* User Type Cards */
 .user_type {
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 16px;
+  border: none;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .user_type:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3) !important; /* Enhanced shadow */
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
+.user_type::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.user_type:hover::before {
+  opacity: 0.8;
+  transform: scale(12);
+  z-index: 0;
+}
+
+.user_type:hover .card-title,
+.user_type:hover .card-text {
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+/* Off-canvas Header */
 .offcanvas-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
   color: white;
+  padding: 1.5rem;
 }
 
-/* Custom button colors to match our theme */
+/* Custom Buttons */
 .btn-custom-primary {
-  background-color: #3498db;
-  border-color: #3498db;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border: none;
   color: white;
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-custom-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+.btn-custom-primary:hover::after {
+  opacity: 1;
+  transform: rotate(45deg) translate(50%, 50%);
 }
 
 .btn-custom-primary:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4); /* Adding a shadow on hover */
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
 }
 
 .btn-custom-secondary {
-  background-color: #2c3e50;
-  border-color: #2c3e50;
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  border: none;
   color: white;
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
 }
 
 .btn-custom-secondary:hover {
-  background-color: #34495e;
-  border-color: #34495e;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4); /* Adding a shadow on hover */
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(71, 85, 105, 0.3);
 }
+
+/* Signup Box Modal Specific */
+#signupbox .modal-content {
+  max-width: 850px;
+}
+
+#signupbox .card {
+  border-radius: 16px;
+  border: none;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#signupbox .card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+#signupbox .card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+  transform-origin: right;
+}
+
+#signupbox .card:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+#signupbox .card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #334155;
+  transition: all 0.3s ease;
+}
+
+/* Sign-in Form Modal */
+#signin_form .modal-content,
+#signup_form .modal-content {
+  max-width: 450px;
+  border-radius: 20px;
+}
+
+#signin_form .modal-body,
+#signup_form .modal-body {
+  background-color: white;
+  padding: 1rem;
+}
+
+/* Form Animations */
+.form-floating {
+  position: relative;
+  margin-bottom: 1.1rem;
+}
+
+.form-floating label {
+  transition: all 0.3s ease;
+}
+
+.form-floating .form-control:focus + label,
+.form-floating .form-control:not(:placeholder-shown) + label {
+  transform: translateY(-1.5rem) scale(0.85);
+  color: #8b5cf6;
+}
+
+
+
 
 /* Alert custom styling */
 .custom-alert-success {
@@ -166,52 +375,6 @@
   color: #555; /* Dark gray for message text */
 }
 
-/* Signup Box Modal */
-#signupbox .modal-content {
-  max-width: 800px; /* Increase max width for larger modal */
-}
-
-#signupbox .card {
-  transition: all 0.3s ease; /* Smooth transitions for cards */
-  cursor: pointer; /* Pointer cursor for clickable cards */
-}
-
-#signupbox .card:hover {
-  transform: translateY(-5px); /* Lift card on hover */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Add shadow on hover */
-}
 
 
 
-#signupbox .card-title {
-  font-size: 1.25rem; /* Increase card title size */
-  font-weight: 600; /* Bold card title */
-}
-
-/* Signup Form Modal */
-#signup_form .modal-content {
-  max-width: 500px; /* Limit width for better readability */
-}
-
-#signup_form .modal-body {
-  background-color: white; /* White background for form */
-}
-
-#signup_form .form-label {
-  font-weight: 500; /* Medium font weight for labels */
-  color: #333; /* Dark gray for labels */
-}
-
-/* Signin Form Modal */
-#signin_form .modal-content {
-  max-width: 400px; /* Limit width for better readability */
-}
-
-#signin_form .modal-body {
-  background-color: white; /* White background for form */
-}
-
-#signin_form .form-label {
-  font-weight: 500; /* Medium font weight for labels */
-  color: #333; /* Dark gray for labels */
-}

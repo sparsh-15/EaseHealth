@@ -17,6 +17,8 @@ const user_signin_activation_report = document.querySelector('#user_signin_activ
 const message_box = new bootstrap.Modal('#message_box'); // modal: message
 const message_title = document.querySelector('#message_title'); // h3
 const message = document.querySelector('#message'); //<p>
+const signupMsgIcon = document.querySelector("#signup-msg-icon");
+const signup_msg_btn = document.querySelector("#signup_msg_btn")
 
 
 signup_form.addEventListener('submit', (ev) => {
@@ -45,18 +47,26 @@ user_card_box.addEventListener('click', (event) => {
 });
 
 const showMessageBox = () => {
-  
 
   setTimeout(() => {
     message_box.show();
   }, 1000);
 };
 
+signup_msg_btn.addEventListener("click", function () {
+  const modal = new bootstrap.Modal(document.getElementById("signin_form"));
+  modal.show();
+});
+
+
 if (user_signup_report.value) {
   if (user_signup_report.value == 'true') {
     message.innerHTML = 'Congratulations .... your account is created <br> please signin';
     message.classList.add('text-success');
     message.classList.add('text-center');
+    signupMsgIcon.innerText = 'verified';
+    signup_msg_btn.innerText = 'Sign In';
+    signup_msg_btn.setAttribute("data-bs-target","signin_form")
     showMessageBox();
 
   } else {
@@ -94,15 +104,16 @@ if (user_signin_activation_report.value == true) {
 }
 
 function togglePasswordVisibility(inputId) {
-  const input = document.getElementById(inputId);
-  const icon = input.nextElementSibling.querySelector('i');
-  if (input.type === 'password') {
-      input.type = 'text';
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
+  const passwordInput = document.getElementById(inputId);
+  const icon = document.getElementById("toggle-password-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
   } else {
-      input.type = 'password';
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
+    passwordInput.type = "password";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
   }
 }
