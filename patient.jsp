@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="static/css/nav.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
 
+
         <style>
             :root {
                 --primary: #4361ee;
@@ -815,6 +816,34 @@
                 transform: scale(1.05);
                 transition: all 0.2s ease;
             }
+
+            /* clinic css */
+            .clinic-option:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            /* carousel css */
+            .carousel-control-prev,
+            .carousel-control-next {
+
+                transition: all 0.3s ease-in-out;
+            }
+
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                filter: invert(100%);
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            /* 🟡 Hover Effect: Increases size & adds glow */
+            .carousel-control-prev:hover,
+            .carousel-control-next:hover {
+                background: rgba(255, 255, 255, 0.3);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+                transform: scale(1.1);
+            }
         </style>
     </head>
 
@@ -918,854 +947,748 @@
 
         <!-- complete_doctor_profile_modal  ->  end -->
 
+        <!-- appointment success alert  -->
+        <% String message=request.getParameter("message"); %>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <% if (message !=null && !message.isEmpty()) { %>
+                <script>
+                    Swal.fire({
+                        icon: '<%= message.toLowerCase().contains("success") ? "success" : "error" %>',
+                        title: '<%= message.toLowerCase().contains("success") ? "Success!" : "Oops..." %>',
+                        text: '<%= message %>',
+                        confirmButtonColor: '#3085d6',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                </script>
+                <% } %>
 
-        <div class="container-fluid sticky-top">
-            <c:import url="nav.jsp" />
-        </div>
-        <!-- Sidebar -->
-        <div class="sidebar col-md-3 col-lg-2 d-md-block">
-            <div class="text-center mb-4 sidebar-brand">
-                <h4 class="m-0 fw-bold">MediCare<span class="text-primary">+</span></h4>
-                <p class="small mb-0 text-muted">Patient Portal</p>
-            </div>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#dashboard">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#appointments">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Appointments</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#top_doctors">
-                        <i class="fas fa-user-md"></i>
-                        <span>Doctors</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#prescriptions">
-                        <i class="fas fa-prescription"></i>
-                        <span>Prescriptions</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#find_nearby_clinic">
-                        <i class="fas fa-file-medical"></i>
-                        <span>Find nearby clinics</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#health_articles">
-                        <i class="fas fa-newspaper"></i>
-                        <span>Health Articles</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#health_tracker">
-                        <i class="fas fa-heartbeat"></i>
-                        <span>Health Tracker</span>
-                    </a>
-                </li>
-                <li class="nav-item mt-3">
-                    <a class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#user_offcanvas">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#help">
-                        <i class="fas fa-question-circle"></i>
-                        <span>Help & Support</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Top Navigation -->
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 px-2">
 
-                <!-- Search Bar -->
-                <div class="input-group search-bar-box flex-grow-2 me-auto" style="max-width: 350px;">
-                    <input type="text" class="form-control" placeholder="Search doctors, clinics, medicines...">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
 
-                <!-- Right Panel -->
-                <div class="d-flex justify-content-between gap-4  flex-wrap">
-                    <!-- Health Tip -->
-                    <div class="flex-fill" style="min-width: 250px;">
-                        <div class="card p-3 shadow-sm" style="background: #f9fafe;">
-                            <h5 class="text-primary mb-3"><i class="fas fa-heartbeat me-2"></i>Today's Health Tip</h5>
-                            <div id="tipBox" class="text-secondary small fw-medium">
-                                Loading tips...
-                            </div>
+                    <div class="container-fluid sticky-top">
+                        <c:import url="nav.jsp" />
+                    </div>
+                    <!-- Sidebar -->
+                    <div class="sidebar col-md-3 col-lg-2 d-md-block">
+                        <div class="text-center mb-4 sidebar-brand">
+                            <h4 class="m-0 fw-bold">MediCare<span class="text-primary">+</span></h4>
+                            <p class="small mb-0 text-muted">Patient Portal</p>
                         </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#dashboard">
+                                    <i class="fas fa-home"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#appointments">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Appointments</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#top_doctors">
+                                    <i class="fas fa-user-md"></i>
+                                    <span>Doctors</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#prescriptions">
+                                    <i class="fas fa-prescription"></i>
+                                    <span>Prescriptions</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#find_nearby_clinic">
+                                    <i class="fas fa-file-medical"></i>
+                                    <span>Find nearby clinics</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#health_articles">
+                                    <i class="fas fa-newspaper"></i>
+                                    <span>Health Articles</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#health_tracker">
+                                    <i class="fas fa-heartbeat"></i>
+                                    <span>Health Tracker</span>
+                                </a>
+                            </li>
+                            <li class="nav-item mt-3">
+                                <a class="nav-link" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#user_offcanvas">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="#help">
+                                    <i class="fas fa-question-circle"></i>
+                                    <span>Help & Support</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <!-- Location Card -->
-                    <div class="flex-fill" style="min-width: 200px;">
-                        <div class="card p-2 shadow-sm" style="background: #f9fafe;">
-                            <h6 class="text-primary mb-2"><i class="fas fa-map-marker-alt me-2"></i>Your Location</h6>
-                            <div id="currentLocation" class="text-secondary small fw-medium">
-                                ${user.city.city},d${user.city.state.state}
+                    <!-- Main Content -->
+                    <div class="main-content">
+                        <!-- Top Navigation -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 px-2">
+
+                            <!-- Search Bar -->
+                            <div class="input-group search-bar-box flex-grow-2 me-auto" style="max-width: 350px;">
+                                <input type="text" class="form-control"
+                                    placeholder="Search doctors, clinics, medicines...">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
-                        </div>
-                    </div>
 
-
-
-                    <!-- Live Clock -->
-                    <div class="flex-fill" style="min-width: 200px;">
-                        <div class="time-box p-3 rounded shadow-sm d-flex align-items-center gap-3">
-                            <i class="fas fa-clock fa-lg text-primary"></i>
-                            <div>
-                                <div class="live-time fw-bold fs-5" id="liveClock">--:-- --</div>
-                                <div class="live-date text-muted small" id="liveDate">Loading date...</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <!-- Welcome Section -->
-            <div class="row mb-4" id="dashboard">
-                <div class="col-lg-8">
-                    <div class="card greeting-card">
-                        <div class="confetti" style="left: 20%; background-color: #4CC9F0;"></div>
-                        <div class="confetti" style="left: 40%; background-color: #F72585; animation-delay: 0.5s;">
-                        </div>
-                        <div class="confetti" style="left: 60%; background-color: #4361EE; animation-delay: 1s;"></div>
-                        <div class="confetti" style="left: 80%; background-color: #F8961E; animation-delay: 1.5s;">
-                        </div>
-
-                        <span class="greeting-icon">
-                            <i class="fas fa-sun"></i>
-                        </span>
-                        <h3>Good morning, ${user.name}!</h3>
-                        <div class="d-flex mt-3 flex-wrap gap-2">
-                            <c:choose>
-                                <c:when test="${details_report eq 'true' }">
-                                    <div>
-                                        <p class="mb-3 fs-5 text-light">
-                                            <i class="fas fa-heartbeat text-danger me-2"></i>
-                                            Hello again! Your wellness is our priority.
-                                        </p>
-
-                                        <!-- Button Row -->
-                                        <div class="d-flex gap-3 flex-wrap">
-                                            <button
-                                                class="btn btn-light d-flex align-items-center gap-2 px-3 py-2 shadow-sm">
-                                                <i class="fas fa-plus text-primary"></i>
-                                                <span>Book Appointment</span>
-                                            </button>
-
-                                            <button
-                                                class="btn btn-light d-flex align-items-center gap-2 px-3 py-2 shadow-sm">
-                                                <i class="fas fa-video text-danger"></i>
-                                                <span>Video Consult </span>
-                                            </button>
+                            <!-- Right Panel -->
+                            <div class="d-flex justify-content-between gap-4  flex-wrap">
+                                <!-- Health Tip -->
+                                <div class="flex-fill" style="min-width: 250px;">
+                                    <div class="card p-3 shadow-sm" style="background: #f9fafe;">
+                                        <h5 class="text-primary mb-3"><i class="fas fa-heartbeat me-2"></i>Today's
+                                            Health
+                                            Tip</h5>
+                                        <div id="tipBox" class="text-secondary small fw-medium">
+                                            Loading tips...
                                         </div>
                                     </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="alert alert-warning d-flex align-items-center gap-2 p-3 shadow-sm">
-                                        <i class="fas fa-exclamation-circle text-warning fs-4"></i>
+                                </div>
+
+                                <!-- Location Card -->
+                                <div class="flex-fill" style="min-width: 200px;">
+                                    <div class="card p-2 shadow-sm" style="background: #f9fafe;">
+                                        <h6 class="text-primary mb-2"><i class="fas fa-map-marker-alt me-2"></i>Your
+                                            Location</h6>
+                                        <div id="currentLocation" class="text-secondary small fw-medium">
+                                            ${user.city.city}, ${user.city.state.state}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Live Clock -->
+                                <div class="flex-fill" style="min-width: 200px;">
+                                    <div class="time-box p-3 rounded shadow-sm d-flex align-items-center gap-3">
+                                        <i class="fas fa-clock fa-lg text-primary"></i>
                                         <div>
-                                            <h5 class="mb-1">Profile Incomplete</h5>
-                                            <p class="mb-0">Please complete your profile to access appointments and
-                                                consultations.</p>
-                                        </div>
-                                        <button class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                            data-bs-target="#completeProfileModal">
-                                            Complete Now
-                                        </button>
-
-                                    </div>
-                                </c:otherwise>
-
-                            </c:choose>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="mb-3">Mood Tracker</h5>
-                            <p>How are you feeling today?</p>
-                            <div class="quiz-option float-animation" data-mood="great" style="animation-delay: 0.2s;">
-                                <i class="far fa-smile"></i>
-                                <div>Great</div>
-                            </div>
-                            <div class="quiz-option float-animation" data-mood="okay" style="animation-delay: 0.4s;">
-                                <i class="far fa-meh"></i>
-                                <div>Okay</div>
-                            </div>
-                            <div class="quiz-option float-animation" data-mood="not-well"
-                                style="animation-delay: 0.6s;">
-                                <i class="far fa-frown"></i>
-                                <div>Not well</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="row mb-4 requires-profile">
-                <div class="col-md-3 col-6 mb-3 mb-md-0">
-                    <div class="card stat-card h-100">
-                        <div class="stat-icon"
-                            style="background-color: rgba(76, 201, 240, 0.15); color: var(--success);">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Appointments</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 mb-3 mb-md-0">
-                    <div class="card stat-card h-100">
-                        <div class="stat-icon"
-                            style="background-color: rgba(67, 97, 238, 0.15); color: var(--primary);">
-                            <i class="fas fa-prescription-bottle-alt"></i>
-                        </div>
-                        <div class="stat-value">2</div>
-                        <div class="stat-label">Prescriptions</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="card stat-card h-100">
-                        <div class="stat-icon"
-                            style="background-color: rgba(247, 37, 133, 0.15); color: var(--danger);">
-                            <i class="fas fa-file-medical"></i>
-                        </div>
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Records</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="card stat-card h-100">
-                        <div class="stat-icon"
-                            style="background-color: rgba(248, 150, 30, 0.15); color: var(--warning);">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Doctors</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Appointments and Calendar -->
-            <div class="row mb-4 requires-profile" title="Please complete your profile to unlock this feature"
-                id="appointments">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Upcoming Appointments</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="appointment-card p-3 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Doctor"
-                                        class="doctor-img me-3">
-                                    <div>
-                                        <h6 class="mb-1">Dr. Michael Chen</h6>
-                                        <p class="text-muted mb-1">Cardiologist</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                            <span>Wednesday, Apr 7, 2025</span>
-                                            <i class="fas fa-clock ms-3 me-2 text-primary"></i>
-                                            <span>9:30 AM&nbsp;</span>
-                                        </div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-sm btn-outline-primary me-2">
-                                            <i class="fas fa-video me-1"></i>Join
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-calendar-alt me-1"></i>Reschedule
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="appointment-card p-3 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Doctor"
-                                        class="doctor-img me-3">
-                                    <div>
-                                        <h6 class="mb-1">Dr. Jessica Williams</h6>
-                                        <p class="text-muted mb-1">Dermatologist</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                            <span>Monday, Apr 12, 2025</span>
-                                            <i class="fas fa-clock ms-3 me-2 text-primary"></i>
-                                            <span>2:00 PM</span>
-                                        </div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-calendar-alt me-1"></i>Reschedule
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="appointment-card p-3">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Doctor"
-                                        class="doctor-img me-3">
-                                    <div>
-                                        <h6 class="mb-1">Dr. Robert Thompson</h6>
-                                        <p class="text-muted mb-1">General Physician</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                            <span>Friday, Apr 16, 2025</span>
-                                            <i class="fas fa-clock ms-3 me-2 text-primary"></i>
-                                            <span>11:15 AM</span>
-                                        </div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-calendar-alt me-1"></i>Reschedule
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Quick Book Appointment</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Select Date</label>
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <div class="calendar-day">
-                                            <div class="text-muted small">Mon</div>
-                                            <div class="fw-bold">6</div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="calendar-day active">
-                                            <div class="text-muted small">Tue</div>
-                                            <div class="fw-bold">7</div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="calendar-day">
-                                            <div class="text-muted small">Wed</div>
-                                            <div class="fw-bold">8</div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="calendar-day">
-                                            <div class="text-muted small">Thu</div>
-                                            <div class="fw-bold">9</div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="calendar-day">
-                                            <div class="text-muted small">Fri</div>
-                                            <div class="fw-bold">10</div>
+                                            <div class="live-time fw-bold fs-5" id="liveClock">--:-- --</div>
+                                            <div class="live-date text-muted small" id="liveDate">Loading date...</div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Available Time Slots</label>
-                                <div>
-                                    <span class="time-slot">9:00 AM</span>
-                                    <span class="time-slot">10:30 AM</span>
-                                    <span class="time-slot">11:45 AM</span>
-                                    <span class="time-slot">2:15 PM</span>
-                                    <span class="time-slot">3:30 PM</span>
-                                    <span class="time-slot">4:45 PM</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary w-100 mt-3">Confirm Booking</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
 
-            <!-- Top Doctors -->
-            <div class="row mb-4" id="top_doctors">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Top Rated Doctors Near You</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row top_doctors_row">
-                                <div class="col-md-6 col-lg-3 mb-3">
-                                    <div class="card doctor-card h-100">
-                                        <div class="card-body">
-                                            <div class="text-center mb-3">
-                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Doctor"
-                                                    class="rounded-circle" style="width: 100px; height: 100px;">
-                                                <h5 class="mt-3 mb-1">Dr. Michael Chen</h5>
-                                                <p class="text-muted mb-1">Cardiologist</p>
-                                                <div class="text-warning mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                    <span class="text-muted ms-1">(4.7)</span>
+
+                        <!-- Welcome Section -->
+                        <div class="row mb-4" id="dashboard">
+                            <div class="col-lg-8">
+                                <div class="card greeting-card">
+                                    <div class="confetti" style="left: 20%; background-color: #4CC9F0;"></div>
+                                    <div class="confetti"
+                                        style="left: 40%; background-color: #F72585; animation-delay: 0.5s;">
+                                    </div>
+                                    <div class="confetti"
+                                        style="left: 60%; background-color: #4361EE; animation-delay: 1s;"></div>
+                                    <div class="confetti"
+                                        style="left: 80%; background-color: #F8961E; animation-delay: 1.5s;">
+                                    </div>
+
+                                    <span class="greeting-icon">
+                                        <i class="fas fa-sun"></i>
+                                    </span>
+                                    <h3>Good morning, ${user.name}!</h3>
+                                    <div class="d-flex mt-3 flex-wrap gap-2">
+                                        <c:choose>
+                                            <c:when test="${details_report eq 'true' }">
+                                                <div>
+                                                    <p class="mb-3 fs-5 text-light">
+                                                        <i class="fas fa-heartbeat text-danger me-2"></i>
+                                                        Hello again! Your wellness is our priority.
+                                                    </p>
+
+                                                    <!-- Button Row -->
+                                                    <div class="d-flex gap-3 flex-wrap">
+                                                        <button
+                                                            class="btn btn-light d-flex align-items-center gap-2 px-3 py-2 shadow-sm">
+                                                            <i class="fas fa-plus text-primary"></i>
+                                                            <span>Book Appointment</span>
+                                                        </button>
+
+                                                        <button
+                                                            class="btn btn-light d-flex align-items-center gap-2 px-3 py-2 shadow-sm">
+                                                            <i class="fas fa-video text-danger"></i>
+                                                            <span>Video Consult </span>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <span class="badge-clinic-open">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                    Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100">Book Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 mb-3">
-                                    <div class="card doctor-card h-100">
-                                        <div class="card-body">
-                                            <div class="text-center mb-3">
-                                                <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Doctor"
-                                                    class="rounded-circle" style="width: 100px; height: 100px;">
-                                                <h5 class="mt-3 mb-1">Dr. Jessica Williams</h5>
-                                                <p class="text-muted mb-1">Dermatologist</p>
-                                                <div class="text-warning mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <span class="text-muted ms-1">(4.9)</span>
-                                                </div>
-                                                <span class="badge-clinic-open">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                    Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100">Book Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 mb-3">
-                                    <div class="card doctor-card h-100">
-                                        <div class="card-body">
-                                            <div class="text-center mb-3">
-                                                <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Doctor"
-                                                    class="rounded-circle" style="width: 100px; height: 100px;">
-                                                <h5 class="mt-3 mb-1">Dr. Robert Thompson</h5>
-                                                <p class="text-muted mb-1">General Physician</p>
-                                                <div class="text-warning mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <span class="text-muted ms-1">(4.1)</span>
-                                                </div>
-                                                <span class="badge-clinic-closed">
-                                                    <i class="fas fa-circle me-1"></i>Closed
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                    Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100">Book Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 mb-3">
-                                    <div class="card doctor-card h-100">
-                                        <div class="card-body">
-                                            <div class="text-center mb-3">
-                                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Doctor"
-                                                    class="rounded-circle" style="width: 100px; height: 100px;">
-                                                <h5 class="mt-3 mb-1">Dr. Maria Gonzalez</h5>
-                                                <p class="text-muted mb-1">Pediatrician</p>
-                                                <div class="text-warning mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                    <span class="text-muted ms-1">(4.6)</span>
-                                                </div>
-                                                <span class="badge-clinic-open">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                    Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100">Book Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div
+                                                    class="alert alert-warning d-flex align-items-center gap-2 p-3 shadow-sm">
+                                                    <i class="fas fa-exclamation-circle text-warning fs-4"></i>
+                                                    <div>
+                                                        <h5 class="mb-1">Profile Incomplete</h5>
+                                                        <p class="mb-0">Please complete your profile to access
+                                                            appointments
+                                                            and
+                                                            consultations.</p>
+                                                    </div>
+                                                    <button class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                                        data-bs-target="#completeProfileModal">
+                                                        Complete Now
+                                                    </button>
 
-            <!-- Prescriptions and Health Metrics -->
-            <div class="row mb-4 requires-profile" id="prescriptions">
-                <div class="col-lg-7">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Active Prescriptions</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="prescription-card p-3 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        <i class="fas fa-pills fa-2x text-primary"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Atorvastatin 20mg</h6>
-                                        <p class="text-muted mb-1">Take 1 tablet at night</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                            <span>Prescribed: Mar 15, 2025</span>
-                                            <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                            <span>Refill in 12 days</span>
-                                        </div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-sm btn-outline-primary">Request Refill</button>
+                                                </div>
+                                            </c:otherwise>
+
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
-                            <div class="prescription-card p-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        <i class="fas fa-capsules fa-2x text-secondary"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Vitamin D3 1000 IU</h6>
-                                        <p class="text-muted mb-1">Take 1 capsule daily with food</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                            <span>Prescribed: Mar 20, 2025</span>
-                                            <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                            <span>Refill in 22 days</span>
+
+                            <div class="col-lg-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="mb-3">Mood Tracker</h5>
+                                        <p>How are you feeling today?</p>
+                                        <div class="quiz-option float-animation" data-mood="great"
+                                            style="animation-delay: 0.2s;">
+                                            <i class="far fa-smile"></i>
+                                            <div>Great</div>
+                                        </div>
+                                        <div class="quiz-option float-animation" data-mood="okay"
+                                            style="animation-delay: 0.4s;">
+                                            <i class="far fa-meh"></i>
+                                            <div>Okay</div>
+                                        </div>
+                                        <div class="quiz-option float-animation" data-mood="not-well"
+                                            style="animation-delay: 0.6s;">
+                                            <i class="far fa-frown"></i>
+                                            <div>Not well</div>
                                         </div>
                                     </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-sm btn-outline-primary">Request Refill</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        <div class="row mb-4 requires-profile">
+                            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                                <div class="card stat-card h-100">
+                                    <div class="stat-icon"
+                                        style="background-color: rgba(76, 201, 240, 0.15); color: var(--success);">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-label">Appointments</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                                <div class="card stat-card h-100">
+                                    <div class="stat-icon"
+                                        style="background-color: rgba(67, 97, 238, 0.15); color: var(--primary);">
+                                        <i class="fas fa-prescription-bottle-alt"></i>
+                                    </div>
+                                    <div class="stat-value">2</div>
+                                    <div class="stat-label">Prescriptions</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="card stat-card h-100">
+                                    <div class="stat-icon"
+                                        style="background-color: rgba(247, 37, 133, 0.15); color: var(--danger);">
+                                        <i class="fas fa-file-medical"></i>
+                                    </div>
+                                    <div class="stat-value">8</div>
+                                    <div class="stat-label">Records</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="card stat-card h-100">
+                                    <div class="stat-icon"
+                                        style="background-color: rgba(248, 150, 30, 0.15); color: var(--warning);">
+                                        <i class="fas fa-user-md"></i>
+                                    </div>
+                                    <div class="stat-value">5</div>
+                                    <div class="stat-label">Doctors</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointments and Calendar -->
+                        <div class="row mb-4 requires-profile"
+                            title="Please complete your profile to unlock this feature" id="appointments">
+                            <div class="col-lg-12"></div>
+                            <!-- Repeat this card for each appointment dynamically using JS -->
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="fw-semi-bold text-dark my-2">
+                                        <i class="fas fa-calendar-check me-2 text-primary"></i> Upcoming Appointments
+                                    </h5>
+                                    <button id="appointment_toggle_btn"
+                                        class="btn btn-sm btn-outline-primary d-none">View All</button>
+                                </div>
+                                <div class="card-body" id="appointmentsContainer">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Doctor"
+                                            class="doctor-img rounded-circle me-3"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">
+                                                Dr. Anand Eknoriya
+                                                <span class="badge bg-success text-white ms-2">Confirmed</span>
+                                            </h6>
+                                            <p class="text-muted mb-1">Gynecologist · Anoopaa Clinic · Itanagar</p>
+                                            <div class="d-flex align-items-center text-muted small">
+                                                <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                                <span>Sunday, Apr 6, 2025</span>
+                                                <i class="fas fa-clock ms-3 me-2 text-primary"></i>
+                                                <span>10:42 PM</span>
+                                            </div>
+                                        </div>
+                                        <div class="ms-auto d-flex flex-column gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-video me-1"></i> Join
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-calendar-alt me-1"></i> Reschedule
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-0 mb-3">
+                                    <button id="appointment_toggle_btn"
+                                        class="btn btn-sm btn-outline-primary d-none">View All</button>
+                                </div>
+                            </div>
+                        </div>
+                   
+
+
+                    <!-- Top Doctors -->
+                    <div class="row mb-4" id="top_doctors">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Top Rated Doctors Near You</h5>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row top_doctors_row">
+                                        <div class="col-md-6 col-lg-3 mb-3">
+                                            <div class="card doctor-card h-100">
+                                                <div class="card-body">
+                                                    <div class="text-center mb-3">
+                                                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                                                            alt="Doctor" class="rounded-circle"
+                                                            style="width: 100px; height: 100px;">
+                                                        <h5 class="mt-3 mb-1">Dr. Michael Chen</h5>
+                                                        <p class="text-muted mb-1">Cardiologist</p>
+                                                        <div class="text-warning mb-2">
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star-half-alt"></i>
+                                                            <span class="text-muted ms-1">(4.7)</span>
+                                                        </div>
+                                                        <span class="badge-clinic-open">
+                                                            <i class="fas fa-circle me-1"></i>Open Now
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3">
+                                                        <button class="btn btn-sm btn-outline-primary w-100 me-2">View
+                                                            Profile</button>
+                                                        <button class="btn btn-sm btn-primary w-100">Book
+                                                            Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3 mb-3">
+                                            <div class="card doctor-card h-100">
+                                                <div class="card-body">
+                                                    <div class="text-center mb-3">
+                                                        <img src="https://randomuser.me/api/portraits/women/28.jpg"
+                                                            alt="Doctor" class="rounded-circle"
+                                                            style="width: 100px; height: 100px;">
+                                                        <h5 class="mt-3 mb-1">Dr. Jessica Williams</h5>
+                                                        <p class="text-muted mb-1">Dermatologist</p>
+                                                        <div class="text-warning mb-2">
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <span class="text-muted ms-1">(4.9)</span>
+                                                        </div>
+                                                        <span class="badge-clinic-open">
+                                                            <i class="fas fa-circle me-1"></i>Open Now
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3">
+                                                        <button class="btn btn-sm btn-outline-primary w-100 me-2">View
+                                                            Profile</button>
+                                                        <button class="btn btn-sm btn-primary w-100">Book
+                                                            Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-5" id="health_tracker">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Health Metrics</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+
+                    <!-- Prescriptions and Health Metrics -->
+                    <div class="row mb-4 requires-profile" id="prescriptions">
+                        <div class="col-lg-7">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Active Prescriptions</h5>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="prescription-card p-3 mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fas fa-pills fa-2x text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">Atorvastatin 20mg</h6>
+                                                <p class="text-muted mb-1">Take 1 tablet at night</p>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                                    <span>Prescribed: Mar 15, 2025</span>
+                                                    <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
+                                                    <span>Refill in 12 days</span>
+                                                </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <button class="btn btn-sm btn-outline-primary">Request
+                                                    Refill</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="prescription-card p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fas fa-capsules fa-2x text-secondary"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">Vitamin D3 1000 IU</h6>
+                                                <p class="text-muted mb-1">Take 1 capsule daily with food</p>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                                    <span>Prescribed: Mar 20, 2025</span>
+                                                    <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
+                                                    <span>Refill in 22 days</span>
+                                                </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <button class="btn btn-sm btn-outline-primary">Request
+                                                    Refill</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row align-items-center mb-4">
-                                <div class="col-4">
-                                    <div class="health-metric">
-                                        <svg width="100" height="100" viewBox="0 0 36 36">
+                        <div class="col-lg-5" id="health_tracker">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Health Metrics</h5>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-4">
+                                            <div class="health-metric">
+                                                <svg width="100" height="100" viewBox="0 0 36 36">
+                                                    <path
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                        fill="none" stroke="#eee" stroke-width="3" />
+                                                    <path
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                        fill="none" stroke="#1e88e5" stroke-width="3"
+                                                        stroke-dasharray="75, 100" />
+                                                </svg>
+                                                <div class="metric-value">75%</div>
+                                            </div>
+                                            <p class="text-center mt-2 mb-0">Overall</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Blood Pressure</span>
+                                                    <span>120/80</span>
+                                                </div>
+                                                <div class="progress progress-thin">
+                                                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Weight</span>
+                                                    <span>68 kg</span>
+                                                </div>
+                                                <div class="progress progress-thin">
+                                                    <div class="progress-bar bg-primary" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Heart Rate</span>
+                                                    <span>72 bpm</span>
+                                                </div>
+                                                <div class="progress progress-thin">
+                                                    <div class="progress-bar bg-info" style="width: 90%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline-primary btn-sm w-100">Update Metrics</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Articles -->
+                    <div class="row mb-4" id="health_articles">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Featured Health Articles</h5>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Browse Library</a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3 ">
+                                            <div class="card article-card shadow h-100">
+                                                <img src="static/media/images/HealthArticle1.png"
+                                                    class="article-img class=w-100 " alt="Article Image">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Understanding Heart Health: Key Facts
+                                                    </h5>
+                                                    <p class="card-text text-muted">Learn about the latest research
+                                                        on
+                                                        cardiovascular health and preventative measures.</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <small class="text-muted">5 min read</small>
+                                                        <button class="btn btn-sm btn-outline-primary">Read
+                                                            More</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card article-card">
+                                                <img src="/api/placeholder/800/400" class="article-img"
+                                                    alt="Article Image">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Nutrition Myths Debunked</h5>
+                                                    <p class="card-text text-muted">Our experts separate fact from
+                                                        fiction about
+                                                        the
+                                                        most common nutrition misconceptions.</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <small class="text-muted">8 min read</small>
+                                                        <button class="btn btn-sm btn-outline-primary">Read
+                                                            More</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card article-card">
+                                                <img src="/api/placeholder/800/400" class="article-img"
+                                                    alt="Article Image">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">The Science of Sleep</h5>
+                                                    <p class="card-text text-muted">Discover how quality sleep
+                                                        impacts
+                                                        your
+                                                        overall
+                                                        health and tips for better rest.</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <small class="text-muted">6 min read</small>
+                                                        <button class="btn btn-sm btn-outline-primary">Read
+                                                            More</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Virtual Waiting Room -->
+                    <div class="row mb-4 requires-profile">
+                        <div class="col-lg-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">Virtual Waiting Room</h5>
+                                    <div class="text-center my-4">
+                                        <svg width="120" height="120" viewBox="0 0 36 36">
                                             <path
                                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                 fill="none" stroke="#eee" stroke-width="3" />
                                             <path
                                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                fill="none" stroke="#1e88e5" stroke-width="3"
-                                                stroke-dasharray="75, 100" />
+                                                fill="none" stroke="#26c6da" stroke-width="3"
+                                                stroke-dasharray="30, 100" />
                                         </svg>
-                                        <div class="metric-value">75%</div>
+                                        <h3 class="mt-3">30%</h3>
+                                        <p class="text-muted">Your estimated wait time is <strong>15
+                                                minutes</strong>
+                                        </p>
                                     </div>
-                                    <p class="text-center mt-2 mb-0">Overall</p>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        You will receive a notification when the doctor is ready to see you.
+                                    </div>
+                                    <button class="btn btn-primary w-100">Check In</button>
                                 </div>
-                                <div class="col-8">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span>Blood Pressure</span>
-                                            <span>120/80</span>
-                                        </div>
-                                        <div class="progress progress-thin">
-                                            <div class="progress-bar bg-success" style="width: 85%"></div>
-                                        </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8" id="find_nearby_clinic">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0"><i class="fas fa-search-location me-2"></i>Find Nearby Clinics</h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- City Select -->
+                                    <div class="mb-4">
+                                        <label for="city" class="form-label fw-semibold">Select Your City</label>
+                                        <select class="form-select" id="clinic_city_id" name="city_id" required onchange="showClinicsByCity(this.value)">
+                                            <option value="" disabled>Choose your location</option>
+                                            <c:forEach var="ct" items="${cities}">
+                                                <option 
+                                                    value="${ct.cityId}" 
+                                                    ${ct.city == user.city.city ? 'selected' : ''}>
+                                                    ${ct.city} (${ct.state.state})
+                                                </option>
+                                            </c:forEach>
+                                        </select>   
                                     </div>
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span>Weight</span>
-                                            <span>68 kg</span>
+                        
+                                    <!-- Clinics Container (to be filled dynamically via AJAX) -->
+                                    <div class="row g-3" id="clinicCardsContainer">
+                                        <!-- Example Clinic Card Template -->
+                                        <div class="col-md-6">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body">
+                                                    <h6 class="fw-bold">MediCare+ Primary Care Center</h6>
+                                                    <p class="text-muted small mb-2">
+                                                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                                        1234 Medical Blvd, Suite 100
+                                                    </p>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="badge bg-success me-2">
+                                                            <i class="fas fa-circle me-1"></i> Open Now
+                                                        </span>
+                                                        <span class="text-muted small">Closes at 7:00 PM</span>
+                                                    </div>
+                                                    <div class="text-warning mb-3">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star-half-alt"></i>
+                                                        <span class="text-muted small ms-1">(4.7)</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <button class="btn btn-outline-primary btn-sm">
+                                                            <i class="fas fa-directions me-1"></i>Directions
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm">
+                                                            <i class="fas fa-calendar-plus me-1"></i>Book Appointment
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="progress progress-thin">
-                                            <div class="progress-bar bg-primary" style="width: 70%"></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span>Heart Rate</span>
-                                            <span>72 bpm</span>
-                                        </div>
-                                        <div class="progress progress-thin">
-                                            <div class="progress-bar bg-info" style="width: 90%"></div>
-                                        </div>
+                                        <!-- End Clinic Card -->
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-outline-primary btn-sm w-100">Update Metrics</button>
                         </div>
+                        
                     </div>
-                </div>
-            </div>
-
-            <!-- Health Articles -->
-            <div class="row mb-4" id="health_articles">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Featured Health Articles</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Browse Library</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3 ">
-                                    <div class="card article-card shadow h-100">
-                                        <img src="static/media/images/HealthArticle1.png"
-                                            class="article-img class=w-100 " alt="Article Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Understanding Heart Health: Key Facts</h5>
-                                            <p class="card-text text-muted">Learn about the latest research on
-                                                cardiovascular health and preventative measures.</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <small class="text-muted">5 min read</small>
-                                                <button class="btn btn-sm btn-outline-primary">Read More</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="card article-card">
-                                        <img src="/api/placeholder/800/400" class="article-img" alt="Article Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Nutrition Myths Debunked</h5>
-                                            <p class="card-text text-muted">Our experts separate fact from fiction about
-                                                the
-                                                most common nutrition misconceptions.</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <small class="text-muted">8 min read</small>
-                                                <button class="btn btn-sm btn-outline-primary">Read More</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="card article-card">
-                                        <img src="/api/placeholder/800/400" class="article-img" alt="Article Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title">The Science of Sleep</h5>
-                                            <p class="card-text text-muted">Discover how quality sleep impacts your
-                                                overall
-                                                health and tips for better rest.</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <small class="text-muted">6 min read</small>
-                                                <button class="btn btn-sm btn-outline-primary">Read More</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Virtual Waiting Room -->
-            <div class="row mb-4 requires-profile">
-                <div class="col-lg-4">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h5 class="card-title">Virtual Waiting Room</h5>
-                            <div class="text-center my-4">
-                                <svg width="120" height="120" viewBox="0 0 36 36">
-                                    <path
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                        fill="none" stroke="#eee" stroke-width="3" />
-                                    <path
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                        fill="none" stroke="#26c6da" stroke-width="3" stroke-dasharray="30, 100" />
-                                </svg>
-                                <h3 class="mt-3">30%</h3>
-                                <p class="text-muted">Your estimated wait time is <strong>15 minutes</strong></p>
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
-                                You will receive a notification when the doctor is ready to see you.
-                            </div>
-                            <button class="btn btn-primary w-100">Check In</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8" id="find_nearby_clinic">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Find Nearby Clinics</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <input type="text" class="form-control search-bar"
-                                    placeholder="Enter your location or zip code">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h6>MediCare+ Primary Care Center</h6>
-                                            <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2"></i>1234
-                                                Medical Blvd, Suite 100</p>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <span class="badge-clinic-open me-3">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                                <span class="text-muted small">Closes at 7:00 PM</span>
-                                            </div>
-                                            <div class="text-warning mb-3">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <span class="text-muted ms-1">(4.7)</span>
-                                            </div>
-                                            <div class="d-flex">
-                                                <button class="btn btn-sm btn-outline-primary me-2">
-                                                    <i class="fas fa-directions me-1"></i>Directions
-                                                </button>
-                                                <button class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-calendar-plus me-1"></i>Book
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h6>MediCare+ Specialty Clinic</h6>
-                                            <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2"></i>5678
-                                                Health
-                                                Ave, Suite 200</p>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <span class="badge-clinic-open me-3">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                                <span class="text-muted small">Closes at 5:30 PM</span>
-                                            </div>
-                                            <div class="text-warning mb-3">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <span class="text-muted ms-1">(4.2)</span>
-                                            </div>
-                                            <div class="d-flex">
-                                                <button class="btn btn-sm btn-outline-primary me-2">
-                                                    <i class="fas fa-directions me-1"></i>Directions
-                                                </button>
-                                                <button class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-calendar-plus me-1"></i>Book
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <!-- Bootstrap and other Scripts -->
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+                    <script src="static/js/patient.js"></script>
 
-        <!-- Bootstrap and other Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="static/js/patient.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
+                    <script>
+                        var patientId = "${patient.patientId}";
 
+                    </script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
 
-                function showMoodToast(message) {
-                    const toast = document.createElement("div");
-                    toast.innerHTML = message;
-                    toast.className = "mood-toast";
-                    document.body.appendChild(toast);
+                            function showMoodToast(message) {
+                                const toast = document.createElement("div");
+                                toast.innerHTML = message;
+                                toast.className = "mood-toast";
+                                document.body.appendChild(toast);
 
-                    setTimeout(() => {
-                        toast.classList.add("show");
-                    }, 100);
+                                setTimeout(() => {
+                                    toast.classList.add("show");
+                                }, 100);
 
-                    setTimeout(() => {
-                        toast.classList.remove("show");
-                        setTimeout(() => toast.remove(), 300);
-                    }, 3000);
-                }
+                                setTimeout(() => {
+                                    toast.classList.remove("show");
+                                    setTimeout(() => toast.remove(), 300);
+                                }, 3000);
+                            }
 
-                const isProfileComplete = "${details_report}" === "true"; // From your JSP
+                            const isProfileComplete = "${details_report}" === "true"; // From your JSP
 
-                if (!isProfileComplete) {
-                    document.querySelectorAll(".requires-profile").forEach(section => {
-                        section.classList.add("blurred");
+                            if (!isProfileComplete) {
+                                document.querySelectorAll(".requires-profile").forEach(section => {
+                                    section.classList.add("blurred");
 
-                        // Inject overlay only once
-                        if (!section.querySelector(".locked-overlay")) {
-                            const overlay = document.createElement("div");
-                            overlay.className = "locked-overlay d-flex align-items-center justify-content-center";
-                            overlay.innerHTML = `
+                                    // Inject overlay only once
+                                    if (!section.querySelector(".locked-overlay")) {
+                                        const overlay = document.createElement("div");
+                                        overlay.className = "locked-overlay d-flex align-items-center justify-content-center";
+                                        overlay.innerHTML = `
                                         <i class="fas fa-user-lock text-danger me-2" title="Locked"></i>
                                         <span class="locked-msg">Complete your profile to access</span>
                                     `;
-                            section.appendChild(overlay);
-                        }
-                    });
-                }
-            });
+                                        section.appendChild(overlay);
+                                    }
+                                });
+                            }
+                        });
 
+                    </script>
 
-
-        </script>
-
-        <c:if test="${sessionScope.details_report == 'false'}">
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const profileModal = new bootstrap.Modal(document.getElementById("completeProfileModal"));
-                    profileModal.show();
-                });
-            </script>
-        </c:if>
+                    <c:if test="${sessionScope.details_report == 'false'}">
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const profileModal = new bootstrap.Modal(document.getElementById("completeProfileModal"));
+                                profileModal.show();
+                            });
+                        </script>
+                    </c:if>
     </body>
 
     </html>

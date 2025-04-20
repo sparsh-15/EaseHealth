@@ -29,6 +29,14 @@ public class User {
 
     
 
+    
+
+    public User(Integer userId, String name, String profilePic) {
+        this.userId = userId;
+        this.name = name;
+        this.profilePic = profilePic;
+    }
+
     public User(String name, String contact, City city, String address, String profilePic) {
         this.name = name;
         this.contact = contact;

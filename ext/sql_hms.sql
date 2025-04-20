@@ -22,6 +22,7 @@ create table status
 );
 
 insert into status (name) values ('Inactive'),('Active');
+alter table status change column name status char(40) not null;
 
 
 create table specializations
@@ -322,6 +323,40 @@ create table clinics
  insert into clinics(clinic_name,doctor_id,address,city_id,contact,consultation_fee) values(?,?,?,?,?,?);
 select * from clinics as c JOIN cities as ct on c.city_id=ct.city_id where doctor_id=?
 
+
+-- Insert additional Clinic Data
+INSERT INTO clinics (clinic_name, doctor_id, address, city_id, contact, consultation_fee) VALUES
+-- For Doctor 14 (General Physician)
+('Visakha Health Care', 14, 'Opposite YMCA, Visakhapatnam, 530016', 1, '9876543220', 600),
+('City Health Clinic', 14, 'Near Railway Station, Vijayawada, 520003', 2, '9876543221', 700),
+('Apollo Health Clinic', 14, 'Opposite Petrol Pump, Bhopal, 462002', 15, '9876543222', 900),
+('Bhopal City Clinic', 14, 'Near Raja Bhoj Airport, Bhopal, 462003', 15, '9876543223', 800),
+
+-- For Doctor 15 (Cardiologist)
+('Cardio Care Clinic', 15, 'Behind Bus Stand, Vijayawada, 520008', 2, '9876543230', 1500),
+('Heart & Health Clinic', 15, 'Near Indira Gandhi Park, Indore, 452001', 16, '9876543231', 1800),
+('Cardio Plus Clinic', 15, 'Near 10th Mile, Indore, 452002', 16, '9876543232', 2000),
+('Heart Health Center', 15, 'Opposite Super Mall, Bhopal, 462004', 15, '9876543233', 1700),
+
+-- For Doctor 16 (Dermatologist)
+('Healthy Skin Clinic', 16, 'Near MG Road, Itanagar, 791102', 3, '9876543240', 1200),
+('Glowing Skin Care', 16, 'Near IG Park, Dispur, 781010', 4, '9876543241', 1300),
+('Skin Rejuvenate Clinic', 16, 'Behind Shankar Market, Indore, 452003', 16, '9876543242', 1500),
+('Derma Solutions Clinic', 16, 'Near Bhopal Lake, Bhopal, 462005', 15, '9876543243', 1400),
+
+-- For Doctor 17 (Orthopedic Surgeon)
+('Bone & Joint Care Clinic', 17, 'Near Park View Hotel, Dispur, 781005', 4, '9876543250', 1100),
+('Indore Bone Clinic', 17, 'Near Chappal Market, Indore, 452004', 16, '9876543251', 1600),
+('Ortho Relief Clinic', 17, 'Near Rani Kheda, Bhopal, 462006', 15, '9876543252', 1300),
+('Bhopal Bone Clinic', 17, 'Near Upper Lake, Bhopal, 462007', 15, '9876543253', 1200),
+
+-- For Doctor 18 (Pediatrician)
+('Kids Health Clinic', 18, 'Near R K Studios, Patna, 800002', 5, '9876543260', 800),
+('Child Care Clinic', 18, 'Behind Patna Junction, Patna, 800003', 5, '9876543261', 900),
+('Pediatric Care Center', 18, 'Near Sarafa Market, Indore, 452005', 16, '9876543262', 1000),
+('Bhopal Child Clinic', 18, 'Near Mandideep, Bhopal, 462008', 15, '9876543263', 950);
+
+
 create table clinic_shifts
 (
     clinic_shift_id int auto_increment primary key,
@@ -342,6 +377,49 @@ create table clinic_days
     constraint fk_clinic_day_clinic foreign key (clinic_id) references clinics (clinic_id),
     constraint fk_clinic_day_days foreign key (day_id) references days (day_id)
 );
+
+INSERT INTO clinic_days (clinic_id, day_id) VALUES
+-- Clinic 22
+(22, 2), (22, 3), (22, 4), (22, 5), (22, 6), (22, 7),
+-- Clinic 23
+(23, 2), (23, 3), (23, 4), (23, 5), (23, 6),
+-- Clinic 24
+(24, 1), (24, 2), (24, 3), (24, 5), (24, 6), (24, 7),
+-- Clinic 25
+(25, 2), (25, 3), (25, 4), (25, 6), (25, 7),
+-- Clinic 26
+(26, 2), (26, 3), (26, 4), (26, 5), (26, 6), (26, 7),
+-- Clinic 27
+(27, 2), (27, 4), (27, 5), (27, 6), (27, 7),
+-- Clinic 28
+(28, 2), (28, 3), (28, 4), (28, 5), (28, 6), (28, 7),
+-- Clinic 29
+(29, 2), (29, 3), (29, 4), (29, 5),
+-- Clinic 30
+(30, 1), (30, 2), (30, 3), (30, 5), (30, 6), (30, 7),
+-- Clinic 31
+(31, 2), (31, 3), (31, 4), (31, 6), (31, 7),
+-- Clinic 32
+(32, 2), (32, 3), (32, 4), (32, 5), (32, 6),
+-- Clinic 33
+(33, 2), (33, 3), (33, 5), (33, 6), (33, 7),
+-- Clinic 34
+(34, 2), (34, 4), (34, 5), (34, 6), (34, 7),
+-- Clinic 35
+(35, 2), (35, 3), (35, 4), (35, 5), (35, 6),
+-- Clinic 36
+(36, 2), (36, 3), (36, 4), (36, 5), (36, 6), (36, 7),
+-- Clinic 37
+(37, 2), (37, 3), (37, 4), (37, 5),
+-- Clinic 38
+(38, 2), (38, 4), (38, 5), (38, 6), (38, 7),
+-- Clinic 39
+(39, 2), (39, 3), (39, 4), (39, 5), (39, 6), (39, 7),
+-- Clinic 40
+(40, 1), (40, 2), (40, 3), (40, 4), (40, 5), (40, 6),
+-- Clinic 41
+(41, 2), (41, 3), (41, 4), (41, 6), (41, 7);
+
 
  insert into clinic_days(clinic_id,day_id) values(?,?);
 
@@ -368,6 +446,38 @@ create table appointments
     constraint fk_appointments_clinic_shift foreign key (clinic_shift_id) references clinic_shifts (clinic_shift_id),   
     constraint fk_appointments_status foreign key (status_id) references status (status_id)  
 );
+
+
+select a.appointment_id,
+    a.patient_id,
+    a.appointment_date,
+    a.clinic_shift_id,
+    a.status_id,
+    cs.clinic_id,
+    c.clinic_name,
+    c.doctor_id,
+    c.address,
+    c.city_id,
+    c.contact,
+    c.consultation_fee,
+    ct.city,
+    d.doctor_id,
+    d.specialization_id,
+    d.user_id,
+    s.specialization,
+    u.name,
+    u.profile_pic
+    FROM appointments AS a JOIN clinic_shifts AS cs ON a.clinic_shift_id=cs.clinic_shift_id 
+    JOIN clinics AS c ON cs.clinic_id=c.clinic_id 
+    JOIN cities AS ct ON c.city_id = ct.city_id
+    JOIN doctors AS d ON d.doctor_id=c.doctor_id
+    JOIN specializations AS s ON d.specialization_id = s.specialization_id
+    JOIN users as u ON d.user_id = u.user_id
+    WHERE patient_id = 4;
+
+
+
+insert into appointments(patient_id,appointment_date,clinic_shift_id,status_id) values(?,?,?,?)
 
 create table prescriptions
 (

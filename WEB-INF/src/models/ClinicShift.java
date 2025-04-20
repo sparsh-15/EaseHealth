@@ -16,11 +16,33 @@ public class ClinicShift {
     private Timestamp endTime;
     private Integer maxAppointment;
 
+    public ClinicShift(Integer clinicShiftId, Clinic clinic, Timestamp startTime, Timestamp endTime,
+            Integer maxAppointment) {
+        this.clinicShiftId = clinicShiftId;
+        this.clinic = clinic;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.maxAppointment = maxAppointment;
+    }
+     
+    public ClinicShift(Integer clinicShiftId) {
+        this.clinicShiftId = clinicShiftId;
+    }
+
     public ClinicShift(Clinic clinic, Timestamp startTime, Timestamp endTime, Integer maxAppointment) {
         this.clinic = clinic;
         this.startTime = startTime;
         this.endTime = endTime;
         this.maxAppointment = maxAppointment;
+    }
+
+    
+
+
+    public ClinicShift(Clinic clinic, Timestamp startTime, Timestamp endTime) {
+        this.clinic = clinic;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Boolean SaveClinicShift() {
@@ -30,7 +52,6 @@ public class ClinicShift {
 
         try {
             PreparedStatement ps = con.prepareStatement(query);
-            System.out.println(startTime);
             ps.setInt(1, clinic.getClinicId());
             ps.setTimestamp(2, startTime);
             ps.setTimestamp(3, endTime);
@@ -60,7 +81,8 @@ public class ClinicShift {
                 ResultSet rs = ps.executeQuery();
                 ArrayList<ClinicShift> clinicShifts = new ArrayList<>();
                 while (rs.next()) {
-                    clinicShifts.add(new ClinicShift(new Clinic(rs.getInt("clinic_id")),rs.getTimestamp("start_time"),rs.getTimestamp("end_time"),rs.getInt("max_appointment")));
+                    clinicShifts.add(new ClinicShift(rs.getInt("clinic_shift_id"), new Clinic(rs.getInt("clinic_id")),
+                            rs.getTimestamp("start_time"), rs.getTimestamp("end_time"), rs.getInt("max_appointment")));
                     flag = true;
                 }
                 clinic.setClinicShifts(clinicShifts);
@@ -69,6 +91,28 @@ public class ClinicShift {
             }
         }
         return flag;
+    }
+     
+
+    public static ArrayList<ClinicShift> collectClinicShifts(int clinicId) {
+        ArrayList<ClinicShift> clinicShifts = new ArrayList<>();
+        String query = "select * from clinic_shifts where clinic_id=?";
+
+            try {
+                Connection con = DBConnect.getConnection();
+                PreparedStatement ps = con.prepareStatement(query);
+
+                ps.setInt(1, clinicId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    clinicShifts.add(new ClinicShift(rs.getInt("clinic_shift_id"), new Clinic(rs.getInt("clinic_id")),
+                            rs.getTimestamp("start_time"), rs.getTimestamp("end_time"), rs.getInt("max_appointment")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        
+        return clinicShifts;
     }
 
     public Integer getClinicShiftId() {

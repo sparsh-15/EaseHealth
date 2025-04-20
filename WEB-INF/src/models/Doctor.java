@@ -20,6 +20,13 @@ public class Doctor {
     private String certificate;
     private Integer clinicCount;
 
+    
+
+    public Doctor(User user, Specialization specialization) {
+        this.user = user;
+        this.specialization = specialization;
+    }
+
     public Doctor(Integer doctorId) {
         this.doctorId = doctorId;
     }

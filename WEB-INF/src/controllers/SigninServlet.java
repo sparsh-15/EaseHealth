@@ -36,5 +36,11 @@ public class SigninServlet extends HttpServlet {
 
         response.sendRedirect(nextPage);
     }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+     
+        response.sendRedirect("home.jsp"); // Recommended
+    }
 }
 

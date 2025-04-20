@@ -26,13 +26,14 @@ public class Patient {
         this.height = height;
         this.uid = uid;
         this.profilePic = profilePic;
-    }
+    }    
 
-    
+    public Patient(Integer patientId) {
+        this.patientId = patientId;
+    }
 
     public Patient() {
     }
-
 
 
     public Boolean savePatient() {

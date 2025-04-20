@@ -20,7 +20,32 @@ public class Clinic {
     private ArrayList<ClinicDay> clinicDays;
     private ArrayList<ClinicShift> clinicShifts;
 
+    public static ArrayList<Clinic> collectCityClinics(int cityId){
+        ArrayList<Clinic> cityClinics = new ArrayList<>();
+        Connection con = DBConnect.getConnection();
+        String query = "select * from clinics as c JOIN cities as ct on c.city_id=ct.city_id where c.city_id=?";
+
+        try{
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, cityId);
+             
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                cityClinics.add(new Clinic(rs.getInt("clinic_id"),rs.getString("clinic_name"),rs.getString("address"),new City(rs.getString("city")),rs.getString("contact"),rs.getInt("consultation_fee")));
+            }
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cityClinics;
+    }
+
+
     
+
+
     public static ArrayList<Clinic> collectClinics(int doctorId){
         ArrayList<Clinic> clinics = new ArrayList<>();
         Connection con = DBConnect.getConnection();

@@ -12,25 +12,25 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import models.Doctor;
+import models.Appointment;
 import models.Patient;
 import models.User;
 
-@WebServlet("/collect_doctors.do")
-public class CollectDoctorsServlet extends HttpServlet{
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+@WebServlet("/collect_appoinments.do")
+public class CollectAppointmentsServlet extends HttpServlet{
+    public void doGet(HttpServletRequest request , HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-
+        
         Patient patient = (Patient)session.getAttribute("patient");
         User user = (User)session.getAttribute("user");
         String records = "empty";
+        System.out.println(patient.getPatientId());
 
         if (user != null) {
-            if (user.getUserType().getUserTypeId() == 1 && patient != null) {
-                ArrayList<Doctor> doctors = Doctor.collectAllDoctors();
-    
-                records = new Gson().toJson(doctors);
-            }
+            ArrayList<Appointment> appointments = Appointment.collectAllAppointment(patient.getPatientId());
+
+            Gson gson = new Gson();
+            records = gson.toJson(appointments);
         }
 
         response.getWriter().write(records);

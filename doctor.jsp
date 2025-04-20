@@ -568,9 +568,8 @@
             }
 
             .clinic-shifts-section .btn:hover {
-  box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
-}
-
+                box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+            }
         </style>
     </head>
 
@@ -756,7 +755,7 @@
                                 <select class="form-select" name="specialization_id" id="specialization" required>
                                     <c:forEach var="specialization" items="${specializations}">
                                         <option value="${specialization.specializationId}">
-                                            ${specialization.name}</option>
+                                            ${specialization.specialization}</option>
                                     </c:forEach>
                                     <!-- Add more specializations dynamically from the database -->
                                 </select>
@@ -870,74 +869,10 @@
                     <!-- Clinics Grid -->
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 clinic_containers">
                         <!-- Clinic Card 1 -->
-                        <div class="col">
-                            <div class="clinic-card">
-                                <img src="/api/placeholder/400/200" alt="Clinic" class="clinic-image w-100">
-                                <div class="clinic-card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title mb-0">Health First Center</h5>
-                                        <div class="dropdown">
-                                            <button class="options-btn" type="button" id="clinicOptionsMenu"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <input type="hidden" id="clinic_id">
-                                            <ul class="dropdown-menu dropdown-menu-end clinic-dropdown-menu"
-                                                aria-labelledby="clinicOptionsMenu">
-                                                <li><a class="dropdown-item schedule btn" data-bs-toggle="modal"
-                                                        data-bs-target="#clinicShiftsModal"><i
-                                                            class="fas fa-calendar-alt"></i>Manage Schedules</a></li>
-                                                <li><a class="dropdown-item edit btn" href="#"><i
-                                                            class="fas fa-edit"></i>Edit</a></li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item delete btn" id="delete_clinic_btn"
-                                                        href="#"><i class="fas fa-trash"></i>Delete</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="clinic-info-item">
-                                        <span class="clinic-info-icon">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </span>
-                                        <span>123 Medical Drive, Suite 101, San Francisco, CA 94107</span>
-                                    </div>
-
-                                    <div class="clinic-info-item">
-                                        <span class="clinic-info-icon">
-                                            <i class="fas fa-phone"></i>
-                                        </span>
-                                        <span>(415) 555-1234</span>
-                                    </div>
-
-                                    <div class="clinic-info-item">
-                                        <span class="clinic-info-icon">
-                                            <i class="fas fa-clock"></i>
-                                        </span>
-                                        <span>9:00 AM - 5:00 PM</span>
-                                    </div>
-
-                                    <div class="mt-3 mb-3">
-
-                                        <span class="badge-day">Mon</span>
-                                        <span class="badge-day">Tue</span>
-                                        <span class="badge-day">Wed</span>
-                                        <span class="badge-day">Thu</span>
-                                        <span class="badge-day">Fri</span>
-                                    </div>
-
-                                    <div class="action-buttons">
-                                        <a href="clinicAppointments.jsp?clinic_id=1" class="btn btn-gradient w-100">
-                                            <i class="fas fa-calendar-check me-2"></i>View Appointments
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <hr>
+                        <h5 class="text-muted">no clinics found</h5>
+                        <hr>
                     </div>
-
                 </div>
 
                 <!-- Pagination -->
@@ -960,7 +895,7 @@
                 </nav>
             </div>
         </div>
-        </div>
+
 
         <!-- complete profile toast -->
         <div class="toast-container position-fixed top-0 start-50 translate-middle-x">

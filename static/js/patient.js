@@ -110,6 +110,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    document.addEventListener('hidden.bs.modal', function () {
+        // Check if any modals are still visible
+        if (document.querySelectorAll('.modal.show').length === 0) {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = ''; // restore scroll
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        }
+    });
 
     // Doctor profile view buttons
     const viewProfileButtons = document.querySelectorAll('.doctor-card .btn-outline-primary');
@@ -489,8 +497,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(rotateTips, 5000);
     rotateTips();
 
-
-
     // ========== UI HELPER FUNCTIONS ==========
 
     // Show a modal dialog
@@ -586,7 +592,7 @@ const showTopDoctors = async () => {
                                             <div class="d-flex justify-content-between mt-3">
                                                 <button class="btn btn-sm btn-outline-primary w-100 me-2 view-profile-btn" id="doctor_profile_btn" data-doctor-id="${doctor.doctorId}">View
                                                     Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100">Book Now</button>
+                                                <button class="btn btn-sm btn-primary w-100" onclick="showClinics(${doctor.doctorId})">Book Now</button>
                                             </div>
                                         </div>
                                     </div>
@@ -609,13 +615,14 @@ const showTopDoctors = async () => {
     })
 }
 
+
+
 showTopDoctors();
 
 
 // Doctor profile view buttons
 
 function showDoctorProfileModal(doctorId, data) {
-    console.log(data);
     let dataForProfile = data.filter(item => item.doctorId == doctorId);
     const doctor = dataForProfile[0];
 
@@ -626,17 +633,18 @@ function showDoctorProfileModal(doctorId, data) {
         <div class="modal-content shadow-sm border-0 rounded-lg overflow-hidden">
           <!-- Profile Header with Background -->
           <div class="position-relative">
-            <div class="text-center" style="margin-top: 10px;">
+            <div class="text-center" style="margin-top: 5px;">
               <img src="static/media/images/doctor.png" alt="${doctor.user.name}" 
                   class="rounded-circle border border-4 border-white shadow" 
                   style="width: 120px; height: 120px; object-fit: cover;">
             </div>
-          </div>
-          
-          <!-- Doctor Info Section -->
-          <div class="modal-body p-2 pt-1">
-            <div class="text-center mb-3">
-              <h3 class="fw-bold mt-2 mb-0">${doctor.user.name}</h3>
+            </div>
+            
+            <!-- Doctor Info Section -->
+            <div class="modal-body p-1 ">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <div class="text-center mb-1">
+              <h3 class="fw-bold mb-0">${doctor.user.name}</h3>
               <p class="text-primary mb-1">${doctor.qualification}</p>
               <p class="text-warning mb-1">
                 <i class="fas fa-star"></i>
@@ -646,12 +654,12 @@ function showDoctorProfileModal(doctorId, data) {
                 <i class="fas fa-star-half-alt"></i>
                 <span class="text-muted ms-1">(4.5)</span>
               </p>
-              <span class="badge bg-primary-subtle text-primary py-2 px-3 mb-3">
+              <span class="badge bg-primary-subtle text-primary py-2 px-3 mb-1">
                 <i class="fas fa-stethoscope me-1"></i>${doctor.specialization.specialization}
               </span>
             </div>
             
-            <hr class="my-3">
+            <hr class="my-1">
             
             <!-- Doctor Details in Cards -->
             <div class="row g-2">
@@ -706,8 +714,8 @@ function showDoctorProfileModal(doctorId, data) {
           <!-- Footer with Action Buttons -->
           <div class="modal-footer border-0 bg-white p-4 pt-0">
             <input type="hidden" value="${doctor.doctorId}" id="hiddenDoctorId">
-            <div class="d-grid gap-2 w-100">
-              <button type="button" class="btn btn-primary btn-lg py-3 shadow-sm" onclick="bookDoctor(${doctor.doctorId})">
+            <div class="d-grid gap-2  w-100">
+              <button type="button" class="btn btn-primary btn-lg py-3 shadow-sm" onclick="showClinics(${doctor.doctorId})">
                 <i class="fas fa-calendar-check me-2"></i>Book Appointment
               </button>
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -726,8 +734,389 @@ function showDoctorProfileModal(doctorId, data) {
 
     // Append modal and show
     document.body.insertAdjacentHTML('beforeend', modalContent);
+
     new bootstrap.Modal(document.getElementById('doctorProfileModal')).show();
 }
+
+const collectClinicsOfADoctor = async (doctorId) => {
+    let response = await fetch('collect_clinics.do?doctor_id=' + doctorId);
+    let result = await response.json();
+
+    return result;
+}
+
+const collectClinicPic = async (clinicId) => {
+
+    let response = await fetch("collect_clinic_pic.do?clinicId=" + clinicId);
+
+    let result = await response.json();
+
+    return result;
+}
+
+const showClinicPic = (clinicId) => {
+
+    collectClinicPic(clinicId).then((data) => {
+        if (data != 'empty') {
+            for (let next of data) {
+
+                if (next.clinic.clinicId == clinicId) {
+                    let clinicImagesContainer = document.getElementById(`clinicImages${next.clinic.clinicId}`);
+                    console.log(clinicImagesContainer);
+
+
+                    let activeClass = clinicImagesContainer.children.length === 0 ? 'active' : '';
+                    let imgElement = document.createElement('div');
+                    imgElement.className = `carousel-item ${activeClass}`;
+                    imgElement.innerHTML = `<img src='download_media.do?path=${next.picPath}' class='img-thumbnail w-100' style='height: 300px; object-fit: cover;' alt='Clinic Image'>`;
+                    clinicImagesContainer.appendChild(imgElement);
+                }
+            }
+        }
+    }).catch((err) => {
+        console.log("error in fetching clinic pic paths" + err);
+    })
+}
+
+function showClinics(doctorId) {
+    collectClinicsOfADoctor(doctorId).then((clinics) => {
+        console.log(clinics);
+
+        let clinicHtml = clinics.map(clinic => {
+            const encodedShifts = encodeURIComponent(JSON.stringify(clinic.clinicShifts));
+
+            return `
+          <div class="col">
+            <div class="card p-3 mb-3 clinic-option shadow-sm border-0 rounded-3">
+              
+              <!-- Carousel -->
+              <div id='clinicCarousel${clinic.clinicId}' class='carousel slide mb-3' data-bs-ride='carousel'>
+                <div class='carousel-inner' id='clinicImages${clinic.clinicId}'>
+                  <!-- Images will be dynamically inserted here -->
+                </div>
+          
+                <!-- Carousel Navigation Buttons -->
+                <button class='carousel-control-prev' type='button' data-bs-target='#clinicCarousel${clinic.clinicId}' data-bs-slide='prev'>
+                  <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                  <span class='visually-hidden'>Previous</span>
+                </button>
+          
+                <button class='carousel-control-next' type='button' data-bs-target='#clinicCarousel${clinic.clinicId}' data-bs-slide='next'>
+                  <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                  <span class='visually-hidden'>Next</span>
+                </button>
+              </div>
+        
+              <!-- Clinic Info BELOW the carousel -->
+              <div style="cursor: pointer; transition: transform 0.3s ease;"
+                   onclick="selectClinic(${clinic.clinicId}, '${clinic.clinicName}', '${clinic.city.city}', JSON.parse(decodeURIComponent('${encodedShifts}')))">
+                <h6 class="mb-1 fw-bold text-primary">${clinic.clinicName}</h6>
+                <p class="mb-1 small text-muted">${clinic.address}</p>
+                <p class="mb-0 text-muted">
+                  <i class="fas fa-map-marker-alt me-1 text-danger"></i>${clinic.city.city}
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+        }).join('');
+
+        const modalContent = `
+            <div class="modal fade" id="clinicModal" tabindex="-1">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow rounded-4">
+                
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Choose a Clinic</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  
+                  <div class="modal-body">
+                   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+                    ${clinicHtml}
+                  </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          `;
+        const existingModal = document.getElementById('clinicModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        document.body.insertAdjacentHTML('beforeend', modalContent);
+        clinics.forEach(clinic => {
+            showClinicPic(clinic.clinicId);
+        });
+        new bootstrap.Modal(document.getElementById('clinicModal')).show();
+        document.getElementById('doctorProfileModal')?.remove();
+
+    }).catch((err) => {
+        console.log(err);
+    })
+}
+
+const formatTime = (rawTime) => {
+    let cleanedTime = rawTime.replace('?', '').trim(); // "Jan 1, 1970, 10:00:00AM"
+    cleanedTime = cleanedTime.replace(/(AM|PM)/, ' $1'); // "Jan 1, 1970, 10:00:00 AM"
+
+    let date = new Date(cleanedTime);
+    let formattedTime = "";
+    if (!isNaN(date.getTime())) {
+        formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    } else {
+        console.log("Invalid Date Format");
+    }
+    return formattedTime;
+}
+
+function selectClinic(clinicId, clinicName, city, clinicShifts) {
+
+    const getShiftLabel = (rawTime) => {
+        let cleanedTime = rawTime.replace('?', '').trim().replace(/(AM|PM)/, ' $1');
+        let date = new Date(cleanedTime);
+        if (!isNaN(date.getTime())) {
+            const hour = date.getHours(); // 0-23 format
+            return hour < 12 ? "Morning Shift" : "Evening Shift";
+        } else {
+            return "Unknown Shift";
+        }
+    };
+
+    const shiftOptions = clinicShifts.map(shift => {
+        const label = getShiftLabel(shift.startTime);
+        const timeRange = `${formatTime(shift.startTime)} - ${formatTime(shift.endTime)}`;
+        const max = shift.maxAppointment ?? 'N/A';
+
+        return `<option value="${shift.clinicShiftId}">
+        ${label} | ${timeRange} | Max: ${max}   
+                </option>`;
+    }).join('');
+
+    const appointmentForm = `
+        <div class="modal fade" id="appointmentModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3">
+              <div class="modal-header">
+                <h5 class="modal-title">Book Appointment at ${clinicName}, ${city}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <form action="book_appointment.do" method="post">
+                <div class="modal-body">
+                  <input type="hidden" name="appointment_patient_id" value="${patientId}">
+                  <label>Select Date</label>
+                  <input type="date" name="appointment_date" class="form-control mb-3" required>
+
+                  <label>Select Shift</label>
+                  <select name="app_clinic_shift_id" class="form-select mb-3" required>
+                     ${shiftOptions}
+                  </select>
+
+                  <button class="btn btn-primary w-100" type="submit">Confirm Appointment</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    `;
+
+    // Close clinic modal and show appointment modal
+
+    document.getElementById('doctorProfileModal')?.remove();
+    document.body.insertAdjacentHTML('beforeend', appointmentForm);
+    new bootstrap.Modal(document.getElementById('appointmentModal')).show();
+}
+
+const collectAppointments = async () => {
+    let response = await fetch('collect_appoinments.do');
+    let result = await response.json();
+    console.log(result);
+
+    return result;
+}
+
+function getStatusClass(status) {
+    const s = status.toLowerCase();
+    if (s === "confirmed") return "success";
+    if (s === "cancelled") return "danger";
+    if (s === "pending") return "warning";
+    return "secondary";
+}
+
+let allAppointments = []; // to store everything
+let showingAll = false;
+const showAppointments = () => {
+    collectAppointments().then((appointments) => {
+        if (appointments != 'empty') {
+
+            allAppointments = appointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+
+            const container = document.getElementById("appointmentsContainer");
+            const toggleBtn = document.getElementById("appointment_toggle_btn");
+
+            const visibleAppointments = showingAll ? allAppointments : allAppointments.slice(0, 3);
+
+            container.innerHTML = ""; // Clear previous
+            visibleAppointments.forEach(app => {
+                const cardHTML = `
+                            <div class="card mb-4 shadow border-0 rounded-4">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center">
+                <!-- Doctor Image -->
+                <img src="${app.clinicShift.clinic.doctor.user.profile_pic || 'https://randomuser.me/api/portraits/men/32.jpg'}" 
+                    alt="Doctor"
+                    class="rounded-circle border me-4"
+                    style="width: 70px; height: 70px; object-fit: cover;">
+
+                <!-- Info Section -->
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-1 text-dark fw-semibold">
+                            ${app.clinicShift.clinic.doctor.user.name}
+                            <span class="badge bg-${getStatusClass(app.status.status)} ms-2 text-capitalize">${app.status.status}</span>
+                        </h5>
+                        <div class="fee-display">
+                            <small class="text-dark fw-semibold">
+                                <i class="fas fa-tag me-1 text-success"></i>
+                                ${app.clinicShift.clinic.consultationFee}
+                            </small>
+                        </div>                 
+                    </div>
+                    
+                    <p class="text-muted mb-1">
+                    ${app.clinicShift.clinic.doctor.specialization.specialization} at 
+                    <strong>${app.clinicShift.clinic.clinicName}</strong>
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                    <i class="fas fa-map-marker-alt me-1 text-danger"></i>${app.clinicShift.clinic.address}, ${app.clinicShift.clinic.city.city} &nbsp;|&nbsp;
+                    <i class="fas fa-phone-alt me-1 text-success"></i>${app.clinicShift.clinic.contact}
+                    </p>
+
+                    <div class="d-flex align-items-center text-muted small">
+                    <i class="fas fa-calendar-alt me-2 text-primary"></i>
+                    <span>${app.appointmentDate}</span>
+                    <i class="fas fa-clock ms-3 me-2 text-primary"></i>
+                    <span>${formatTime(app.clinicShift.startTime)} - ${formatTime(app.clinicShift.endTime)}</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="ms-4 d-flex flex-column align-items-end gap-2">
+                    <button class="btn btn-sm btn-outline-primary px-3">
+                    <i class="fas fa-video me-1"></i> Join
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary px-3">
+                    <i class="fas fa-calendar-alt me-1"></i> Reschedule
+                    </button>
+                </div>
+                </div>
+            </div>
+            </div>
+
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            if (allAppointments.length > 3) {
+                toggleBtn.classList.remove("d-none");
+                toggleBtn.innerText = showingAll ? "View Less" : "View All";
+            } else {
+                toggleBtn.classList.add("d-none");
+            }
+        } else {
+            console.log("failed to fetch appointments");
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+document.getElementById("appointment_toggle_btn").addEventListener("click", function () {
+    showingAll = !showingAll;
+    showAppointments(allAppointments); // will re-render with updated visibility
+});
+
+
+showAppointments();
+
+
+const collectClinicsByCity = async (cityId) => {
+    let response = await fetch("collect_city_clinics.do?city_id=" + cityId);
+    let result = await response.json();
+    console.log(result);
+    console.log(response);
+
+
+    return result;
+}
+
+const showClinicsByCity = (cityId) => {
+    const clinicContainer = document.getElementById("clinicCardsContainer");
+    console.log(cityId);
+
+    collectClinicsByCity(cityId).then((clinics) => {
+        console.log(clinics);
+        if (clinics != 'empty') {
+            console.log(clinics);
+
+            clinicContainer.innerHTML = "";
+            if (clinics.length === 0) {
+                clinicContainer.innerHTML = '<p class="text-danger">No clinics found for this city.</p>';
+                return;
+            }
+            clinics.forEach(clinic => {
+                const cardHTML = `
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="fw-bold">${clinic.clinicName}</h6>
+                                <p class="text-muted small mb-2">
+                                    <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                    ${clinic.address}
+                                </p>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-success me-2">
+                                        <i class="fas fa-circle me-1"></i> Open Now
+                                    </span>
+                                    <span class="text-muted small">Closes at 7:00 PM</span>
+                                </div>
+                                <div class="text-warning mb-3">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="text-muted small ms-1">(4.7)</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-directions me-1"></i>Directions
+                                    </button>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-calendar-plus me-1"></i>Book Appointment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                clinicContainer.innerHTML += cardHTML;
+            });
+        }
+    }).catch((err) => {
+        console.log(err);
+    })
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const defaultCityId = document.getElementById('clinic_city_id').value;
+    if (defaultCityId) {
+        showClinicsByCity(defaultCityId);
+    }
+});
 
 
 

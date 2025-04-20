@@ -4,14 +4,6 @@ const profileIncompleteToast = document.getElementById("profileIncompleteToast")
 
 const dayButtons = document.querySelectorAll('.day-btn');
 
-const collectClinicDetails = async () => {
-    let response = await fetch("collect_clinics.do");
-    let result = await response.json();
-
-    return result;
-}
-
-
 function formatTime(timeString) {
     if (!timeString) return "Invalid Time";
 
@@ -26,6 +18,13 @@ function formatTime(timeString) {
     } else {
         return "Invalid Time";
     }
+}
+
+const collectClinicDetails = async () => {
+    let response = await fetch("collect_clinics.do");
+    let result = await response.json();
+
+    return result;
 }
 
 const showClinics = () => {
@@ -147,7 +146,7 @@ const showClinics = () => {
                                 </div>
                             </div>
                             <div class='action-buttons mt-3'>
-                                <a href='clinicAppointments.jsp?clinic_id=${clinic.clinicId}' class='btn btn-gradient w-100'>
+                                <a href='clinicAppointments.do?clinic_id=${clinic.clinicId}' class='btn btn-gradient w-100'>
                                     <i class='fas fa-calendar-check me-2'></i>View Appointments
                                 </a>
                             </div>

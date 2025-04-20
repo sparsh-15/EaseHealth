@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 import models.Patient;
 import models.User;
 
@@ -25,11 +24,15 @@ public class PatientServlet extends HttpServlet {
         if (user != null) {
             if (user.getUserType().getUserTypeId() == 1) {
                 Patient patient = new Patient().fetchCheckPatientDetails(user);
+                String message = request.getParameter("message");
+                if (message != null) {
+                    request.setAttribute("message", message); // pass it to JSP explicitly
+                }
 
-                if(patient.getPatientId()!=null) {
+                if (patient.getPatientId() != null) {
                     session.setAttribute("details_report", "true");
                     session.setAttribute("patient", patient);
-                }else{
+                } else {
                     session.setAttribute("details_report", "false");
                 }
                 nextPage = "patient.jsp";

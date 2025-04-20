@@ -25,6 +25,14 @@ public class Specialization {
         this.specializationId = specializationId;
     }
 
+    
+
+
+
+    public Specialization(String specialization) {
+        this.specialization = specialization;
+    }
+
 
 
     public static ArrayList<Specialization> collectAllSpecializations() {
