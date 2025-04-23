@@ -552,8 +552,6 @@ document.addEventListener('DOMContentLoaded', function () {
 const collectTopDoctors = async () => {
     let response = await fetch('collect_doctors.do');
     let result = await response.json();
-    console.log(result);
-
 
     return result;
 }
@@ -616,11 +614,8 @@ const showTopDoctors = async () => {
 }
 
 
-
 showTopDoctors();
 
-
-// Doctor profile view buttons
 
 function showDoctorProfileModal(doctorId, data) {
     let dataForProfile = data.filter(item => item.doctorId == doctorId);
@@ -762,8 +757,6 @@ const showClinicPic = (clinicId) => {
 
                 if (next.clinic.clinicId == clinicId) {
                     let clinicImagesContainer = document.getElementById(`clinicImages${next.clinic.clinicId}`);
-                    console.log(clinicImagesContainer);
-
 
                     let activeClass = clinicImagesContainer.children.length === 0 ? 'active' : '';
                     let imgElement = document.createElement('div');
@@ -784,6 +777,8 @@ function showClinics(doctorId) {
 
         let clinicHtml = clinics.map(clinic => {
             const encodedShifts = encodeURIComponent(JSON.stringify(clinic.clinicShifts));
+            const encodedDays = encodeURIComponent(JSON.stringify(clinic.clinicDays));
+
 
             return `
           <div class="col">
@@ -809,7 +804,7 @@ function showClinics(doctorId) {
         
               <!-- Clinic Info BELOW the carousel -->
               <div style="cursor: pointer; transition: transform 0.3s ease;"
-                   onclick="selectClinic(${clinic.clinicId}, '${clinic.clinicName}', '${clinic.city.city}', JSON.parse(decodeURIComponent('${encodedShifts}')))">
+                   onclick="selectClinic('${clinic.clinicName}', '${clinic.city.city}', JSON.parse(decodeURIComponent('${encodedShifts}')), JSON.parse(decodeURIComponent('${encodedDays}')))">
                 <h6 class="mb-1 fw-bold text-primary">${clinic.clinicName}</h6>
                 <p class="mb-1 small text-muted">${clinic.address}</p>
                 <p class="mb-0 text-muted">
@@ -872,7 +867,9 @@ const formatTime = (rawTime) => {
     return formattedTime;
 }
 
-function selectClinic(clinicId, clinicName, city, clinicShifts) {
+function selectClinic(clinicName, city, clinicShifts, clinicDays) {
+    console.log(clinicShifts);
+    console.log(clinicDays);
 
     const getShiftLabel = (rawTime) => {
         let cleanedTime = rawTime.replace('?', '').trim().replace(/(AM|PM)/, ' $1');
@@ -895,6 +892,12 @@ function selectClinic(clinicId, clinicName, city, clinicShifts) {
                 </option>`;
     }).join('');
 
+
+    const availableDays = clinicDays.map(day => {
+        return `<div class="available-day">${day.day.name}</div>`;
+    }).join('');
+
+
     const appointmentForm = `
         <div class="modal fade" id="appointmentModal" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">
@@ -907,12 +910,20 @@ function selectClinic(clinicId, clinicName, city, clinicShifts) {
                 <div class="modal-body">
                   <input type="hidden" name="appointment_patient_id" value="${patientId}">
                   <label>Select Date</label>
-                  <input type="date" name="appointment_date" class="form-control mb-3" required>
+                  <input type="text" id="appointmentDate" name="appointment_date" class="form-control" placeholder="Choose Appointment Date">
 
                   <label>Select Shift</label>
                   <select name="app_clinic_shift_id" class="form-select mb-3" required>
                      ${shiftOptions}
                   </select>
+
+                  <label>Available Days</label>
+                    <div class="d-flex flex-wrap mb-3">
+                        ${availableDays}
+                    </div>
+                    
+                    <label for="reason">Reason for Appointment</label>
+                    <textarea name="reason" id="reason" class="form-control mb-3" rows="3" placeholder="Describe your symptoms or reason for visit..." required></textarea>
 
                   <button class="btn btn-primary w-100" type="submit">Confirm Appointment</button>
                 </div>
@@ -923,16 +934,33 @@ function selectClinic(clinicId, clinicName, city, clinicShifts) {
     `;
 
     // Close clinic modal and show appointment modal
-
     document.getElementById('doctorProfileModal')?.remove();
     document.body.insertAdjacentHTML('beforeend', appointmentForm);
+
+    let openDays = clinicDays.map(day => day.day.dayId);
+
+    flatpickr("#appointmentDate", {
+        dateFormat: "Y-m-d",
+        disable: [
+            function (date) {
+                const dayOfWeek = date.getDay();
+                const mappedDayId = (dayOfWeek === 0) ? 7 : dayOfWeek + 1; // Map Sunday to 7
+                console.log(`Day of week: ${dayOfWeek}, Mapped dayId: ${mappedDayId}`);
+                return !openDays.includes(mappedDayId);
+            }
+        ],
+        onChange: function (selectedDates, dateStr, instance) {
+            console.log("Selected date:", dateStr);  // Log the selected date
+        }
+    });
+
     new bootstrap.Modal(document.getElementById('appointmentModal')).show();
 }
+
 
 const collectAppointments = async () => {
     let response = await fetch('collect_appoinments.do');
     let result = await response.json();
-    console.log(result);
 
     return result;
 }
@@ -941,7 +969,7 @@ function getStatusClass(status) {
     const s = status.toLowerCase();
     if (s === "confirmed") return "success";
     if (s === "cancelled") return "danger";
-    if (s === "pending") return "warning";
+    if (s === "completed") return "warning";
     return "secondary";
 }
 
@@ -1046,21 +1074,15 @@ showAppointments();
 const collectClinicsByCity = async (cityId) => {
     let response = await fetch("collect_city_clinics.do?city_id=" + cityId);
     let result = await response.json();
-    console.log(result);
-    console.log(response);
-
 
     return result;
 }
 
 const showClinicsByCity = (cityId) => {
     const clinicContainer = document.getElementById("clinicCardsContainer");
-    console.log(cityId);
 
     collectClinicsByCity(cityId).then((clinics) => {
-        console.log(clinics);
         if (clinics != 'empty') {
-            console.log(clinics);
 
             clinicContainer.innerHTML = "";
             if (clinics.length === 0) {

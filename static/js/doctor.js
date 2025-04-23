@@ -5,6 +5,7 @@ const profileIncompleteToast = document.getElementById("profileIncompleteToast")
 const dayButtons = document.querySelectorAll('.day-btn');
 
 function formatTime(timeString) {
+    
     if (!timeString) return "Invalid Time";
 
     // Match hh:mm:ss and optional AM/PM
@@ -33,6 +34,8 @@ const showClinics = () => {
 
             let clinicCardsHTML = '';
             for (let clinic of data) {
+                console.log(typeof clinic.startTime);
+                
 
                 clinicCardsHTML += `
                 <div class='col'>
@@ -146,7 +149,7 @@ const showClinics = () => {
                                 </div>
                             </div>
                             <div class='action-buttons mt-3'>
-                                <a href='clinicAppointments.do?clinic_id=${clinic.clinicId}' class='btn btn-gradient w-100'>
+                                <a href='appointments.do?clinic_id=${clinic.clinicId}' class='btn btn-gradient w-100'>
                                     <i class='fas fa-calendar-check me-2'></i>View Appointments
                                 </a>
                             </div>
@@ -169,9 +172,6 @@ const showClinics = () => {
 }
 
 showClinics();
-
-
-
 
 
 const collectClinicPic = async (clinicId) => {
@@ -345,3 +345,20 @@ if (profileIncompleteToastBtn) {
 }
 
 
+const collectAppoinmentDetails = async () => {
+    let response = await fetch('collect_appointments.do');
+    let result = await response.json();
+
+    return result;
+}
+
+const showAppointmentDetails = (clinicId) => {
+    collectAppoinmentDetails().then((data)=> {
+        if(data!='empty') {
+            console.log(data);
+            
+        }
+    }).catch((err)=> {
+        console.log(err);
+    })
+}

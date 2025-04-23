@@ -14,7 +14,8 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="static/css/nav.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
-
+        <!-- Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
         <style>
             :root {
@@ -474,6 +475,28 @@
                 flex-direction: column;
                 gap: 8px;
             }
+
+            /* clinic booking modal days */
+
+            .available-day {
+                background-color: #e8f5e9;
+                /* Light green background */
+                color: #2e7d32;
+                /* Darker green text for contrast */
+                border: 1px solid #c8e6c9;
+                /* Subtle green border */
+                padding: 8px 12px;
+                margin: 5px;
+                border-radius: 5px;
+                display: inline-block;
+                /* Better for alignment */
+                font-size: 14px;
+                font-weight: 500;
+                /* Semi-bold for better readability */
+            }
+
+
+
 
             /* Mobile optimizations */
             @media (max-width: 992px) {
@@ -963,9 +986,6 @@
                 </script>
                 <% } %>
 
-
-
-
                     <div class="container-fluid sticky-top">
                         <c:import url="nav.jsp" />
                     </div>
@@ -1273,368 +1293,389 @@
                                 </div>
                             </div>
                         </div>
-                   
 
 
-                    <!-- Top Doctors -->
-                    <div class="row mb-4" id="top_doctors">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Top Rated Doctors Near You</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+
+                        <!-- Top Doctors -->
+                        <div class="row mb-4" id="top_doctors">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Top Rated Doctors Near You</h5>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row top_doctors_row">
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card doctor-card h-100">
+                                                    <div class="card-body">
+                                                        <div class="text-center mb-3">
+                                                            <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                                                                alt="Doctor" class="rounded-circle"
+                                                                style="width: 100px; height: 100px;">
+                                                            <h5 class="mt-3 mb-1">Dr. Michael Chen</h5>
+                                                            <p class="text-muted mb-1">Cardiologist</p>
+                                                            <div class="text-warning mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star-half-alt"></i>
+                                                                <span class="text-muted ms-1">(4.7)</span>
+                                                            </div>
+                                                            <span class="badge-clinic-open">
+                                                                <i class="fas fa-circle me-1"></i>Open Now
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3">
+                                                            <button
+                                                                class="btn btn-sm btn-outline-primary w-100 me-2">View
+                                                                Profile</button>
+                                                            <button class="btn btn-sm btn-primary w-100">Book
+                                                                Now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card doctor-card h-100">
+                                                    <div class="card-body">
+                                                        <div class="text-center mb-3">
+                                                            <img src="https://randomuser.me/api/portraits/women/28.jpg"
+                                                                alt="Doctor" class="rounded-circle"
+                                                                style="width: 100px; height: 100px;">
+                                                            <h5 class="mt-3 mb-1">Dr. Jessica Williams</h5>
+                                                            <p class="text-muted mb-1">Dermatologist</p>
+                                                            <div class="text-warning mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <span class="text-muted ms-1">(4.9)</span>
+                                                            </div>
+                                                            <span class="badge-clinic-open">
+                                                                <i class="fas fa-circle me-1"></i>Open Now
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3">
+                                                            <button
+                                                                class="btn btn-sm btn-outline-primary w-100 me-2">View
+                                                                Profile</button>
+                                                            <button class="btn btn-sm btn-primary w-100">Book
+                                                                Now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row top_doctors_row">
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="card doctor-card h-100">
-                                                <div class="card-body">
-                                                    <div class="text-center mb-3">
-                                                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                                                            alt="Doctor" class="rounded-circle"
-                                                            style="width: 100px; height: 100px;">
-                                                        <h5 class="mt-3 mb-1">Dr. Michael Chen</h5>
-                                                        <p class="text-muted mb-1">Cardiologist</p>
-                                                        <div class="text-warning mb-2">
+                            </div>
+                        </div>
+
+                        <!-- Prescriptions and Health Metrics -->
+                        <div class="row mb-4 requires-profile" id="prescriptions">
+                            <div class="col-lg-7">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Active Prescriptions</h5>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="prescription-card p-3 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fas fa-pills fa-2x text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">Atorvastatin 20mg</h6>
+                                                    <p class="text-muted mb-1">Take 1 tablet at night</p>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                                        <span>Prescribed: Mar 15, 2025</span>
+                                                        <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
+                                                        <span>Refill in 12 days</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <button class="btn btn-sm btn-outline-primary">Request
+                                                        Refill</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="prescription-card p-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fas fa-capsules fa-2x text-secondary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">Vitamin D3 1000 IU</h6>
+                                                    <p class="text-muted mb-1">Take 1 capsule daily with food</p>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                                        <span>Prescribed: Mar 20, 2025</span>
+                                                        <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
+                                                        <span>Refill in 22 days</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <button class="btn btn-sm btn-outline-primary">Request
+                                                        Refill</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5" id="health_tracker">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Health Metrics</h5>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col-4">
+                                                <div class="health-metric">
+                                                    <svg width="100" height="100" viewBox="0 0 36 36">
+                                                        <path
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                            fill="none" stroke="#eee" stroke-width="3" />
+                                                        <path
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                            fill="none" stroke="#1e88e5" stroke-width="3"
+                                                            stroke-dasharray="75, 100" />
+                                                    </svg>
+                                                    <div class="metric-value">75%</div>
+                                                </div>
+                                                <p class="text-center mt-2 mb-0">Overall</p>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between mb-1">
+                                                        <span>Blood Pressure</span>
+                                                        <span>120/80</span>
+                                                    </div>
+                                                    <div class="progress progress-thin">
+                                                        <div class="progress-bar bg-success" style="width: 85%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between mb-1">
+                                                        <span>Weight</span>
+                                                        <span>68 kg</span>
+                                                    </div>
+                                                    <div class="progress progress-thin">
+                                                        <div class="progress-bar bg-primary" style="width: 70%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="d-flex justify-content-between mb-1">
+                                                        <span>Heart Rate</span>
+                                                        <span>72 bpm</span>
+                                                    </div>
+                                                    <div class="progress progress-thin">
+                                                        <div class="progress-bar bg-info" style="width: 90%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-primary btn-sm w-100">Update Metrics</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Health Articles -->
+                        <div class="row mb-4" id="health_articles">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Featured Health Articles</h5>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">Browse Library</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3 ">
+                                                <div class="card article-card shadow h-100">
+                                                    <img src="static/media/images/HealthArticle1.png"
+                                                        class="article-img class=w-100 " alt="Article Image">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Understanding Heart Health: Key Facts
+                                                        </h5>
+                                                        <p class="card-text text-muted">Learn about the latest research
+                                                            on
+                                                            cardiovascular health and preventative measures.</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <small class="text-muted">5 min read</small>
+                                                            <button class="btn btn-sm btn-outline-primary">Read
+                                                                More</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card article-card">
+                                                    <img src="/api/placeholder/800/400" class="article-img"
+                                                        alt="Article Image">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Nutrition Myths Debunked</h5>
+                                                        <p class="card-text text-muted">Our experts separate fact from
+                                                            fiction about
+                                                            the
+                                                            most common nutrition misconceptions.</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <small class="text-muted">8 min read</small>
+                                                            <button class="btn btn-sm btn-outline-primary">Read
+                                                                More</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card article-card">
+                                                    <img src="/api/placeholder/800/400" class="article-img"
+                                                        alt="Article Image">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">The Science of Sleep</h5>
+                                                        <p class="card-text text-muted">Discover how quality sleep
+                                                            impacts
+                                                            your
+                                                            overall
+                                                            health and tips for better rest.</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <small class="text-muted">6 min read</small>
+                                                            <button class="btn btn-sm btn-outline-primary">Read
+                                                                More</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Virtual Waiting Room -->
+                        <div class="row mb-4 requires-profile">
+                            <div class="col-lg-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Virtual Waiting Room</h5>
+                                        <div class="text-center my-4">
+                                            <svg width="120" height="120" viewBox="0 0 36 36">
+                                                <path
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                    fill="none" stroke="#eee" stroke-width="3" />
+                                                <path
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                    fill="none" stroke="#26c6da" stroke-width="3"
+                                                    stroke-dasharray="30, 100" />
+                                            </svg>
+                                            <h3 class="mt-3">30%</h3>
+                                            <p class="text-muted">Your estimated wait time is <strong>15
+                                                    minutes</strong>
+                                            </p>
+                                        </div>
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            You will receive a notification when the doctor is ready to see you.
+                                        </div>
+                                        <button class="btn btn-primary w-100">Check In</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8" id="find_nearby_clinic">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0"><i class="fas fa-search-location me-2"></i>Find Nearby Clinics
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- City Select -->
+                                        <div class="mb-4">
+                                            <label for="city" class="form-label fw-semibold">Select Your City</label>
+                                            <select class="form-select" id="clinic_city_id" name="city_id" required
+                                                onchange="showClinicsByCity(this.value)">
+                                                <option value="" disabled>Choose your location</option>
+                                                <c:forEach var="ct" items="${cities}">
+                                                    <option value="${ct.cityId}" ${ct.city==user.city.city ? 'selected'
+                                                        : '' }>
+                                                        ${ct.city} (${ct.state.state})
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
+                                        <!-- Clinics Container (to be filled dynamically via AJAX) -->
+                                        <div class="row g-3" id="clinicCardsContainer">
+                                            <!-- Example Clinic Card Template -->
+                                            <div class="col-md-6">
+                                                <div class="card h-100 shadow-sm">
+                                                    <div class="card-body">
+                                                        <h6 class="fw-bold">MediCare+ Primary Care Center</h6>
+                                                        <p class="text-muted small mb-2">
+                                                            <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                                            1234 Medical Blvd, Suite 100
+                                                        </p>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <span class="badge bg-success me-2">
+                                                                <i class="fas fa-circle me-1"></i> Open Now
+                                                            </span>
+                                                            <span class="text-muted small">Closes at 7:00 PM</span>
+                                                        </div>
+                                                        <div class="text-warning mb-3">
                                                             <i class="fas fa-star"></i>
                                                             <i class="fas fa-star"></i>
                                                             <i class="fas fa-star"></i>
                                                             <i class="fas fa-star"></i>
                                                             <i class="fas fa-star-half-alt"></i>
-                                                            <span class="text-muted ms-1">(4.7)</span>
+                                                            <span class="text-muted small ms-1">(4.7)</span>
                                                         </div>
-                                                        <span class="badge-clinic-open">
-                                                            <i class="fas fa-circle me-1"></i>Open Now
-                                                        </span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between mt-3">
-                                                        <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                            Profile</button>
-                                                        <button class="btn btn-sm btn-primary w-100">Book
-                                                            Now</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="card doctor-card h-100">
-                                                <div class="card-body">
-                                                    <div class="text-center mb-3">
-                                                        <img src="https://randomuser.me/api/portraits/women/28.jpg"
-                                                            alt="Doctor" class="rounded-circle"
-                                                            style="width: 100px; height: 100px;">
-                                                        <h5 class="mt-3 mb-1">Dr. Jessica Williams</h5>
-                                                        <p class="text-muted mb-1">Dermatologist</p>
-                                                        <div class="text-warning mb-2">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <span class="text-muted ms-1">(4.9)</span>
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-outline-primary btn-sm">
+                                                                <i class="fas fa-directions me-1"></i>Directions
+                                                            </button>
+                                                            <button class="btn btn-primary btn-sm">
+                                                                <i class="fas fa-calendar-plus me-1"></i>Book
+                                                                Appointment
+                                                            </button>
                                                         </div>
-                                                        <span class="badge-clinic-open">
-                                                            <i class="fas fa-circle me-1"></i>Open Now
-                                                        </span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between mt-3">
-                                                        <button class="btn btn-sm btn-outline-primary w-100 me-2">View
-                                                            Profile</button>
-                                                        <button class="btn btn-sm btn-primary w-100">Book
-                                                            Now</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- End Clinic Card -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Prescriptions and Health Metrics -->
-                    <div class="row mb-4 requires-profile" id="prescriptions">
-                        <div class="col-lg-7">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Active Prescriptions</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="prescription-card p-3 mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-3">
-                                                <i class="fas fa-pills fa-2x text-primary"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-1">Atorvastatin 20mg</h6>
-                                                <p class="text-muted mb-1">Take 1 tablet at night</p>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                                    <span>Prescribed: Mar 15, 2025</span>
-                                                    <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                                    <span>Refill in 12 days</span>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-sm btn-outline-primary">Request
-                                                    Refill</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="prescription-card p-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-3">
-                                                <i class="fas fa-capsules fa-2x text-secondary"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-1">Vitamin D3 1000 IU</h6>
-                                                <p class="text-muted mb-1">Take 1 capsule daily with food</p>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                                    <span>Prescribed: Mar 20, 2025</span>
-                                                    <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                                    <span>Refill in 22 days</span>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-sm btn-outline-primary">Request
-                                                    Refill</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        <div class="col-lg-5" id="health_tracker">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Health Metrics</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row align-items-center mb-4">
-                                        <div class="col-4">
-                                            <div class="health-metric">
-                                                <svg width="100" height="100" viewBox="0 0 36 36">
-                                                    <path
-                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                        fill="none" stroke="#eee" stroke-width="3" />
-                                                    <path
-                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                        fill="none" stroke="#1e88e5" stroke-width="3"
-                                                        stroke-dasharray="75, 100" />
-                                                </svg>
-                                                <div class="metric-value">75%</div>
-                                            </div>
-                                            <p class="text-center mt-2 mb-0">Overall</p>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span>Blood Pressure</span>
-                                                    <span>120/80</span>
-                                                </div>
-                                                <div class="progress progress-thin">
-                                                    <div class="progress-bar bg-success" style="width: 85%"></div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span>Weight</span>
-                                                    <span>68 kg</span>
-                                                </div>
-                                                <div class="progress progress-thin">
-                                                    <div class="progress-bar bg-primary" style="width: 70%"></div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span>Heart Rate</span>
-                                                    <span>72 bpm</span>
-                                                </div>
-                                                <div class="progress progress-thin">
-                                                    <div class="progress-bar bg-info" style="width: 90%"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline-primary btn-sm w-100">Update Metrics</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Health Articles -->
-                    <div class="row mb-4" id="health_articles">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Featured Health Articles</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Browse Library</a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3 ">
-                                            <div class="card article-card shadow h-100">
-                                                <img src="static/media/images/HealthArticle1.png"
-                                                    class="article-img class=w-100 " alt="Article Image">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Understanding Heart Health: Key Facts
-                                                    </h5>
-                                                    <p class="card-text text-muted">Learn about the latest research
-                                                        on
-                                                        cardiovascular health and preventative measures.</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <small class="text-muted">5 min read</small>
-                                                        <button class="btn btn-sm btn-outline-primary">Read
-                                                            More</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card article-card">
-                                                <img src="/api/placeholder/800/400" class="article-img"
-                                                    alt="Article Image">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Nutrition Myths Debunked</h5>
-                                                    <p class="card-text text-muted">Our experts separate fact from
-                                                        fiction about
-                                                        the
-                                                        most common nutrition misconceptions.</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <small class="text-muted">8 min read</small>
-                                                        <button class="btn btn-sm btn-outline-primary">Read
-                                                            More</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card article-card">
-                                                <img src="/api/placeholder/800/400" class="article-img"
-                                                    alt="Article Image">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">The Science of Sleep</h5>
-                                                    <p class="card-text text-muted">Discover how quality sleep
-                                                        impacts
-                                                        your
-                                                        overall
-                                                        health and tips for better rest.</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <small class="text-muted">6 min read</small>
-                                                        <button class="btn btn-sm btn-outline-primary">Read
-                                                            More</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Virtual Waiting Room -->
-                    <div class="row mb-4 requires-profile">
-                        <div class="col-lg-4">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h5 class="card-title">Virtual Waiting Room</h5>
-                                    <div class="text-center my-4">
-                                        <svg width="120" height="120" viewBox="0 0 36 36">
-                                            <path
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                fill="none" stroke="#eee" stroke-width="3" />
-                                            <path
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                fill="none" stroke="#26c6da" stroke-width="3"
-                                                stroke-dasharray="30, 100" />
-                                        </svg>
-                                        <h3 class="mt-3">30%</h3>
-                                        <p class="text-muted">Your estimated wait time is <strong>15
-                                                minutes</strong>
-                                        </p>
-                                    </div>
-                                    <div class="alert alert-info">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        You will receive a notification when the doctor is ready to see you.
-                                    </div>
-                                    <button class="btn btn-primary w-100">Check In</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8" id="find_nearby_clinic">
-                            <div class="card shadow-sm border-0">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0"><i class="fas fa-search-location me-2"></i>Find Nearby Clinics</h5>
-                                </div>
-                                <div class="card-body">
-                                    <!-- City Select -->
-                                    <div class="mb-4">
-                                        <label for="city" class="form-label fw-semibold">Select Your City</label>
-                                        <select class="form-select" id="clinic_city_id" name="city_id" required onchange="showClinicsByCity(this.value)">
-                                            <option value="" disabled>Choose your location</option>
-                                            <c:forEach var="ct" items="${cities}">
-                                                <option 
-                                                    value="${ct.cityId}" 
-                                                    ${ct.city == user.city.city ? 'selected' : ''}>
-                                                    ${ct.city} (${ct.state.state})
-                                                </option>
-                                            </c:forEach>
-                                        </select>   
-                                    </div>
-                        
-                                    <!-- Clinics Container (to be filled dynamically via AJAX) -->
-                                    <div class="row g-3" id="clinicCardsContainer">
-                                        <!-- Example Clinic Card Template -->
-                                        <div class="col-md-6">
-                                            <div class="card h-100 shadow-sm">
-                                                <div class="card-body">
-                                                    <h6 class="fw-bold">MediCare+ Primary Care Center</h6>
-                                                    <p class="text-muted small mb-2">
-                                                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>
-                                                        1234 Medical Blvd, Suite 100
-                                                    </p>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <span class="badge bg-success me-2">
-                                                            <i class="fas fa-circle me-1"></i> Open Now
-                                                        </span>
-                                                        <span class="text-muted small">Closes at 7:00 PM</span>
-                                                    </div>
-                                                    <div class="text-warning mb-3">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star-half-alt"></i>
-                                                        <span class="text-muted small ms-1">(4.7)</span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <button class="btn btn-outline-primary btn-sm">
-                                                            <i class="fas fa-directions me-1"></i>Directions
-                                                        </button>
-                                                        <button class="btn btn-primary btn-sm">
-                                                            <i class="fas fa-calendar-plus me-1"></i>Book Appointment
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Clinic Card -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
                     </div>
 
                     <!-- Bootstrap and other Scripts -->
                     <script
                         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
                     <script src="static/js/patient.js"></script>
+                    <!-- Flatpickr JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            flatpickr("#appointmentDate", {
+                                dateFormat: "Y-m-d",
+                                disable: [
+                                    function (date) {
+                                        return true; // disable all by default
+                                    }
+                                ]
+                            });
+                        });
+                    </script>
+
+
 
                     <script>
                         var patientId = "${patient.patientId}";

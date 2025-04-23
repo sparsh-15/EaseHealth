@@ -18,7 +18,7 @@ import models.Clinic;
 public class CollectCityClinicsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-        System.out.println("~~~~~~~collect city clinics");
+        
         Integer cityId = Integer.parseInt(request.getParameter("city_id"));
         System.out.println(cityId);
 

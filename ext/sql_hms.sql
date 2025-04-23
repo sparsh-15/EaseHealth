@@ -475,6 +475,18 @@ select a.appointment_id,
     JOIN users as u ON d.user_id = u.user_id
     WHERE patient_id = 4;
 
+alter table appointments add column reason text not null ;
+
+SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?
+
+SELECT a.appointment_id, a.appointment_date, a.reason, a.status_id, a.patient_id, 
+       p.gender, p.blood_group, p.weight, p.height, p.profile_pic, 
+       c.start_time, c.end_time, s.status
+FROM appointments a
+JOIN clinic_shifts c ON a.clinic_shift_id = c.clinic_shift_id
+JOIN status s ON a.status_id = s.status_id
+JOIN patients p ON a.patient_id = p.patient_id
+WHERE a.appointment_date = ? AND a.clinic_shift_id = ?;
 
 
 insert into appointments(patient_id,appointment_date,clinic_shift_id,status_id) values(?,?,?,?)

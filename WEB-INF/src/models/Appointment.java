@@ -15,6 +15,7 @@ public class Appointment {
     private Date appointmentDate;
     private ClinicShift clinicShift;
     private Status status;
+    private String reason;
 
     public Appointment(Integer appointmentId, Date appointmentDate, ClinicShift clinicShift,
             Status status) {
@@ -24,16 +25,71 @@ public class Appointment {
         this.status = status;
     }
 
-    public Appointment(Patient patient, Date appointmentDate, ClinicShift clinicShift) {
+    public Appointment(Patient patient, Date appointmentDate, ClinicShift clinicShift, String reason) {
         this.patient = patient;
         this.appointmentDate = appointmentDate;
         this.clinicShift = clinicShift;
+        this.reason = reason;
     }
+
+
+    public static ArrayList<Appointment> collectAppoinmentByDateShift(int clinicShiftId, Date appDate){
+        ArrayList<Appointment> appointments = new ArrayList<>();
+
+        Connection con = DBConnect.getConnection();
+        
+        String query = "";
+
+        return appointments;
+    }
+
+    public static int getAppointmentsByClinic(int clinicId) {
+        int appByClinic = 0;
+        Connection con = DBConnect.getConnection();
+
+        String query = "SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?";
+
+        try{
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, clinicId);
+
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                appByClinic = rs.getInt("total_appointments");
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appByClinic;
+    }
+
+    // public static int getAppointmentCountGroupedByShift(int clinicId) {
+    //     int appByClinic = 0;
+    //     Connection con = DBConnect.getConnection();
+
+    //     String query = "SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?";
+
+    //     try{
+    //         PreparedStatement ps = con.prepareStatement(query);
+    //         ps.setInt(1, clinicId);
+
+    //         ResultSet rs = ps.executeQuery();
+    //         if(rs.next()) {
+    //             appByClinic = rs.getInt("total_appointments");
+    //         }
+            
+    //     }catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return appByClinic;
+    // }
+
 
     public Boolean saveAppointment() {
         Boolean flag = false;
         Connection con = DBConnect.getConnection();
-        String query = "insert into appointments(patient_id,appointment_date,clinic_shift_id,status_id) values(?,?,?,?)";
+        String query = "insert into appointments(patient_id,appointment_date,clinic_shift_id,status_id,reason) values(?,?,?,?,?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(query);
@@ -41,6 +97,7 @@ public class Appointment {
             ps.setDate(2, appointmentDate);
             ps.setInt(3, clinicShift.getClinicShiftId());
             ps.setInt(4, 1);
+            ps.setString(5, reason);
 
             int res = ps.executeUpdate();
 
@@ -141,4 +198,14 @@ public class Appointment {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    
 }

@@ -36,15 +36,14 @@ public class ClinicShift {
         this.maxAppointment = maxAppointment;
     }
 
-    
-
-
     public ClinicShift(Clinic clinic, Timestamp startTime, Timestamp endTime) {
         this.clinic = clinic;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
+
+    
     public Boolean SaveClinicShift() {
         Boolean flag = false;
         Connection con = DBConnect.getConnection();
