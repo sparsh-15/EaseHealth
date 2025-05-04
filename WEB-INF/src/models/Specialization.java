@@ -14,6 +14,11 @@ public class Specialization {
 
     
 
+    public Specialization() {
+    }
+
+
+
     public Specialization(Integer specializationId, String specialization) {
         this.specializationId = specializationId;
         this.specialization = specialization;

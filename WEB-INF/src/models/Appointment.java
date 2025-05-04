@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,9 +14,28 @@ public class Appointment {
     private Integer appointmentId;
     private Patient patient;
     private Date appointmentDate;
+    private Timestamp bookingTime;
     private ClinicShift clinicShift;
     private Status status;
     private String reason;
+
+    
+
+    public Appointment() {
+    }
+
+    
+
+    public Appointment(Integer appointmentId, Patient patient, Date appointmentDate, ClinicShift clinicShift,
+            String reason) {
+        this.appointmentId = appointmentId;
+        this.patient = patient;
+        this.appointmentDate = appointmentDate;
+        this.clinicShift = clinicShift;
+        this.reason = reason;
+    }
+
+
 
     public Appointment(Integer appointmentId, Date appointmentDate, ClinicShift clinicShift,
             Status status) {
@@ -32,13 +52,76 @@ public class Appointment {
         this.reason = reason;
     }
 
+    public Appointment(Integer appointmentId, Patient patient, Date appointmentDate, ClinicShift clinicShift,
+            Status status, String reason, Timestamp bookingTime) {
+        this.appointmentId = appointmentId;
+        this.patient = patient;
+        this.appointmentDate = appointmentDate;
+        this.clinicShift = clinicShift;
+        this.status = status;
+        this.reason = reason;
+        this.bookingTime = bookingTime;
+    }
 
-    public static ArrayList<Appointment> collectAppoinmentByDateShift(int clinicShiftId, Date appDate){
+    
+
+    public Appointment(Integer appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public static ArrayList<Appointment> collectAppoinmentByDateShift(int clinicShiftId, Date appDate) {
         ArrayList<Appointment> appointments = new ArrayList<>();
 
         Connection con = DBConnect.getConnection();
-        
-        String query = "";
+
+        String query = "SELECT " +
+                "a.appointment_id, a.appointment_date, a.reason, a.status_id, a.patient_id, a.booking_time, " +
+                "u.name AS patient_name, u.email AS patient_email, u.contact AS patient_contact, u.city_id, " +
+                "p.gender, p.blood_group, p.weight, p.height, p.profile_pic, p.dob, " +
+                "c.start_time, c.end_time, " +
+                "s.status, " +
+                "ct.city " +
+                "FROM appointments a " +
+                "JOIN patients p ON a.patient_id = p.patient_id " +
+                "JOIN users u ON p.user_id = u.user_id " +
+                "JOIN cities ct ON u.city_id = ct.city_id " +
+                "JOIN clinic_shifts c ON a.clinic_shift_id = c.clinic_shift_id " +
+                "JOIN status s ON a.status_id = s.status_id " +
+                "WHERE a.appointment_date = ? AND a.clinic_shift_id = ? " +
+                "ORDER BY booking_time ASC";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setDate(1, appDate);
+            ps.setInt(2, clinicShiftId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                appointments.add(new Appointment(
+                        rs.getInt("appointment_id"),
+                        new Patient(
+                                rs.getInt("patient_id"),
+                                new User(rs.getString("patient_name"), rs.getString("patient_email"),
+                                        rs.getString("patient_contact"),
+                                        new City(rs.getInt("city_id"), rs.getString("city"))),
+                                rs.getString("gender"),
+                                rs.getString("blood_group"),
+                                rs.getFloat("weight"),
+                                rs.getInt("height"),
+                                rs.getDate("dob"),
+                                rs.getString("profile_pic")),
+                        rs.getDate("appointment_date"),
+                        new ClinicShift(rs.getTimestamp("start_time"), rs.getTimestamp("end_time")),
+                        new Status(rs.getInt("status_id"), rs.getString("status")),
+                        rs.getString("reason"),
+                        rs.getTimestamp("booking_time")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return appointments;
     }
@@ -49,42 +132,42 @@ public class Appointment {
 
         String query = "SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?";
 
-        try{
+        try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, clinicId);
 
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 appByClinic = rs.getInt("total_appointments");
             }
-            
-        }catch (SQLException e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return appByClinic;
     }
 
-    // public static int getAppointmentCountGroupedByShift(int clinicId) {
-    //     int appByClinic = 0;
-    //     Connection con = DBConnect.getConnection();
+    public static int getAppointmentCountGroupedByShift(int clinicShiftId, Date appointmentDate) {
+        int appByClinic = 0;
+        Connection con = DBConnect.getConnection();
 
-    //     String query = "SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?";
+        String query = "SELECT COUNT(*) AS total_appointments FROM appointments where clinic_shift_id=? and appointment_date=?";
 
-    //     try{
-    //         PreparedStatement ps = con.prepareStatement(query);
-    //         ps.setInt(1, clinicId);
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, clinicShiftId);
+            ps.setDate(2, appointmentDate);
 
-    //         ResultSet rs = ps.executeQuery();
-    //         if(rs.next()) {
-    //             appByClinic = rs.getInt("total_appointments");
-    //         }
-            
-    //     }catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return appByClinic;
-    // }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                appByClinic = rs.getInt("total_appointments");
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appByClinic;
+    }
 
     public Boolean saveAppointment() {
         Boolean flag = false;
@@ -129,7 +212,7 @@ public class Appointment {
                 "JOIN doctors AS d ON d.doctor_id = c.doctor_id " +
                 "JOIN specializations AS s ON d.specialization_id = s.specialization_id " +
                 "JOIN users AS u ON d.user_id = u.user_id " +
-                "WHERE a.patient_id = ?";
+                "WHERE a.patient_id = ? ORDER by appointment_date desc";
 
         try {
             PreparedStatement ps = con.prepareStatement(query);
@@ -158,6 +241,8 @@ public class Appointment {
 
         return appointments;
     }
+
+    
 
     public Integer getAppointmentId() {
         return appointmentId;
@@ -207,5 +292,12 @@ public class Appointment {
         this.reason = reason;
     }
 
-    
+    public Timestamp getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(Timestamp bookingTime) {
+        this.bookingTime = bookingTime;
+    }
+
 }

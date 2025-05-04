@@ -22,6 +22,10 @@ public class Doctor {
 
     
 
+    public Doctor(User user) {
+        this.user = user;
+    }
+
     public Doctor(User user, Specialization specialization) {
         this.user = user;
         this.specialization = specialization;

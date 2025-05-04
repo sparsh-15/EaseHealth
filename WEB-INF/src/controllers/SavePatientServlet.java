@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -38,6 +39,7 @@ public class SavePatientServlet extends HttpServlet{
                 Integer height = null;
                 String uid = null;
                 String profilePic = null;
+                Date dob = null;
                 if (ServletFileUpload.isMultipartContent(request)) {
                     DiskFileItemFactory dfif = new DiskFileItemFactory();
                     ServletFileUpload sfu = new ServletFileUpload(dfif);
@@ -59,7 +61,11 @@ public class SavePatientServlet extends HttpServlet{
                                         height = Integer.parseInt(fileItem.getString());
                                         break;
                                     case "uid":
-                                        uid = fileItem.getString();                                    
+                                        uid = fileItem.getString(); 
+                                        break;                                   
+                                    case "dob":
+                                        dob = Date.valueOf(fileItem.getString());   
+                                        break;                                 
                                 }
                             } else {
                                 String uploadPath = getServletContext().getRealPath("/WEB-INF/uploads/" + user.getUserId() + "_" + user.getEmail());
@@ -79,7 +85,7 @@ public class SavePatientServlet extends HttpServlet{
                     }
                 }
 
-                Patient patient = new Patient(user, gender, bloodGroup, weight, height, uid, profilePic);
+                Patient patient = new Patient(user, gender, bloodGroup, weight, height, uid, dob, profilePic);
                 if (patient.savePatient()) {
                     nextPage = "patient.do";
                 }

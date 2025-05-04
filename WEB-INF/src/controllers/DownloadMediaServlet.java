@@ -15,7 +15,7 @@ public class DownloadMediaServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String path = request.getParameter("path");
         String fixedPath = path.replace("\\", "/");
-
+        
 
         InputStream is = getServletContext().getResourceAsStream("/WEB-INF/uploads/" + fixedPath.trim());
         
@@ -26,7 +26,7 @@ public class DownloadMediaServlet extends HttpServlet {
         while(is.read(arr) != -1) {
             os.write(arr);
         }
-
+        
         os.flush();
         os.close();
     }

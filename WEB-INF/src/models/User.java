@@ -28,8 +28,22 @@ public class User {
     static StrongPasswordEncryptor spe = new StrongPasswordEncryptor();
 
     
-
     
+    
+
+    public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public User(String name, String email, String contact, City city) {
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
+        this.city = city;
+    }
 
     public User(Integer userId, String name, String profilePic) {
         this.userId = userId;

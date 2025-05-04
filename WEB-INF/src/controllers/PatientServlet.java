@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Appointment;
 import models.Patient;
+import models.Prescription;
 import models.User;
 
 @WebServlet("/patient.do")
@@ -32,6 +35,10 @@ public class PatientServlet extends HttpServlet {
                 if (patient.getPatientId() != null) {
                     session.setAttribute("details_report", "true");
                     session.setAttribute("patient", patient);
+
+                    ArrayList<Prescription> activePrescriptions = Prescription.getPrescriptionsbyPatientId(patient.getPatientId());
+                    
+                    request.setAttribute("activePrescriptions", activePrescriptions);
                 } else {
                     session.setAttribute("details_report", "false");
                 }

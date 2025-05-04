@@ -24,7 +24,7 @@ public class CollectAppointmentsServlet extends HttpServlet{
         Patient patient = (Patient)session.getAttribute("patient");
         User user = (User)session.getAttribute("user");
         String records = "empty";
-        System.out.println(patient.getPatientId());
+    
 
         if (user != null) {
             ArrayList<Appointment> appointments = Appointment.collectAllAppointment(patient.getPatientId());

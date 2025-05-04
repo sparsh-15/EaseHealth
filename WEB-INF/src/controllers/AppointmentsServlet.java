@@ -36,6 +36,7 @@ public class AppointmentsServlet extends HttpServlet {
             return;
         }
         Integer clinicId = Integer.parseInt(clinicIdParam);
+        String nextPage = "index.do";
 
         if (user != null) {
             if (user.getUserType().getUserTypeId() == 2 && doctor != null) {
@@ -52,8 +53,10 @@ public class AppointmentsServlet extends HttpServlet {
                 request.setAttribute("clinicId", clinicId);
                 request.setAttribute("clinics", gson.toJson(clinics));
                 request.setAttribute("appByClinic", appByClinic);
+
+                nextPage = "clinicAppointments.jsp";
             }
         }
-        request.getRequestDispatcher("clinicAppointments.jsp").forward(request, response);
+        request.getRequestDispatcher(nextPage).forward(request, response);
     }
 }

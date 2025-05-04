@@ -56,7 +56,6 @@ public class SaveClinicServlet extends HttpServlet {
                                     case "clinic_name":
                                         clinicName = fileItem.getString();
                                         clinicNameFolder = clinicName.replaceAll("\\s+", "_");
-                                        System.out.println(clinicName);
                                         break;
                                     case "address":
                                         clinicAddress = fileItem.getString();
@@ -80,7 +79,7 @@ public class SaveClinicServlet extends HttpServlet {
                             } else if(fileItem.getFieldName().equals("clinic_image[]")) {
                             
                                     String uploadPath = getServletContext().getRealPath("/WEB-INF/uploads");
-                                    String clinicPath = user.getUserId()+"_"+user.getEmail()+ "/clinics/" + clinicNameFolder.replace("\\", "/"); ;
+                                    String clinicPath = user.getUserId()+"_"+user.getEmail()+ "/clinics/" + clinicNameFolder.replace("\\", "/"); 
 
                                     String fileName = new File(fileItem.getName()).getName();
 
@@ -89,8 +88,7 @@ public class SaveClinicServlet extends HttpServlet {
 
                                     String thumbnail = clinicPath + "/" + fileName;
 
-                                    File file = new File(uploadPath, thumbnail);
-
+                                    File file = new File(uploadPath, thumbnail);                                    
                                     try {
                                         // Save the file
                                         fileItem.write(file);
@@ -103,11 +101,9 @@ public class SaveClinicServlet extends HttpServlet {
                                     }
                                 }
                             }
-                        System.out.println("Uploaded Files: " + clinicPics);
 
                         Clinic clinic = new Clinic(clinicName,new Doctor(doctorId), clinicAddress, new City(cityId), contactNumber, consultationFee);
                         int clinicId = clinic.saveClinicDetails(doctorId);
-                        System.out.println(clinicId);
 
                         ClinicPic.saveClinicPics(clinicId, clinicPics);
                         doctorExist.updateClinicCount(doctorId);

@@ -18,6 +18,15 @@ public class City implements Comparable<City> {
     }
 
     
+    
+
+    public City(Integer cityId, String city) {
+        this.cityId = cityId;
+        this.city = city;
+    }
+
+
+
 
     public City() {
     }

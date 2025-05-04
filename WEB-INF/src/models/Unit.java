@@ -19,6 +19,11 @@ public class Unit {
 
     
 
+    public Unit() {
+    }
+
+
+
     public Unit(Integer unitId) {
         this.unitId = unitId;
     }

@@ -18,17 +18,15 @@ public class Medicine {
     private String sideEffects;
     private String warnings;
 
-    ArrayList<MedicineFormat> medicineFormats ;
+    ArrayList<MedicineFormat> medicineFormats;
 
     public Medicine() {
 
     }
-      
 
     public Medicine(Integer medicineId) {
         this.medicineId = medicineId;
     }
-
 
     public Medicine(Integer medicineId, String name, String description, String ingredients, String effectiveBodypart,
             String sideEffects, String warnings) {
@@ -41,8 +39,6 @@ public class Medicine {
         this.warnings = warnings;
     }
 
-
-
     public Medicine(PharmaCompany pharmaCompany, String name, String description, String ingredients,
             String effectiveBodypart, String sideEffects, String warnings) {
         this.pharmaCompany = pharmaCompany;
@@ -54,6 +50,7 @@ public class Medicine {
         this.warnings = warnings;
     }
 
+    // for pharma company
     public static ArrayList<Medicine> collectAllMedicines(PharmaCompany pharmaCompany) {
         ArrayList<Medicine> medicines = new ArrayList<>();
 
@@ -69,7 +66,9 @@ public class Medicine {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                medicines.add(new Medicine(rs.getInt("medicine_id"),rs.getString("name"),rs.getString("description"),rs.getString("ingredients"),rs.getString("effective_bodypart"),rs.getString("side_effects"),rs.getString("warnings")));
+                medicines.add(new Medicine(rs.getInt("medicine_id"), rs.getString("name"), rs.getString("description"),
+                        rs.getString("ingredients"), rs.getString("effective_bodypart"), rs.getString("side_effects"),
+                        rs.getString("warnings")));
             }
 
         } catch (SQLException e) {
@@ -78,35 +77,59 @@ public class Medicine {
 
         return medicines;
     }
+    // for prescription
+
+    public static ArrayList<Medicine> searchMedicines(String words) {
+        ArrayList<Medicine> searchedMedicines = new ArrayList<>();
+
+        String query = "SELECT * FROM medicines WHERE name LIKE ?";
+        Connection con = DBConnect.getConnection();
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, words + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Medicine med = new Medicine();
+                med.setMedicineId(rs.getInt("medicine_id"));
+                med.setName(rs.getString("name"));
+                med.setIngredients(rs.getString("ingredients"));
+                searchedMedicines.add(med);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return searchedMedicines;
+    }
 
     public Boolean saveMedicine(PharmaCompany pharmaDetails) {
         Boolean flag = false;
-        try{
+        try {
             Connection con = DBConnect.getConnection();
-            
+
             String query = "insert into medicines(pharma_company_id,name,description,ingredients,effective_bodypart,side_effects,warnings) values (?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1,pharmaCompany.getPharmaCompanyId());
-            ps.setString(2,name);
-            ps.setString(3,description);
-            ps.setString(4,ingredients);
-            ps.setString(5,effectiveBodypart);
-            ps.setString(6,sideEffects);
-            ps.setString(7,warnings);
-            
+            ps.setInt(1, pharmaCompany.getPharmaCompanyId());
+            ps.setString(2, name);
+            ps.setString(3, description);
+            ps.setString(4, ingredients);
+            ps.setString(5, effectiveBodypart);
+            ps.setString(6, sideEffects);
+            ps.setString(7, warnings);
+
             int res = ps.executeUpdate();
-            if(res==1) {
+            if (res == 1) {
                 PharmaCompany pharmaCompany = new PharmaCompany();
                 pharmaCompany.updateMedicineCount(pharmaDetails.getPharmaCompanyId());
                 flag = true;
             }
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return flag;
-    } 
-
+    }
 
     public Integer getMedicineId() {
         return medicineId;
@@ -172,15 +195,12 @@ public class Medicine {
         this.warnings = warnings;
     }
 
-
     public ArrayList<MedicineFormat> getMedicineFormats() {
         return medicineFormats;
     }
-
 
     public void setMedicineFormats(ArrayList<MedicineFormat> medicineFormats) {
         this.medicineFormats = medicineFormats;
     }
 
-    
 }

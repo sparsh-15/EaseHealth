@@ -1,4 +1,5 @@
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -736,9 +737,92 @@
                 animation: confetti-fall 3s ease-in-out infinite;
             }
 
-            /* top bar */
-            .search-bar-box input::placeholder {
-                color: #aaa;
+            /* .search-container {
+                padding: 20px 0;
+                background-color: #f8f9fa;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                margin-bottom: 30px;
+            } */
+
+            .search-bar-box {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .search-bar-box .form-control {
+                border-radius: 30px 0 0 30px;
+                padding-left: 20px;
+                height: 50px;
+                font-size: 16px;
+                border: 2px solid #e0e0e0;
+                box-shadow: none;
+                transition: all 0.3s;
+            }
+
+            .search-bar-box .form-control:focus {
+                border-color: #4e73df;
+                box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            }
+
+            .search-bar-box .btn {
+                border-radius: 0 30px 30px 0;
+                height: 50px;
+                padding: 0 25px;
+                background-color: #4e73df;
+                border-color: #4e73df;
+                transition: all 0.3s;
+            }
+
+            .search-bar-box .btn:hover {
+                background-color: #375bd2;
+                border-color: #375bd2;
+            }
+
+            .search-bar-box .btn i {
+                font-size: 18px;
+            }
+
+            .search-categories {
+                margin-top: 15px;
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .category-pill {
+                background-color: #e8eafd;
+                color: #4e73df;
+                border-radius: 20px;
+                padding: 5px 15px;
+                font-size: 14px;
+                display: inline-flex;
+                align-items: center;
+                transition: all 0.2s;
+                border: none;
+                cursor: pointer;
+            }
+
+            .category-pill:hover {
+                background-color: #d8dcfc;
+                transform: translateY(-2px);
+            }
+
+            .category-pill i {
+                margin-right: 5px;
+                font-size: 12px;
+            }
+
+            @media (max-width: 576px) {
+                .search-bar-box .form-control {
+                    height: 45px;
+                }
+
+                .search-bar-box .btn {
+                    height: 45px;
+                    padding: 0 15px;
+                }
             }
 
             .time-box {
@@ -938,6 +1022,13 @@
                                     placeholder="e.g. 170" name="height" required>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="dob" class="form-label">
+                                    <i class="fas fa-birthday-cake me-2 text-info"></i>Date of Birth
+                                </label>
+                                <input type="date" name="dob" class="form-control" id="dob" required>
+                            </div>
+
                             <!-- UID -->
                             <div class="mb-2">
                                 <label for="uid" class="form-label">
@@ -1057,62 +1148,61 @@
                     <!-- Main Content -->
                     <div class="main-content">
                         <!-- Top Navigation -->
-                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 px-2">
-
-                            <!-- Search Bar -->
-                            <div class="input-group search-bar-box flex-grow-2 me-auto" style="max-width: 350px;">
-                                <input type="text" class="form-control"
-                                    placeholder="Search doctors, clinics, medicines...">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-
-                            <!-- Right Panel -->
-                            <div class="d-flex justify-content-between gap-4  flex-wrap">
-                                <!-- Health Tip -->
-                                <div class="flex-fill" style="min-width: 250px;">
-                                    <div class="card p-3 shadow-sm" style="background: #f9fafe;">
-                                        <h5 class="text-primary mb-3"><i class="fas fa-heartbeat me-2"></i>Today's
-                                            Health
-                                            Tip</h5>
-                                        <div id="tipBox" class="text-secondary small fw-medium">
-                                            Loading tips...
-                                        </div>
+                        <div class="row gx-4 gy-3 mb-4 px-2">
+                            <!-- Health Tip -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card p-3 shadow-sm h-100" style="background: #f9fafe;">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="fas fa-heartbeat me-2"></i>Today's Health Tip
+                                    </h5>
+                                    <div id="tipBox" class="text-secondary small fw-medium">
+                                        Loading tips...
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Location Card -->
-                                <div class="flex-fill" style="min-width: 200px;">
-                                    <div class="card p-2 shadow-sm" style="background: #f9fafe;">
-                                        <h6 class="text-primary mb-2"><i class="fas fa-map-marker-alt me-2"></i>Your
-                                            Location</h6>
-                                        <div id="currentLocation" class="text-secondary small fw-medium">
+                            <!-- Location Card -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card shadow-sm border-0 h-100"
+                                    style="background: linear-gradient(145deg, #ffffff, #f0f4f9); border-radius: 1rem;">
+                                    <div class="card-body py-3 px-4">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                style="width: 36px; height: 36px;">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </div>
+                                            <h6 class="mb-0 text-dark">Your Location</h6>
+                                        </div>
+                                        <div id="currentLocation" class="text-muted small fw-medium ps-5">
                                             ${user.city.city}, ${user.city.state.state}
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-
-
-                                <!-- Live Clock -->
-                                <div class="flex-fill" style="min-width: 200px;">
-                                    <div class="time-box p-3 rounded shadow-sm d-flex align-items-center gap-3">
-                                        <i class="fas fa-clock fa-lg text-primary"></i>
-                                        <div>
-                                            <div class="live-time fw-bold fs-5" id="liveClock">--:-- --</div>
-                                            <div class="live-date text-muted small" id="liveDate">Loading date...</div>
+                            <!-- Modern Clock Card -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card shadow-sm border-0 h-100"
+                                    style="border-radius: 1rem; background: linear-gradient(to right, #eef3f8, #ffffff); transition: all 0.3s;">
+                                    <div class="card-body d-flex align-items-center gap-3 p-4">
+                                        <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center shadow"
+                                            style="width: 48px; height: 48px; background: linear-gradient(145deg, #2e86de, #6c5ce7); color: white;">
+                                            <i class="fas fa-clock fa-lg"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold fs-4 text-dark" id="liveClock"
+                                                style="letter-spacing: 1px;">--:-- --</div>
+                                            <div class="text-muted small mt-1" id="liveDate">Loading date...</div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
+
                         </div>
 
                         <!-- Welcome Section -->
                         <div class="row mb-4" id="dashboard">
-                            <div class="col-lg-8">
+                            <div class="col-lg-7">
                                 <div class="card greeting-card">
                                     <div class="confetti" style="left: 20%; background-color: #4CC9F0;"></div>
                                     <div class="confetti"
@@ -1177,8 +1267,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="card h-100">
+                            <div class="col-lg-5">
+                                <div class="card h-90">
                                     <div class="card-body">
                                         <h5 class="mb-3">Mood Tracker</h5>
                                         <p>How are you feeling today?</p>
@@ -1202,6 +1292,7 @@
                             </div>
                         </div>
 
+
                         <!-- Stats Section -->
                         <div class="row mb-4 requires-profile">
                             <div class="col-md-3 col-6 mb-3 mb-md-0">
@@ -1210,7 +1301,7 @@
                                         style="background-color: rgba(76, 201, 240, 0.15); color: var(--success);">
                                         <i class="fas fa-calendar-check"></i>
                                     </div>
-                                    <div class="stat-value">3</div>
+                                    <div class="stat-value" id="appointment-stat">3</div>
                                     <div class="stat-label">Appointments</div>
                                 </div>
                             </div>
@@ -1220,7 +1311,7 @@
                                         style="background-color: rgba(67, 97, 238, 0.15); color: var(--primary);">
                                         <i class="fas fa-prescription-bottle-alt"></i>
                                     </div>
-                                    <div class="stat-value">2</div>
+                                    <div class="stat-value" id="prescription-stat">${fn:length(activePrescriptions)}</div>
                                     <div class="stat-label">Prescriptions</div>
                                 </div>
                             </div>
@@ -1294,15 +1385,43 @@
                             </div>
                         </div>
 
-
-
                         <!-- Top Doctors -->
                         <div class="row mb-4" id="top_doctors">
                             <div class="col-12">
                                 <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Top Rated Doctors Near You</h5>
-                                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                    <div class="row card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 col-3">Top Rated Doctors</h5>
+                                        <div class="search-container w-90 w-md-auto col-7">
+                                            <div class="search-bar-box">
+                                                <div class="input-group">
+                                                    <input type="search" class="form-control" id="doctorSearchInput"
+                                                        placeholder="Search doctors by name, specialization, city...">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="fas fa-search"></i> Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown col-2">
+                                            <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                                id="cityFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-map-marker-alt me-1"></i> Filter by City
+                                            </button>
+                                            <span id="selectedCityBadge" class="d-none">
+                                                <span class="selected-city-name"></span>
+                                                <i class="fas fa-times-circle clear-city-filter"></i>
+                                            </span>
+                                            <ul class="dropdown-menu city-dropdown overflow-auto" style="height: 450px;"
+                                                aria-labelledby="cityFilterButton">
+                                                <c:forEach var="ct" items="${cities}">
+                                                    <li><a class="dropdown-item" href="#" data-city="${ct.city}"
+                                                            data-state="${ct.state.state}">
+                                                            ${ct.city} (${ct.state.state})
+                                                        </a></li>
+                                                </c:forEach>
+                                                <!-- Add more cities dynamically or statically -->
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row top_doctors_row">
@@ -1382,50 +1501,63 @@
                                         <h5 class="mb-0">Active Prescriptions</h5>
                                         <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
                                     </div>
+
                                     <div class="card-body">
-                                        <div class="prescription-card p-3 mb-3">
-                                            <div class="d-flex align-items-center">
-                                                <div class="me-3">
-                                                    <i class="fas fa-pills fa-2x text-primary"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-1">Atorvastatin 20mg</h6>
-                                                    <p class="text-muted mb-1">Take 1 tablet at night</p>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                                        <span>Prescribed: Mar 15, 2025</span>
-                                                        <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                                        <span>Refill in 12 days</span>
+                                        <c:choose>
+                                            <c:when test="${not empty activePrescriptions}">
+                                                <c:forEach var="pres" items="${activePrescriptions}">
+                                                    <div class="prescription-card p-3 mb-3 border rounded shadow-sm">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-3">
+                                                                <i class="fas fa-user-md fa-2x text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-1">
+                                                                    Dr.
+                                                                    ${pres.appointment.clinicShift.clinic.doctor.user.name}
+                                                                </h6>
+                                                                <p class="text-muted mb-1">
+                                                                    <i class="fas fa-clinic-medical me-2 text-info"></i>
+                                                                    ${pres.appointment.clinicShift.clinic.clinicName}
+                                                                </p>
+                                                                <p class="text-muted mb-1">
+                                                                    <i
+                                                                        class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                                                    ${pres.appointment.clinicShift.clinic.address},
+                                                                    ${pres.appointment.clinicShift.clinic.city.city}
+                                                                </p>
+                                                                <div class="d-flex align-items-center">
+                                                                    <i
+                                                                        class="fas fa-calendar-day me-2 text-primary"></i>
+                                                                    <span>Appointment:
+                                                                        ${pres.appointment.appointmentDate}</span>
+                                                                    <i
+                                                                        class="fas fa-notes-medical ms-3 me-2 text-success"></i>
+                                                                    <span>Reason: ${pres.appointment.reason}</span>
+                                                                </div>
+                                                                <div class="mt-2">
+                                                                    <i
+                                                                        class="fas fa-prescription-bottle-alt me-2 text-warning"></i>
+                                                                    <span>Prescription ID:
+                                                                        <strong>${pres.prescriptionCode}</strong>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-auto">
+                                                                <button class="btn btn-sm btn-outline-primary"
+                                                                    onclick="showPrescription('${pres.appointment.appointmentId}')">View
+                                                                    Details</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ms-auto">
-                                                    <button class="btn btn-sm btn-outline-primary">Request
-                                                        Refill</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="prescription-card p-3">
-                                            <div class="d-flex align-items-center">
-                                                <div class="me-3">
-                                                    <i class="fas fa-capsules fa-2x text-secondary"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-1">Vitamin D3 1000 IU</h6>
-                                                    <p class="text-muted mb-1">Take 1 capsule daily with food</p>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-calendar-day me-2 text-primary"></i>
-                                                        <span>Prescribed: Mar 20, 2025</span>
-                                                        <i class="fas fa-hourglass-half ms-3 me-2 text-warning"></i>
-                                                        <span>Refill in 22 days</span>
-                                                    </div>
-                                                </div>
-                                                <div class="ms-auto">
-                                                    <button class="btn btn-sm btn-outline-primary">Request
-                                                        Refill</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="text-muted">No prescriptions found.</div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="col-lg-5" id="health_tracker">
@@ -1654,6 +1786,11 @@
 
                         </div>
                     </div>
+
+                    <div id="moodToast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+                        <!-- Toast will be injected here dynamically -->
+                    </div>
+                    
 
                     <!-- Bootstrap and other Scripts -->
                     <script

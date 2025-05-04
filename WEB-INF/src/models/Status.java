@@ -22,6 +22,16 @@ public class Status {
         this.statusId = statusId;
     }
 
+    
+
+
+
+    public Status(Integer statusId, String status) {
+        this.statusId = statusId;
+        this.status = status;
+    }
+
+
 
 
     public void setStatusId (Integer statusId){

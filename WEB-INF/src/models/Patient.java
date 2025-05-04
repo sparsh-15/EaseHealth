@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +16,24 @@ public class Patient {
     private Float weight;
     private Integer height;
     private String uid;
+    private Date dob;
     private String profilePic;
+
+    
   
-    public Patient(User user, String gender, String bloodGroup, Float weight, Integer height, String uid,
+    public Patient(Integer patientId, User user, String gender, String bloodGroup, Float weight, Integer height, Date dob,
+            String profilePic) {
+        this.patientId = patientId;
+        this.user = user;
+        this.gender = gender;
+        this.bloodGroup = bloodGroup;
+        this.weight = weight;
+        this.height = height;
+        this.dob = dob;
+        this.profilePic = profilePic;
+    }
+
+    public Patient(User user, String gender, String bloodGroup, Float weight, Integer height, String uid, Date dob,
             String profilePic) {
         this.user = user;
         this.gender = gender;
@@ -25,6 +41,7 @@ public class Patient {
         this.weight = weight;
         this.height = height;
         this.uid = uid;
+        this.dob = dob;
         this.profilePic = profilePic;
     }    
 
@@ -41,7 +58,7 @@ public class Patient {
         try {
             Connection con = DBConnect.getConnection();
 
-            String query = "insert into patients (user_id, gender, blood_group, weight, height, uid, profile_pic) value (?,?,?,?,?,?,?)";
+            String query = "insert into patients (user_id, gender, blood_group, weight, height, uid, dob, profile_pic) value (?,?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, user.getUserId());
@@ -50,7 +67,8 @@ public class Patient {
             ps.setFloat(4, weight);
             ps.setInt(5, height);
             ps.setString(6, uid != null && !uid.isEmpty() ? uid : null);
-            ps.setString(7, profilePic);
+            ps.setDate(7, dob != null  ? dob : null);
+            ps.setString(8, profilePic);
 
             int res = ps.executeUpdate();
             if (res == 1) {
@@ -139,4 +157,14 @@ public class Patient {
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    
 }

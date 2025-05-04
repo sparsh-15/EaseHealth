@@ -24,21 +24,22 @@ public class CollectAppoinmentByDateShift extends HttpServlet {
 
         Doctor doctor = (Doctor) session.getAttribute("doctor");
         User user = (User) session.getAttribute("user");
+        
 
         String records = "empty";
-
+        
         if (user != null) {
             if (user.getUserType().getUserTypeId() == 2 && doctor != null) {
                 Integer clinicShiftId = Integer.valueOf(request.getParameter("clinic_shift_id"));
                 Date appDate = Date.valueOf(request.getParameter("date"));
 
-                System.out.println(appDate);
-                System.out.println(clinicShiftId);
-
                 ArrayList<Appointment> appointments = Appointment.collectAppoinmentByDateShift(clinicShiftId,appDate);
+                int totalAppOnDateShift = Appointment.getAppointmentCountGroupedByShift(clinicShiftId, appDate);
+
+                request.setAttribute("totalAppOnDateShift", totalAppOnDateShift);
+
 
                 records = new Gson().toJson(appointments);
-                System.out.println(records);
             
             }
         }

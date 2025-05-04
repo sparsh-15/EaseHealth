@@ -12,6 +12,9 @@ public class Format {
     private Integer formatId;
     private String name;
 
+    public Format() {
+    }
+
     public Format(Integer formatId, String name) {
         this.formatId = formatId;
         this.name = name;

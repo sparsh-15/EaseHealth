@@ -1,16 +1,4 @@
 
-// Sample JavaScript for functionality
-document.addEventListener('DOMContentLoaded', function () {
-    // Toggle sidebar on mobile
-
-
-
-});
-
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
-
-
 
 // Wait for the DOM to be fully loaded before executing JavaScript
 document.addEventListener('DOMContentLoaded', function () {
@@ -47,6 +35,35 @@ document.addEventListener('DOMContentLoaded', function () {
             showMoodToast(message);
         });
     });
+
+    function showMoodToast(message) {
+    const toastContainer = document.getElementById("moodToast");
+
+    const toast = document.createElement("div");
+    toast.className = "toast align-items-center text-white bg-dark border-0 show";
+    toast.setAttribute("role", "alert");
+    toast.setAttribute("aria-live", "assertive");
+    toast.setAttribute("aria-atomic", "true");
+    toast.style.minWidth = "280px";
+
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Auto-remove toast after 4s
+    setTimeout(() => {
+        toast.classList.remove("show");
+        toast.classList.add("hide");
+        setTimeout(() => toast.remove(), 500); // Fade-out delay
+    }, 4000);
+}
 
 
     // ========== SIDEBAR FUNCTIONALITY ==========
@@ -555,54 +572,17 @@ const collectTopDoctors = async () => {
 
     return result;
 }
+let allDoctors = [];
 
 
 const showTopDoctors = async () => {
     collectTopDoctors().then((data) => {
-        const topDoctors = document.querySelector(".top_doctors_row");
-        topDoctors.innerHTML = '';
-
+        console.log(data);
         if (data != "empty") {
-            for (let doctor of data) {
-                console.log();
 
-                topDoctors.innerHTML +=
-                    `<div class="col-md-6 col-lg-3 mb-3">
-                                    <div class="card doctor-card h-100" id="top_doctor_card_${doctor.doctorId}">
-                                        <div class="card-body">
-                                            <div class="text-center mb-3">
-                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Doctor"
-                                                    class="rounded-circle" style="width: 100px; height: 100px;">
-                                                <h5 class="mt-3 mb-1">${doctor.user.name}</h5>
-                                                <p class="text-muted mb-1">${doctor.specialization.specialization}</p>
-                                                <div class="text-warning mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                    <span class="text-muted ms-1">(4.7)</span>
-                                                </div>
-                                                <span class="badge-clinic-open">
-                                                    <i class="fas fa-circle me-1"></i>Open Now
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mt-3">
-                                                <button class="btn btn-sm btn-outline-primary w-100 me-2 view-profile-btn" id="doctor_profile_btn" data-doctor-id="${doctor.doctorId}">View
-                                                    Profile</button>
-                                                <button class="btn btn-sm btn-primary w-100" onclick="showClinics(${doctor.doctorId})">Book Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                `
-            }
-            document.querySelectorAll('.view-profile-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const doctorId = parseInt(this.getAttribute('data-doctor-id'));
-                    showDoctorProfileModal(doctorId, data); // Now safe to pass
-                });
-            });
+            allDoctors = data;
+            renderDoctorCards(data.slice(0, 4));
+
         } else {
             console.log("doctors not fetched");
 
@@ -614,7 +594,137 @@ const showTopDoctors = async () => {
 }
 
 
+function renderDoctorCards(doctors) {
+    const topDoctors = document.querySelector(".top_doctors_row");
+    topDoctors.innerHTML = '';
+
+    for (let doctor of doctors) {
+        topDoctors.innerHTML +=
+            `<div class="col-md-6 col-lg-3 mb-4">
+    <div class="card doctor-card h-100 shadow-sm border-0 transition-scale" id="top_doctor_card_${doctor.doctorId}">
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <img src="static/media/images/home_doctor.jpeg" alt="Doctor"
+                    class="rounded-circle border border-3 border-primary shadow-sm"
+                    style="width: 100px; height: 100px; object-fit: cover;">
+            </div>
+            <h5 class="fw-bold mb-1">${doctor.user.name}</h5>
+            <p class="text-muted mb-1 small">${doctor.specialization.specialization}</p>
+            <p class="text-muted mb-2 small"><i class="fas fa-map-marker-alt me-1"></i>${doctor.user.city.city}</p>
+            
+            <div class="text-warning mb-2">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span class="text-muted small ms-1">(4.7)</span>
+            </div>
+
+            <span class="badge bg-gradient-success text-white px-3 py-1 rounded-pill mb-3">
+                <i class="fas fa-circle me-1"></i>Open Now
+            </span>
+
+            <div class="d-flex justify-content-between mt-3 gap-2">
+                <button class="btn btn-outline-primary w-50 view-profile-btn" 
+                    id="doctor_profile_btn" data-doctor-id="${doctor.doctorId}">
+                    <i class="fas fa-user me-1"></i> Profile
+                </button>
+                <button class="btn btn-primary w-50" onclick="showClinics(${doctor.doctorId})">
+                    <i class="fas fa-calendar-check me-1"></i> Book
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        `
+
+        document.querySelectorAll('.view-profile-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const doctorId = parseInt(this.getAttribute('data-doctor-id'));
+                showDoctorProfileModal(doctorId, doctors); // Now safe to pass
+            });
+        });
+    }
+}
+
 showTopDoctors();
+
+// Filter doctors by city, name, specialization
+function filterDoctors() {
+    const searchQuery = document.getElementById("doctorSearchInput").value.toLowerCase();
+
+    const filtered = allDoctors.filter(doc => {
+        const nameMatch = doc.user.name.toLowerCase().includes(searchQuery);
+        const specMatch = doc.specialization.specialization.toLowerCase().includes(searchQuery);
+        const cityMatch = selectedCity ? doc.user.city.city.toLowerCase() === selectedCity : true;
+
+        return (nameMatch || specMatch) && cityMatch;
+    });
+
+    renderDoctorCards(filtered.slice(0, 4)); // show top 4
+}
+document.getElementById("doctorSearchInput").addEventListener("input", filterDoctors);
+
+
+let typedCityFilter = '';
+let typingTimer;
+
+document.querySelector('.dropdown-menu.city-dropdown').addEventListener('keydown', function (e) {
+    if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
+        typedCityFilter += e.key.toLowerCase();
+
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => typedCityFilter = '', 1500);
+
+        this.querySelectorAll('.dropdown-item').forEach(item => {
+            const city = item.dataset.city.toLowerCase();
+            item.style.display = city.startsWith(typedCityFilter) ? 'block' : 'none';
+        });
+    } else if (e.key === 'Backspace') {
+        typedCityFilter = typedCityFilter.slice(0, -1);
+    }
+});
+
+
+let selectedCity = ''; // Global
+
+document.querySelectorAll('.dropdown-item[data-city]').forEach(item => {
+    item.addEventListener('click', function () {
+        selectedCity = this.dataset.city.toLowerCase();
+        updateSelectedCity(selectedCity);
+        filterDoctors();
+    });
+});
+
+document.querySelector('.dropdown-menu.city-dropdown').setAttribute('tabindex', '0');
+
+document.getElementById('cityFilterButton').addEventListener('click', () => {
+    setTimeout(() => {
+        document.querySelector('.dropdown-menu.city-dropdown').focus();
+    }, 100);
+});
+
+
+function updateSelectedCity(city) {
+    const badge = document.getElementById('selectedCityBadge');
+    const cityNameEl = badge.querySelector('.selected-city-name');
+    
+    if (city) {
+      cityNameEl.textContent = city;
+      badge.classList.remove('d-none');
+    } else {
+      badge.classList.add('d-none');
+    }
+  }
+
+  document.querySelector('.clear-city-filter').addEventListener('click', function() {
+    selectedCity = '';
+    updateSelectedCity('');
+    filterDoctors(); // Your existing function
+  });
+
 
 
 function showDoctorProfileModal(doctorId, data) {
@@ -978,8 +1088,9 @@ let showingAll = false;
 const showAppointments = () => {
     collectAppointments().then((appointments) => {
         if (appointments != 'empty') {
-
-            allAppointments = appointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+            document.getElementById('appointment-stat').innerText = appointments.length
+            
+            allAppointments = appointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
 
             const container = document.getElementById("appointmentsContainer");
             const toggleBtn = document.getElementById("appointment_toggle_btn");
@@ -1139,6 +1250,17 @@ window.addEventListener('DOMContentLoaded', () => {
         showClinicsByCity(defaultCityId);
     }
 });
+
+// const fetchPrescription = async()=>{
+//     let response = await fetch('');
+//     let result = await response.json();
+
+//     return result
+// }
+
+function showPrescription(appointmentId) {
+    window.location.href = 'prescription.jsp?appointment_id=' + appointmentId;
+}
 
 
 

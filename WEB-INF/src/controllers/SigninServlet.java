@@ -20,6 +20,7 @@ public class SigninServlet extends HttpServlet {
         String nextPage = "index.do?signin_status=";
 
         String email = request.getParameter("signin_email");
+
         String password = request.getParameter("signin_password");
 
         User user = new User(email, password);

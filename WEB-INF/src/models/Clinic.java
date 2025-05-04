@@ -148,6 +148,16 @@ public class Clinic {
         this.consultationFee = consultationFee;
     }
 
+    
+
+    public Clinic(Integer clinicId, String clinicName, Doctor doctor, String address, City city) {
+        this.clinicId = clinicId;
+        this.clinicName = clinicName;
+        this.doctor = doctor;
+        this.address = address;
+        this.city = city;
+    }
+
 
     public Clinic(String clinicName, Doctor doctor, String address, City city, String contact,
             Integer consultationFee) {
@@ -167,6 +177,10 @@ public class Clinic {
     }
 
 
+
+
+    public Clinic() {
+    }
 
 
     public Integer getClinicId() {

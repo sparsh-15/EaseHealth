@@ -42,8 +42,22 @@ public class ClinicShift {
         this.endTime = endTime;
     }
 
+    
 
     
+    public ClinicShift(Integer clinicShiftId, Clinic clinic) {
+        this.clinicShiftId = clinicShiftId;
+        this.clinic = clinic;
+    }
+
+    public ClinicShift() {
+    }
+
+    public ClinicShift(Timestamp startTime, Timestamp endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public Boolean SaveClinicShift() {
         Boolean flag = false;
         Connection con = DBConnect.getConnection();

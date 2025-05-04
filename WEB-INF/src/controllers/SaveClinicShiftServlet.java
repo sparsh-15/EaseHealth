@@ -37,7 +37,6 @@ public class SaveClinicShiftServlet extends HttpServlet{
                 Integer clinicId = Integer.parseInt(request.getParameter("clinic_id"));
                 
                 Timestamp startTime = convertToTimestamp(request.getParameter("start_time"));
-                System.out.println(startTime);
                 Timestamp endTime = convertToTimestamp(request.getParameter("end_time"));                
                 Integer maxAppointment = Integer.parseInt(request.getParameter("max_appointment"));
 

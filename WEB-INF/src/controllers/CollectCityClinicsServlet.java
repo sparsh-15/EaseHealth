@@ -20,15 +20,15 @@ public class CollectCityClinicsServlet extends HttpServlet {
         response.setContentType("application/json");
         
         Integer cityId = Integer.parseInt(request.getParameter("city_id"));
-        System.out.println(cityId);
+        
 
         String records  = "empty";
         ArrayList<Clinic> cityClinics = Clinic.collectCityClinics(cityId);
-        System.out.println(cityClinics);
+        
 
         Gson gson = new Gson();
         records = gson.toJson(cityClinics);
-        System.out.println(records);
+      
 
         response.getWriter().write(records);
     

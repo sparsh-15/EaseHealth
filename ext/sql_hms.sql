@@ -479,26 +479,97 @@ alter table appointments add column reason text not null ;
 
 SELECT COUNT(*) AS total_appointments FROM appointments a JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id WHERE cs.clinic_id = ?
 
-SELECT a.appointment_id, a.appointment_date, a.reason, a.status_id, a.patient_id, 
-       p.gender, p.blood_group, p.weight, p.height, p.profile_pic, 
-       c.start_time, c.end_time, s.status
+SELECT 
+    a.appointment_id, a.appointment_date, a.reason, a.status_id, a.patient_id,
+    u.name AS patient_name, u.email AS patient_email, u.contact AS patient_contact, u.city_id,
+    p.gender, p.blood_group, p.weight, p.height, p.profile_pic,
+    c.start_time, c.end_time, 
+    s.status,
+    ct.city
 FROM appointments a
+JOIN patients p ON a.patient_id = p.patient_id
+JOIN users u ON p.user_id = u.user_id
+JOIN cities ct ON u.city_id = ct.city_id
 JOIN clinic_shifts c ON a.clinic_shift_id = c.clinic_shift_id
 JOIN status s ON a.status_id = s.status_id
-JOIN patients p ON a.patient_id = p.patient_id
-WHERE a.appointment_date = ? AND a.clinic_shift_id = ?;
+WHERE a.appointment_date = '2025-04-09' AND a.clinic_shift_id = 19
+
 
 
 insert into appointments(patient_id,appointment_date,clinic_shift_id,status_id) values(?,?,?,?)
 
-create table prescriptions
-(
-    prescription_id int auto_increment primary key,
-    appointment_id int  not null,
-    medicine_denomination_id int not null,
-    dosage char(50) not null,
-    constraint fk_prescription_appointment foreign key (appointment_id) references appointments (appointment_id),   
-    constraint fk_prescription_medicines foreign key (medicine_denomination_id) references medicine_denominations (medicine_denomination_id)   
+-- ~~~~~~~~~~ should normalize this table ~~~~~~~~~~~~~~
+-- create table prescriptions
+-- (
+--     prescription_id int auto_increment primary key,
+--     appointment_id int  not null,
+--     medicine_denomination_id int not null,
+--     dosage char(50) not null,
+--     constraint fk_prescription_appointment foreign key (appointment_id) references appointments (appointment_id),   
+--     constraint fk_prescription_medicines foreign key (medicine_denomination_id) references medicine_denominations (medicine_denomination_id)   
+-- );
+
+-- alter table prescriptions add column special_instructions varchar(500) not null;
+-- alter table prescriptions add column prescription_code varchar(50) not null;
+
+-- INSERT INTO prescriptions (prescription_code, appointment_id, medicine_denomination_id, dosage, special_instructions) VALUES (?, ?, ?, ?, ?)
+
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+CREATE TABLE prescriptions (
+    prescription_id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id INT NOT NULL,
+    prescription_code VARCHAR(50) NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
+);
+
+
+SELECT p.prescription_id, p.appointment_id, p.prescription_code, p.created_at, p.special_instructions,
+    a.patient_id, a.clinic_shift_id, a.reason, pt.patient_id, u_patient.user_id AS patient_user_id, u_patient.name AS patient_name, 
+       cs.clinic_id, c.clinic_name, c.doctor_id, c.address AS clinic_address, c.city_id, c.contact, ct.city, ct.state_id, st.state, 
+       d.doctor_id, u_doctor.user_id AS doctor_user_id, u_doctor.name AS doctor_name, d.specialization_id, d.qualification, d.experience, sp.specialization, 
+       pi.item_id, pi.medicine_denomination_id, pi.dosage, md.medicine_format_id, md.quantity, md.unit_id,  u.unit_id, u.name AS unit, 
+       mf.medicine_id, mf.format_id, m.name AS medicine_name, f.name AS format 
+FROM prescriptions p 
+JOIN appointments a ON p.appointment_id = a.appointment_id 
+JOIN patients pt ON a.patient_id = pt.patient_id 
+JOIN users u_patient ON pt.user_id = u_patient.user_id 
+JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id 
+JOIN clinics c ON cs.clinic_id = c.clinic_id 
+JOIN cities ct ON c.city_id = ct.city_id 
+JOIN states st ON ct.state_id = st.state_id 
+JOIN doctors d ON c.doctor_id = d.doctor_id 
+JOIN users u_doctor ON d.user_id = u_doctor.user_id 
+LEFT JOIN specializations sp ON d.specialization_id = sp.specialization_id 
+LEFT JOIN prescription_items pi ON pi.prescription_id = p.prescription_id 
+LEFT JOIN medicine_denominations md ON pi.medicine_denomination_id = md.medicine_denomination_id 
+LEFT JOIN medicine_formats mf ON md.medicine_format_id = mf.medicine_format_id 
+LEFT JOIN units u ON md.unit_id = u.unit_id 
+LEFT JOIN medicines m ON mf.medicine_id = m.medicine_id 
+LEFT JOIN formats f ON mf.format_id = f.format_id 
+WHERE p.appointment_id = 19;
+
+select a.appointment_id, a.appointment_date, a.patient_id, a.clinic_shift_id, a.reason , cs.clinic_id , cs.clinic_shift_id, c.clinic_name , c.doctor_id , c.address AS clinic_address , c.city_id, ct.city,
+    d.doctor_id, d.user_id , u.name AS doctor_name ,p.prescription_code
+    FROM appointments a 
+    JOIN prescriptions p ON a.appointment_id = p.appointment_id
+    JOIN clinic_shifts cs ON a.clinic_shift_id = cs.clinic_shift_id
+    JOIN clinics c ON cs.clinic_id = c.clinic_id
+    JOIN doctors d ON c.doctor_id = d.doctor_id
+    JOIN users u ON d.user_id = u.user_id
+    JOIN cities ct ON c.city_id = ct.city_id
+    WHERE a.patient_id= 5;
+
+
+
+CREATE TABLE prescription_items (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    prescription_id INT NOT NULL,
+    medicine_denomination_id INT NOT NULL,
+    dosage INT NOT NULL,
+    FOREIGN KEY (prescription_id) REFERENCES prescriptions(prescription_id),
+    FOREIGN KEY (medicine_denomination_id) REFERENCES medicine_denominations(medicine_denomination_id)
 );
 
 
