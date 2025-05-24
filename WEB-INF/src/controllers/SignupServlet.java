@@ -20,7 +20,7 @@ import utils.EmailTemplate;
 public class SignupServlet extends HttpServlet{
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         String name = request.getParameter("name");
-        String email = request.getParameter("email");
+        String email = request.getParameter("email").trim();
         String password = request.getParameter("password");
         String contact = request.getParameter("contact");
         Integer cityId = Integer.parseInt(request.getParameter("city_id"));

@@ -11,10 +11,34 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
     <link rel="stylesheet" href="static/css/nav.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet">
 
 
     <style>
       /* ~~~~ */
+      body {
+        font-family: 'Roboto', sans-serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .modal-title {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      label,
+      input,
+      button,
+      select,
+      textarea {
+        font-family: 'Roboto', sans-serif;
+      }
+
       .hover-lift {
         transition: transform 0.2s ease;
       }
@@ -678,6 +702,59 @@
           height: 180px;
         }
       }
+
+      .hover-shadow:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      .transition-scale {
+        transition: transform 0.3s ease;
+      }
+
+      .transition-scale:hover {
+        transform: scale(1.08);
+      }
+    </style>
+
+    <style>
+      .heading-primary {
+
+        font-weight: 600;
+        color: #2c3e50;
+        /* Deep navy for trust */
+        letter-spacing: 0.5px;
+        border-left: 5px solid #36b9cc;
+        padding-left: 12px;
+        margin-bottom: 20px;
+      }
+
+      .heading-feature {
+        
+        font-weight: 600;
+        color: #007bff;
+        border-bottom: 2px solid #d1ecf1;
+        padding-bottom: 6px;
+        margin-bottom: 15px;
+      }
+
+      .heading-secondary {
+        
+        font-weight: 500;
+        color: #5a5c69;
+        /* Subtle gray-blue tone */
+        letter-spacing: 0.3px;
+        margin-bottom: 10px;
+      }
+
+
+
+      .heading-white {
+       
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      }
     </style>
   </head>
 
@@ -691,40 +768,59 @@
       <div class="container">
 
         <!-- Welcome Section -->
-        <div class="row align-items-center">
+        <div class="row align-items-center py-5">
           <div class="col-md-8">
-            <h1 class="display-4 fw-bold  fw-bold section-title mb-3">Welcome to EaseHealth</h1>
-            <p class="lead fw-bold section-title">Your trusted partner in convenient and accessible healthcare services
-            </p>
+            <h1 class="display-4 fw-bold section-title mb-3 text-primary-emphasis heading-primary">
+              Welcome to
+              <span class="text-primary fw-bolder"
+                style="font-size: 3.8rem; background: linear-gradient(to right, #007bff, #00c6ff); -webkit-background-clip: text; color: transparent;">
+                EaseHealth
+              </span>
+            </h1>
+            <p class="lead fw-medium heading-secondary">Your trusted partner in convenient and accessible healthcare
+              services</p>
           </div>
+
           <div class="col-md-4">
-            <div class="d-flex justify-content-end gap-3">
-              <div class="text-center">
-                <a href="#top_doctors" style="text-decoration: none;">
-                <div class="bg-white rounded-circle p-3 shadow mb-2 hover-lift">
+            <div class="d-flex justify-content-end gap-4">
+
+              <!-- Find Doctors -->
+              <a href="#top_doctors" class="text-decoration-none text-center">
+                <div class="bg-white rounded-circle p-4 shadow-sm hover-shadow transition-scale">
                   <i class="fas fa-stethoscope fa-2x text-primary"></i>
                 </div>
-               <small class="fw-bold section-title">Find Doctors</small>
-              </div></a>
-              <div class="text-center">
-                <div class="bg-white rounded-circle p-3 shadow mb-2 hover-lift">
-                  <i class="fas fa-pills fa-2x text-primary"></i>
+                <small class="fw-semibold text-dark mt-2 d-block">Find Doctors</small>
+              </a>
+
+              <!-- Clinics -->
+              <a href="#find_clinics">
+                <div class="text-center">
+                  <div class="bg-white rounded-circle p-4 shadow-sm hover-shadow transition-scale">
+                    <i class="fas fa-clinic-medical fa-2x text-primary"></i>
+                  </div>
+                  <small class="fw-semibold text-dark mt-2 d-block">Clinics</small>
                 </div>
-                <small class="fw-bold section-title">Medicines</small>
-              </div>
-              <div class="text-center">
-                <div class="bg-white rounded-circle p-3 shadow mb-2 hover-lift">
-                  <i class="fas fa-flask fa-2x text-primary"></i>
+              </a>
+
+              <!-- Lab Tests -->
+              <a href="#services">
+                <div class="text-center">
+                  <div class="bg-white rounded-circle p-4 shadow-sm hover-shadow transition-scale">
+                    <i class="fab fa-servicestack fa-2x text-primary"></i>
+
+                  </div>
+                  <small class="fw-semibold text-dark mt-2 d-block">Services</small>
                 </div>
-                <small class="fw-bold section-title">Lab Tests</small>
-              </div>
+              </a>
+
             </div>
           </div>
         </div>
-        <div class="container my-3">
+
+        <div class="container mb-4">
           <div class="row align-items-center">
             <div class="col-md-5 text-center d-flex flex-column justify-content-center">
-              <div class="character-box p-3  bg-light rounded shadow d-flex align-items-center">
+              <div class="character-box p-3  rounded  d-flex align-items-center">
                 <!-- From Uiverse.io by Lakshay-art -->
                 <div class="bo m-4">
                   <div class="face">
@@ -832,61 +928,64 @@
           </div>
         </div>
 
-        <div class="container mt-5 mb-5">
-          <div class="row align-items-center justify-content-between gy-3">
-
-            <!-- Search Input -->
-            <div class="col-lg-6 col-md-7">
-              <div class="position-relative">
-                <input class="form-control form-control-lg rounded-pill pe-5" type="search"
-                  placeholder="Search for doctors by name or specialization..." aria-label="Search"
-                  id="doctorSearchInput">
-                <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-3" type="submit"
-                  style="z-index: 5;">
-                  <i class="fa fa-search text-primary"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="col-lg-6 col-md-5 text-md-end text-center">
-              <div class="d-flex justify-content-md-end justify-content-center gap-2">
-                <div class="dropdown">
-                  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="cityFilterButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-map-marker-alt me-1"></i> Filter by City
-                  </button>
-                  <span id="selectedCityBadge" class="d-none">
-                    <span class="selected-city-name"></span>
-                    <i class="fas fa-times-circle clear-city-filter"></i>
-                  </span>
-                  <ul class="dropdown-menu city-dropdown overflow-auto" style="height: 450px;"
-                    aria-labelledby="cityFilterButton">
-                    <c:forEach var="ct" items="${cities}">
-                      <li><a class="dropdown-item" href="#" data-city="${ct.city}" data-state="${ct.state.state}">
-                          ${ct.city} (${ct.state.state})
-                        </a></li>
-                    </c:forEach>
-                    <!-- Add more cities dynamically or statically -->
-                  </ul>
-                </div>
-                <button class="btn btn-warning">
-                  <i class="fas fa-calendar-check me-1"></i> Book Appointment
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
 
         <!-- Featured Doctors Section -->
         <div class="row mb-4 overflow-auto" style="height: 550px;" id="top_doctors">
           <div class="col-12">
             <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Top Rated Doctors Near You</h5>
+              <div class="card-header"
+                style="background: linear-gradient(to right, #4e73df, #36b9cc); color: white; padding: 15px 20px; border-radius: 8px 8px 0 0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
 
+                <div class="row align-items-center w-100 gx-2">
+
+                  <!-- Title -->
+                  <div class="col-lg-3 col-md-4 col-sm-12 mb-2 mb-md-0">
+                    <h5 class="mb-0 heading-white" style="font-weight: 600; letter-spacing: 0.5px;">
+                      <i class="fas fa-user-md me-2" style="font-size: 1.25rem;"></i>Top Rated Doctors
+                    </h5>
+                  </div>
+
+                  <!-- Search -->
+                  <div class="col-lg-6 col-md-5 col-sm-12 mb-2 mb-md-0">
+                    <div class="position-relative">
+                      <input class="form-control form-control-sm rounded-pill pe-5 py-2" type="search"
+                        placeholder="Search doctors by name or specialization..." aria-label="Search"
+                        id="doctorSearchInput">
+                      <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" type="submit"
+                        style="z-index: 5;">
+                        <i class="fa fa-search text-primary"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Filter Dropdown -->
+                  <div class="col-lg-3 col-md-3 col-sm-12 text-md-end text-center">
+                    <div class="d-flex justify-content-md-end justify-content-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="cityFilterButton"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fas fa-map-marker-alt me-1"></i> Filter by City
+                        </button>
+                        <span id="selectedCityBadge" class="d-none ms-2">
+                          <span class="selected-city-name fw-semibold"></span>
+                          <i class="fas fa-times-circle clear-city-filter text-danger ms-1" role="button"></i>
+                        </span>
+                        <ul class="dropdown-menu city-dropdown overflow-auto" style="height: 450px;"
+                          aria-labelledby="cityFilterButton">
+                          <c:forEach var="ct" items="${cities}">
+                            <li><a class="dropdown-item" href="#" data-city="${ct.city}" data-state="${ct.state.state}">
+                                ${ct.city} (${ct.state.state})
+                              </a></li>
+                          </c:forEach>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </div>
+
+
               <div class="card-body">
                 <div class="row top_doctors_row">
                   <div class="col-md-6 col-lg-3 mb-3">
@@ -955,11 +1054,11 @@
 
       </div>
 
-      <div class="container py-5">
+      <div class="container py-5" id="services">
         <!-- Services Section -->
         <div class="row mb-5">
           <div class="col-12 text-center mb-4">
-            <h2 class="fw-bold section-title">Our Healthcare Services</h2>
+            <h2 class="fw-bold section-title heading-feature">Our Healthcare Services</h2>
             <p class="text-muted">Comprehensive care for you and your family</p>
           </div>
 
@@ -1047,13 +1146,13 @@
 
 
         <!-- Location Map Section -->
-        <div class="row mb-5">
+        <div class="row mb-5 " id="find_clinics">
           <div class="col-12">
             <div class="gradient-section p-4 p-md-5 shadow">
               <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                  <h2 class="fw-bold mb-3">Find Us Near You</h2>
-                  <p class="lead mb-4">With over 100+ locations across the country, quality healthcare is just around
+                  <h2 class="fw-bold mb-3 heading-feature">Find Us Near You</h2>
+                  <p class="lead mb-4 heading-secondary ">With over 100+ locations across the country, quality healthcare is just around
                     the corner</p>
 
                   <div class="row g-3 mb-4">
@@ -1179,8 +1278,8 @@
         <!-- Health Articles Section -->
         <div class="row mb-5">
           <div class="col-12 text-center mb-4">
-            <h2 class="fw-bold section-title">Health & Wellness Articles</h2>
-            <p class="text-muted">Stay informed with the latest health tips and medical news</p>
+            <h1 class="fw-bold section-title heading-feature">Health & Wellness Articles</h1>
+            <h5 class="heading-secondary">Stay informed with the latest health tips and medical news</h5>
           </div>
 
           <div class="col-lg-4 col-md-6 mb-4">
@@ -1268,8 +1367,8 @@
         <!-- Specialty Services Section -->
         <div class="row mb-5">
           <div class="col-12 text-center mb-4">
-            <h2 class="fw-bold section-title">Specialized Healthcare Services</h2>
-            <p class="text-muted">Comprehensive specialized care for specific health needs</p>
+            <h1 class="fw-bold section-title heading-feature">Specialized Healthcare Services</h1>
+            <h5 class="text-muted">Comprehensive specialized care for specific health needs</h5>
           </div>
 
           <div class="col-lg-3 col-md-6 mb-4">
@@ -1327,7 +1426,7 @@
             <div class="app-download p-4 p-md-5 text-white shadow">
               <div class="row align-items-center">
                 <div class="col-md-7">
-                  <h2 class="fw-bold mb-3">Get EaseHealth Mobile App</h2>
+                  <h2 class="fw-bold mb-3 heading-white">Get EaseHealth Mobile App</h2>
                   <p class="lead mb-4">Access healthcare services anytime, anywhere with just a few taps</p>
 
                   <div class="row mb-4">
@@ -1401,70 +1500,120 @@
       </div>
 
       <!-- Footer -->
+      <!-- Enhanced Footer -->
       <footer class="bg-dark text-light py-5">
         <div class="container">
-          <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-              <h5 class="fw-bold mb-3">EaseHealth</h5>
-              <p class="mb-3">Making quality healthcare accessible for everyone, everywhere.</p>
-              <div class="d-flex gap-3 mb-3">
-                <a href="#" class="text-light"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a href="#" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
-                <a href="#" class="text-light"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-light"><i class="fab fa-linkedin-in fa-lg"></i></a>
-              </div>
-              <p class="small text-muted">© 2025 EaseHealth. All rights reserved.</p>
-            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">EaseHealth</h5>
+                    <p class="mb-3">Making quality healthcare accessible for everyone, everywhere.</p>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="#" class="text-light social-icon" style="transition: transform 0.3s;"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-light social-icon" style="transition: transform 0.3s;"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light social-icon" style="transition: transform 0.3s;"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light social-icon" style="transition: transform 0.3s;"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                    </div>
+                    <p class="small text-muted">© 2025 EaseHealth. All rights reserved.</p>
+                </div>
 
-            <div class="col-lg-2 col-md-6">
-              <h6 class="fw-bold mb-3">Services</h6>
-              <ul class="list-unstyled footer-links">
-                <li class="mb-2"><a href="#">Doctor Consultation</a></li>
-                <li class="mb-2"><a href="#">Lab Tests</a></li>
-                <li class="mb-2"><a href="#">Medicine Delivery</a></li>
-                <li class="mb-2"><a href="#">Health Packages</a></li>
-                <li><a href="#">All Services</a></li>
-              </ul>
-            </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Services</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#">Lab Tests</a></li>
+                        <li class="mb-2"><a href="#">Medicine Delivery</a></li>
+                        <li class="mb-2"><a href="#">Health Packages</a></li>
+                        <li><a href="#">All Services</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-lg-2 col-md-6">
-              <h6 class="fw-bold mb-3">Resources</h6>
-              <ul class="list-unstyled footer-links">
-                <li class="mb-2"><a href="#">Health Articles</a></li>
-                <li class="mb-2"><a href="#">Find a Doctor</a></li>
-                <li class="mb-2"><a href="#">Find a Location</a></li>
-                <li class="mb-2"><a href="#">Health Tools</a></li>
-                <li><a href="#">FAQs</a></li>
-              </ul>
-            </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Resources</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Health Articles</a></li>
+                        <li class="mb-2"><a href="#">Find a Doctor</a></li>
+                        <li class="mb-2"><a href="#">Find a Location</a></li>
+                        <li class="mb-2"><a href="#">Health Tools</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-lg-2 col-md-6">
-              <h6 class="fw-bold mb-3">Company</h6>
-              <ul class="list-unstyled footer-links">
-                <li class="mb-2"><a href="#">About Us</a></li>
-                <li class="mb-2"><a href="#">Careers</a></li>
-                <li class="mb-2"><a href="#">Press</a></li>
-                <li class="mb-2"><a href="#">Contact Us</a></li>
-                <li><a href="#">Terms & Privacy</a></li>
-              </ul>
-            </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Company</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">About Us</a></li>
+                        <li class="mb-2"><a href="#">Careers</a></li>
+                        <li class="mb-2"><a href="#">Press</a></li>
+                        <li class="mb-2"><a href="#">Contact Us</a></li>
+                        <li><a href="#">Terms & Privacy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-lg-2 col-md-6">
-              <h6 class="fw-bold mb-3">Download App</h6>
-              <div class="mb-2">
-                <a href="#" class="btn btn-outline-light btn-sm mb-2 w-100">
-                  <i class="fab fa-apple me-2"></i>App Store
-                </a>
-              </div>
-              <div>
-                <a href="#" class="btn btn-outline-light btn-sm w-100">
-                  <i class="fab fa-google-play me-2"></i>Google Play
-                </a>
-              </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Download App</h6>
+                    <div class="mb-2">
+                        <a href="#" class="btn btn-outline-light btn-sm mb-2 w-100">
+                            <i class="fab fa-apple me-2"></i>App Store
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-outline-light btn-sm w-100">
+                            <i class="fab fa-google-play me-2"></i>Google Play
+                        </a>
+                    </div>
+                </div>
             </div>
-          </div>
+            
+            <!-- Developer Credit Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="developer-credit p-3 rounded mb-4" style="background-color: rgba(13, 110, 253, 0.05); border-left: 3px solid #0d6efd;">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h6 style="color: #0d6efd;" class="mb-2">
+                                    <i class="fas fa-code me-2" style="color: #0d6efd;"></i>Designed & Developed by <span style="font-weight: 700; color: #0d6efd;">Sparsh Sahu</span>
+                                </h6>
+                                <p class="mb-0" style="font-size: 0.9rem;">Full Stack Java Developer specializing in healthcare technology solutions</p>
+                            </div>
+                            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+                                <a href="https://sparsh-portfolio-sigma-fawn-15.vercel.app/" class="btn btn-sm btn-primary me-2" style="border-radius: 20px;">
+                                    <i class="fas fa-briefcase me-1"></i> Portfolio
+                                </a>
+                                <a href="https://linkedin.com/in/sparsh-sahu-b934a6243" class="btn btn-sm btn-outline-primary" style="border-radius: 20px;">
+                                    <i class="fab fa-linkedin me-1"></i> LinkedIn
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Health Disclaimer -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="disclaimer-section py-3 my-3" style="border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.85rem;">
+                        <p class="mb-0"><strong>Medical Disclaimer:</strong> The content on this website is provided for informational purposes only and is not intended as medical advice, diagnosis, or treatment recommendations. Always consult with a qualified healthcare provider for medical advice. EaseHealth does not provide medical services or advice through this platform.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright Section with Mentor Acknowledgment -->
+            <div class="row mt-3">
+                <div class="col-md-7">
+                    <p class="small mb-1">
+                        <i class="far fa-copyright me-1"></i> 2025 EaseHealth. All Rights Reserved. 
+                        <a href="#" class="ms-2 text-decoration-underline" style="color: #adb5bd; font-size: 0.85rem;">Privacy Policy</a>
+                        <a href="#" class="ms-2 text-decoration-underline" style="color: #adb5bd; font-size: 0.85rem;">Terms of Use</a>
+                    </p>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <p class="small mb-0" style="color: #adb5bd; font-style: italic;">
+                        <i class="fas fa-user-graduate me-1"></i> With guidance from <span style="color: #dee2e6;">Mentor Name</span>
+                    </p>
+                </div>
+            </div>
         </div>
-      </footer>
+    </footer>
 
 
 

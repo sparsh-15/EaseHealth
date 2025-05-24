@@ -257,10 +257,12 @@
                     </nav>
                 </div>
                 <div class="col-md-4">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" id="search" type="submit">Search</button>
-                    </form>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="searchMedicineInput"
+                            placeholder="Search medicines...">
+                    </div>
+
+
                 </div>
             </div>
 
@@ -302,7 +304,7 @@
                     <div class="card bg-light dashboard_card">
                         <div class="card-body">
                             <h5 class="card-title">Categories</h5>
-                            <p class="card-text h3">8</p>
+                            <p class="card-text h3">10</p>
                         </div>
                     </div>
                 </div>
@@ -317,6 +319,31 @@
             </div>
 
             <!-- Dashboard Quick ends -->
+            <div class="filter-container p-3 my-4 bg-light rounded shadow-sm">
+                <h5 class="filter-heading mb-3">
+                    <i class="bi bi-funnel-fill me-2"></i>Filter by Format
+                </h5>
+                <div class="filter-badges d-flex flex-wrap gap-2">
+                    <!-- Show All Badge -->
+                    <span 
+                        class="filter-badge active" 
+                        onclick="renderMedicineCards(medicineDataGlobal); setActiveFilter(this)">
+                        <i class="bi bi-grid-3x3-gap me-1"></i>Show All
+                    </span>
+                    
+                    <!-- Dynamic Badges -->
+                    <c:forEach var="format" items="${formats}">
+                        <span 
+                            class="filter-badge" 
+                            onclick="filterByFormat(${format.formatId}); setActiveFilter(this)">
+                            ${format.name}
+                        </span>
+                    </c:forEach>
+                </div>
+            </div>
+            
+            
+
 
 
             <!-- medicines Card starts -->
@@ -336,7 +363,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="static/js/nav.js"></script>
         <script src="static/js/pharmaCompany.js"></script>
-       
+
     </body>
 
     </html>

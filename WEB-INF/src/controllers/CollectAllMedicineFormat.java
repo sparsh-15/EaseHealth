@@ -27,6 +27,8 @@ public class CollectAllMedicineFormat extends HttpServlet {
             Integer medicineId = Integer.parseInt(request.getParameter("medicine_id"));
 
             ArrayList<MedicineFormat> medicineFormats = MedicineFormat.collectAllMedicineFormat(medicineId);
+
+            pharmaDetails.updateMedicineCount(pharmaDetails.getPharmaCompanyId());
             
 
             Gson gson = new Gson();

@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function showMoodToast(message) {
-    const toastContainer = document.getElementById("moodToast");
+        const toastContainer = document.getElementById("moodToast");
 
-    const toast = document.createElement("div");
-    toast.className = "toast align-items-center text-white bg-dark border-0 show";
-    toast.setAttribute("role", "alert");
-    toast.setAttribute("aria-live", "assertive");
-    toast.setAttribute("aria-atomic", "true");
-    toast.style.minWidth = "280px";
+        const toast = document.createElement("div");
+        toast.className = "toast align-items-center text-white bg-dark border-0 show";
+        toast.setAttribute("role", "alert");
+        toast.setAttribute("aria-live", "assertive");
+        toast.setAttribute("aria-atomic", "true");
+        toast.style.minWidth = "280px";
 
-    toast.innerHTML = `
+        toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">
                 ${message}
@@ -55,15 +55,18 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `;
 
-    toastContainer.appendChild(toast);
+        toastContainer.appendChild(toast);
 
-    // Auto-remove toast after 4s
-    setTimeout(() => {
-        toast.classList.remove("show");
-        toast.classList.add("hide");
-        setTimeout(() => toast.remove(), 500); // Fade-out delay
-    }, 4000);
-}
+        // Auto-remove toast after 4s
+        setTimeout(() => {
+            toast.classList.remove("show");
+            toast.classList.add("hide");
+            setTimeout(() => toast.remove(), 500); // Fade-out delay
+        }, 4000);
+    }
+
+
+
 
 
     // ========== SIDEBAR FUNCTIONALITY ==========
@@ -214,94 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // ========== HEALTH TRACKER FUNCTIONALITY ==========
 
-    const updateMetricsBtn = document.querySelector('#health_tracker button.btn-outline-primary');
 
-    if (updateMetricsBtn) {
-        updateMetricsBtn.addEventListener('click', function () {
-
-            // Show the modal form using custom modal rendering function
-            showModal('Update Health Metrics', `
-            <form id="health-metrics-form">
-                <div class="mb-3">
-                    <label class="form-label">Blood Pressure (systolic/diastolic)</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" id="bp-systolic" placeholder="Systolic" min="70" max="200">
-                        <span class="input-group-text">/</span>
-                        <input type="number" class="form-control" id="bp-diastolic" placeholder="Diastolic" min="40" max="130">
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Weight (kg)</label>
-                    <input type="number" class="form-control" id="weight" step="0.1" min="30" max="200">
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Heart Rate (bpm)</label>
-                    <input type="number" class="form-control" id="heart-rate" min="40" max="200">
-                </div>
-                
-                <button type="submit" class="btn btn-primary w-100">Save Metrics</button>
-            </form>
-        `);
-
-            // Form submission handler
-            document.getElementById('health-metrics-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const systolic = parseInt(document.getElementById('bp-systolic').value.trim());
-                const diastolic = parseInt(document.getElementById('bp-diastolic').value.trim());
-                const weight = parseFloat(document.getElementById('weight').value.trim());
-                const heartRate = parseInt(document.getElementById('heart-rate').value.trim());
-
-                if (
-                    isNaN(systolic) ||
-                    isNaN(diastolic) ||
-                    isNaN(weight) ||
-                    isNaN(heartRate)
-                ) {
-                    showAlert('Please fill in all health metrics correctly!', 'warning');
-                    return;
-                }
-
-                // ✅ Proceed to update UI
-                document.querySelector('#health_tracker .d-flex.justify-content-between:nth-child(1) span:last-child').textContent = `${systolic}/${diastolic}`;
-                document.querySelector('#health_tracker .d-flex.justify-content-between:nth-child(2) span:last-child').textContent = `${weight} kg`;
-                document.querySelector('#health_tracker .d-flex.justify-content-between:nth-child(3) span:last-child').textContent = `${heartRate} bpm`;
-
-                const bpScore = calculateBPScore(systolic, diastolic);
-                const weightScore = calculateWeightScore(weight);
-                const hrScore = calculateHeartRateScore(heartRate);
-                const overallScore = Math.round((bpScore + weightScore + hrScore) / 3);
-
-                document.querySelector('#health_tracker .progress-bar.bg-success').style.width = `${bpScore}%`;
-                document.querySelector('#health_tracker .progress-bar.bg-primary').style.width = `${weightScore}%`;
-                document.querySelector('#health_tracker .progress-bar.bg-info').style.width = `${hrScore}%`;
-
-                document.querySelector('#health_tracker path[stroke="#1e88e5"]').setAttribute('stroke-dasharray', `${overallScore}, 100`);
-                document.querySelector('#health_tracker .metric-value').textContent = `${overallScore}%`;
-
-                closeModal();
-                showAlert('Health metrics updated successfully!', 'success');
-            });
-
-        });
-    }
-
-    // Helper functions for health score calculations (simplified)
-    function calculateBPScore(systolic, diastolic) {
-        return (120 - Math.abs(120 - systolic) - Math.abs(80 - diastolic)) * 0.8; // Normalize
-    }
-
-    function calculateWeightScore(weight) {
-        return weight >= 50 && weight <= 80 ? 100 : Math.max(0, 100 - Math.abs(65 - weight));
-    }
-
-    function calculateHeartRateScore(hr) {
-        return hr >= 60 && hr <= 100 ? 100 : Math.max(0, 100 - Math.abs(80 - hr));
-    }
 
     // ========== ARTICLE FUNCTIONALITY ==========
 
@@ -313,24 +230,27 @@ document.addEventListener('DOMContentLoaded', function () {
             const articleSummary = this.closest('.card-body').querySelector('p').textContent;
 
             showModal(articleTitle, `
-                <img src="/api/placeholder/800/400" class="img-fluid rounded mb-3" alt="Article Image">
-                <p class="lead">${articleSummary}</p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. 
-                    Sed euismod, purus vel fermentum malesuada, nunc arcu tincidunt nisi, at 
-                    aliquam arcu nisi vel nisi. Sed euismod, purus vel fermentum malesuada, 
-                    nunc arcu tincidunt nisi, at aliquam arcu nisi vel nisi.
-                </p>
-                <p>
-                    Etiam tincidunt magna vel nisi ultrices, ut aliquam nisi tincidunt. 
-                    Curabitur euismod, purus vel fermentum malesuada, nunc arcu tincidunt nisi, 
-                    at aliquam arcu nisi vel nisi. Sed euismod, purus vel fermentum malesuada, 
-                    nunc arcu tincidunt nisi, at aliquam arcu nisi vel nisi.
-                </p>
-                <div class="mt-4">
-                    <button class="btn btn-outline-primary me-2">Save Article</button>
-                    <button class="btn btn-primary">Share</button>
-                </div>
+                <div class="card mb-4 shadow-sm">
+    <!-- Image on Top -->
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK624X1GvDSmFaARHjqI0aTLRu3qDgco_rqA&s"
+         class="card-img-top img-fluid rounded-top" alt="Article Image">
+
+    <!-- Text Content -->
+    <div class="card-body">
+        <p class="lead">${articleSummary}</p>
+        <p>
+            Maintaining a balanced and healthy lifestyle is crucial for preventing chronic illnesses and enhancing overall well-being. Regular physical activity, a nutrient-rich diet, adequate sleep, and stress management are fundamental pillars of good health. Small changes like incorporating daily walks or switching to whole grains can make a significant impact over time.
+        </p>
+       
+
+        <!-- Buttons -->
+        <div class="mt-4">
+            <button class="btn btn-outline-primary me-2">Save Article</button>
+            <button class="btn btn-primary">Share</button>
+        </div>
+    </div>
+</div>
+
             `);
         });
     });
@@ -564,6 +484,172 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// ======= health metrics -------
+
+
+// Updates the health metrics in the health tracker component
+// Updates the health metrics in the health tracker component
+function updateHealthMetrics(metrics) {
+    // Validate input data
+    if (!metrics || typeof metrics !== 'object') {
+        console.error('Invalid metrics data provided');
+        return false;
+    }
+
+    try {
+        // Get essential details from the metrics object
+        const bloodPressure = metrics.bloodPressure;
+        const weight = metrics.weight;
+        const heartRate = metrics.heartRate;
+        const overallPercentage = metrics.overallPercentage;
+
+        // Validate required fields
+        if (!bloodPressure || !weight || !heartRate || overallPercentage === undefined) {
+            console.error('Missing required health metrics');
+            return false;
+        }
+
+        // Calculate health status percentages (simple example implementation)
+        const bpPercentage = calculateBPPercentage(bloodPressure);
+        const weightPercentage = calculateWeightPercentage(weight);
+        const heartRatePercentage = calculateHeartRatePercentage(heartRate);
+
+        // Update overall percentage circle
+        updateOverallCircle(overallPercentage);
+
+        // Update individual metrics text
+        document.querySelector('#health_tracker .metric-value').textContent = `${overallPercentage}%`;
+
+        // Update blood pressure - find the correct span elements without using :contains
+        const bpLabels = document.querySelectorAll('#health_tracker .d-flex span:first-child');
+        for (let label of bpLabels) {
+            if (label.textContent.includes('Blood Pressure')) {
+                const valueSpan = label.nextElementSibling;
+                if (valueSpan) valueSpan.textContent = `${bloodPressure.systolic}/${bloodPressure.diastolic}`;
+                break;
+            }
+        }
+
+        // Update weight
+        const weightLabels = document.querySelectorAll('#health_tracker .d-flex span:first-child');
+        for (let label of weightLabels) {
+            if (label.textContent.includes('Weight')) {
+                const valueSpan = label.nextElementSibling;
+                if (valueSpan) valueSpan.textContent = `${weight} kg`;
+                break;
+            }
+        }
+
+        // Update heart rate
+        const hrLabels = document.querySelectorAll('#health_tracker .d-flex span:first-child');
+        for (let label of hrLabels) {
+            if (label.textContent.includes('Heart Rate')) {
+                const valueSpan = label.nextElementSibling;
+                if (valueSpan) valueSpan.textContent = `${heartRate} bpm`;
+                break;
+            }
+        }
+
+        // Update progress bars
+        document.querySelector('#health_tracker .progress-bar.bg-success').style.width = `${bpPercentage}%`;
+        document.querySelector('#health_tracker .progress-bar.bg-primary').style.width = `${weightPercentage}%`;
+        document.querySelector('#health_tracker .progress-bar.bg-info').style.width = `${heartRatePercentage}%`;
+
+        console.log('Health metrics updated successfully');
+        return true;
+    } catch (error) {
+        console.error('Error updating health metrics:', error);
+        return false;
+    }
+}
+
+// Updates the SVG circle for overall health percentage
+function updateOverallCircle(percentage) {
+    const circle = document.querySelector('#health_tracker svg path:nth-child(2)');
+    if (circle) {
+        // Update the stroke-dasharray to reflect the percentage
+        circle.setAttribute('stroke-dasharray', `${percentage}, 100`);
+    }
+}
+
+// Calculates blood pressure percentage based on ideal ranges
+function calculateBPPercentage(bloodPressure) {
+    const systolic = bloodPressure.systolic;
+    const diastolic = bloodPressure.diastolic;
+
+    // Simple calculation (can be replaced with more sophisticated logic)
+    if (systolic <= 120 && diastolic <= 80) {
+        return 100; // Ideal
+    } else if (systolic <= 130 && diastolic <= 85) {
+        return 85; // Normal
+    } else if (systolic <= 140 && diastolic <= 90) {
+        return 70; // High normal
+    } else {
+        return 50; // High
+    }
+}
+
+// Calculates weight percentage based on BMI (simplified)
+function calculateWeightPercentage(weight) {
+    // This is simplified - in a real app, you'd want to consider height for BMI
+    // For demo purposes, we'll just return a value based on weight
+    return weight >= 50 && weight <= 80 ? 85 : 60;
+}
+
+// Calculates heart rate percentage based on normal ranges
+function calculateHeartRatePercentage(heartRate) {
+    // Normal resting heart rate: 60-100 bpm
+    if (heartRate >= 60 && heartRate <= 100) {
+        // Closer to 60 is usually better for resting heart rate
+        return 100 - ((heartRate - 60) / 40 * 20);
+    } else if (heartRate < 60) {
+        // Could be athletic or bradycardia
+        return 80;
+    } else {
+        // Above 100 - tachycardia
+        return 60;
+    }
+}
+
+// Gets health data from the form and updates the UI
+function getHealthDataAndUpdate() {
+    // Get values from form inputs
+    const systolic = parseInt(document.getElementById('systolic').value) || 120;
+    const diastolic = parseInt(document.getElementById('diastolic').value) || 80;
+    const weight = parseFloat(document.getElementById('weight').value) || 68;
+    const heartRate = parseInt(document.getElementById('heartRate').value) || 72;
+
+    // Calculate overall percentage
+    const bpPercentage = calculateBPPercentage({ systolic, diastolic });
+    const weightPercentage = calculateWeightPercentage(weight);
+    const heartRatePercentage = calculateHeartRatePercentage(heartRate);
+    const overallPercentage = Math.round((bpPercentage + weightPercentage + heartRatePercentage) / 3);
+
+    // Update metrics
+    updateHealthMetrics({
+        bloodPressure: { systolic, diastolic },
+        weight,
+        heartRate,
+        overallPercentage
+    });
+
+    // Close modal if it exists
+    const modalElement = document.getElementById('healthMetricsModal');
+    if (modalElement) {
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) {
+            modal.hide();
+        }
+    }
+}
+
+// Set up event listener for the update button when page loads
+document.addEventListener('DOMContentLoaded', function () {
+    const updateButton = document.querySelector('#saveHealthMetrics');
+    if (updateButton) {
+        updateButton.addEventListener('click', getHealthDataAndUpdate);
+    }
+});
 // ======== collect doctors ======
 
 const collectTopDoctors = async () => {
@@ -710,20 +796,20 @@ document.getElementById('cityFilterButton').addEventListener('click', () => {
 function updateSelectedCity(city) {
     const badge = document.getElementById('selectedCityBadge');
     const cityNameEl = badge.querySelector('.selected-city-name');
-    
-    if (city) {
-      cityNameEl.textContent = city;
-      badge.classList.remove('d-none');
-    } else {
-      badge.classList.add('d-none');
-    }
-  }
 
-  document.querySelector('.clear-city-filter').addEventListener('click', function() {
+    if (city) {
+        cityNameEl.textContent = city;
+        badge.classList.remove('d-none');
+    } else {
+        badge.classList.add('d-none');
+    }
+}
+
+document.querySelector('.clear-city-filter').addEventListener('click', function () {
     selectedCity = '';
     updateSelectedCity('');
     filterDoctors(); // Your existing function
-  });
+});
 
 
 
@@ -1089,7 +1175,7 @@ const showAppointments = () => {
     collectAppointments().then((appointments) => {
         if (appointments != 'empty') {
             document.getElementById('appointment-stat').innerText = appointments.length
-            
+
             allAppointments = appointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
 
             const container = document.getElementById("appointmentsContainer");

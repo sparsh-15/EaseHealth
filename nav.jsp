@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-  <!-- (Signup/SignIn Fail) Handling ~~~~ start -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet"> <!-- (Signup/SignIn Fail) Handling ~~~~ start -->
   <input type="hidden" id="user_signup_report" value="${param.signup}">
   <input type="hidden" id="user_signin_report" value="${param.signin_status}">
   <input type="hidden" id="user_signin_activation_report" value="${param.activated}">
@@ -98,7 +98,7 @@
   <!-- #signup form Step-2 ~~~~ start -->
   <div class="modal fade" id="signup_form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content p-3 rounded-4 border-0 shadow-lg">
+      <div class="modal-content p-1 rounded-4 border-0 shadow-lg">
         <form action="signup.do" method="post" id="signup_inner_form">
           <div class="modal-header border-0">
             <h1 class="modal-title fs-4 fw-bold " id="signup_title">Create Your Account</h1>
@@ -106,36 +106,41 @@
           </div>
           <div class="modal-body">
             <input type="hidden" name="user_type_id" id="utype">
-  
+
             <div class="mb-3">
               <label for="name" class="form-label fw-semibold">Full Name</label>
               <input type="text" class="form-control rounded-pill px-3" name="name" id="name" required>
             </div>
-  
+
             <div class="mb-3">
               <label for="email" class="form-label fw-semibold">Email</label>
-              <input type="email" autocomplete="on" class="form-control rounded-pill px-3" name="email" id="email" required>
+              <input type="email" autocomplete="on" class="form-control rounded-pill px-3" name="email" id="email"
+                required>
             </div>
-  
+
+
             <div class="mb-3 position-relative">
               <label for="password" class="form-label fw-semibold">Password</label>
               <div class="input-group">
                 <input type="password" class="form-control rounded-pill px-3 pe-5" name="password" id="password"
                   placeholder="Enter your password" required>
-                <span class="position-absolute end-0 top-50 translate-middle-y me-3" onclick="togglePasswordVisibility('password')" style="cursor: pointer;">
+                <span class="position-absolute end-0 top-50 translate-middle-y me-3"
+                  onclick="togglePasswordVisibility('password')" style="cursor: pointer;">
                   <i class="fas fa-eye-slash text-secondary" id="toggle-password-icon"></i>
                 </span>
               </div>
             </div>
-  
+
             <div class="mb-3">
               <label for="contact" class="form-label fw-semibold">Contact Number</label>
-              <input type="number" autocomplete="on" class="form-control rounded-pill px-3" name="contact" id="contact" required>
+              <input type="number" autocomplete="on" class="form-control rounded-pill px-3" name="contact" id="contact"
+                required>
             </div>
-  
+
             <div class="mb-3">
               <label for="city" class="form-label fw-semibold">City</label>
-              <input list="city_list" autocomplete="off" type="text" class="form-control rounded-pill px-3" name="city" id="city" required>
+              <input list="city_list" autocomplete="off" type="text" class="form-control rounded-pill px-3" name="city"
+                id="city" required>
               <input type="hidden" name="city_id" id="city_id">
               <datalist id="city_list">
                 <c:forEach var="ct" items="${cities}">
@@ -144,18 +149,42 @@
               </datalist>
             </div>
           </div>
-  
+
           <div class="modal-footer border-0 d-flex justify-content-between">
-            <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+              data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary rounded-pill px-4">Sign Up</button>
           </div>
+          <!-- Professional Footer Section -->
+          <footer class="form-footer">
+            <div class="legal-text text-center">
+              By signing up, you agree to our Terms of Service and Privacy Policy.
+            </div>
+
+            <div class="footer-links">
+              <a href="#" class="footer-link">
+                <i class="fas fa-file-contract"></i> Terms of Service
+              </a>
+              <a href="#" class="footer-link">
+                <i class="fas fa-shield-alt"></i> Privacy Policy
+              </a>
+              <a href="#" class="footer-link">
+                <i class="fas fa-headset"></i> Contact Support
+              </a>
+            </div>
+
+            <div class="text-center copyright">
+              &copy; 2025 HealthCare Solutions. All rights reserved.
+            </div>
+          </footer>
+
         </form>
       </div>
     </div>
   </div>
-  
 
-  
+
+
   <!-- #signup form ~~~~ end -->
 
   <!-- SignIn Step-3 Modal ---- start -->
@@ -176,13 +205,12 @@
             <div class="mb-3 position-relative">
               <label for="signin_password" class="form-label">Password</label>
               <input type="password" class="form-control" name="signin_password" id="signin_password" required>
-              <span class="position-absolute end-0 top-50 transform: translateY(-50%); me-3" 
-                    onclick="togglePasswordVisibility('signin_password')" 
-                    style="cursor: pointer;">
-                  <i id="signin_eye" class="fas fa-eye"></i>
+              <span class="position-absolute end-0 top-50 transform: translateY(-50%); me-3"
+                onclick="togglePasswordVisibility('signin_password')" style="cursor: pointer;">
+                <i id="signin_eye" class="fas fa-eye"></i>
               </span>
-          </div>
-          
+            </div>
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -206,16 +234,17 @@
         <!-- Avatar with upload functionality -->
         <div class="position-relative d-inline-block mb-3">
           <input type="file" id="avatar-upload" class="d-none" accept="image/*">
-          
+
           <!-- User Avatar Image -->
-          <img src="static/media/images/user.png" alt="click to add profile" 
-              class="rounded-circle" height="80" width="80" id="user-avatar" style="cursor: pointer;">
-      
+          <img src="static/media/images/user.png" alt="click to add profile" class="rounded-circle" height="80"
+            width="80" id="user-avatar" style="cursor: pointer;">
+
           <!-- Camera Icon -->
-          <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-1 upload-icon" style="cursor: pointer;">
-              <i class="material-icons text-white" style="font-size: 16px;">photo_camera</i>
+          <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-1 upload-icon"
+            style="cursor: pointer;">
+            <i class="material-icons text-white" style="font-size: 16px;">photo_camera</i>
           </div>
-      </div>
+        </div>
         <h6 class="mb-1">${user.name}</h6>
         <p class="text-muted small mb-3">${user.email}</p>
         <a href="profile.do" class="btn btn-sm btn-outline-primary">Edit Profile</a>
@@ -282,7 +311,7 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active fw-bold" aria-current="page" href="home.jsp">Home</a>
             </li>
             <c:choose>
               <c:when test="${user.userType.userTypeId == 2}">
@@ -291,7 +320,7 @@
                 </li>
               </c:when>
               <c:otherwise>
-                <li class="nav-item">
+                <li class="nav-item fw-bold">
                   <a class="nav-link" href="#">Find doctor</a>
                 </li>
               </c:otherwise>

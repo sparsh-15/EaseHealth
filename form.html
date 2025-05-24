@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        #form {
+            border: 2px solid red;
+            border-radius: 5px;
+            background-color: antiquewhite;
+            display: block;
+            align-items: center;
+            gap: 5px;
+            width: 500px;
+            align-items: center;
+        }
+        #submit{
+            padding: 2px;
+        }
+        label {
+            margin: 10px;
+            padding: 10px;
+        }
+        input {
+            padding: 5px;
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form" >
+        <div>
+            <label for="name">Full Name </label>
+            <input type="text" id="name" placeholder="type your name">
+        </div>
+        <div>
+            <label for="contact">contact No</label>
+            <input type="number"  id="contact" max="10" placeholder="type your number" required>
+        </div>
+        <div>
+            <label for="email">email        </label>
+            <input type="email" id="email" placeholder="type your email">
+        </div>
+        <input type="submit" value="submit" id="submit">
+    </form>
+</body>
+</html>

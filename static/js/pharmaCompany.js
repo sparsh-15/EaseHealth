@@ -110,6 +110,44 @@ const collectAllMedicineFormat = async (medicineId) => {
     return result;
 }
 
+
+// function filterByFormat(formatId) {
+//     const filteredMedicines = medicineDataGlobal.filter(med => {
+//         return med.medicineFormats.some(mf => mf.format.formatId === formatId);
+//     });
+
+//     renderMedicineCards(filteredMedicines);
+// }
+
+function filterByFormat(formatId) {
+    const filteredMedicines = medicineDataGlobal.filter(med => {
+        return med.medicineFormats.some(mf => mf.format.formatId === formatId);
+    });
+
+    const container = document.getElementById("all_medicines"); // Adjust ID if yours differs
+
+    if (filteredMedicines.length === 0) {
+        container.innerHTML = `
+            <div class="alert alert-warning text-center" role="alert">
+                No medicines found with the selected format.
+            </div>
+        `;
+    } else {
+        renderMedicineCards(filteredMedicines);
+    }
+}
+
+
+function setActiveFilter(element) {
+    // Remove active class from all filter badges
+    document.querySelectorAll('.filter-badge').forEach(badge => {
+        badge.classList.remove('active');
+    });
+    
+    // Add active class to clicked badge
+    element.classList.add('active');
+}
+
 const showAllMedicinesFormats = (medicineId) => {
 
     collectAllMedicineFormat(medicineId).then((data) => {
@@ -393,131 +431,131 @@ const collectAllMedicine = async () => {
     return result;
 }
 
+let medicineDataGlobal = [];
+
 const showAllMedicines = () => {
     collectAllMedicine().then((data) => {
         if (data != 'no') {
             console.log(data);
-
-            all_medicines.innerHTML = '<div class="mb-3"><h4> All medicines </h4></div>'
-            for (let next of data) {
-                all_medicines.innerHTML +=
-                    '<div class="col-md-4 d-flex justify-content-center mb-4">' +
-                    '<div class="card medicine-card border-0 shadow-lg rounded-4 overflow-hidden text-white" id="card_' + next.medicineId + '">' +
-
-                    // Header section with image
-                    '<div class="d-flex align-items-center p-2 pb-2">' +
-                    '<div class="position-relative me-3 img-container">' +
-                    '<div class="position-absolute top-0 start-0 w-80 h-50 rounded-circle glow-effect"></div>' +
-                    '<img src="static/media/images/medicine.png" ' +
-                    'alt="' + next.name + '" class="medicine-icon">' +
-                    '</div>' +
-                    '<h5 id="t_' + next.medicineId + '" class="card-title fw-bold mb-0 flex-grow-1 medicine-title">' + next.name + '</h5>' +
-                    '<span class="badge med-badge px-3 py-2 rounded-pill shadow-sm">RX-2023</span>' +
-                    '</div>' +
-
-                    // Animated divider
-                    '<hr class="divider my-0">' +
-
-                    '<div class="card-body pt-2">' +
-                    // Description with better contrast
-                    '<p class="card-text mb-2 lh-base medicine-description">' + next.description + '</p>' +
-
-                    // Info section with improved icons and layout
-                    '<div class="info-container p-2 rounded-3 mb-1">' +
-
-                    '<div class="d-flex align-items-center mb-1 info-row">' +
-                    '<div class="icon-container me-3 d-flex align-items-center justify-content-center ingredients-icon">' +
-                    '<i class="bi bi-capsule-pill"></i>' +
-                    '</div>' +
-                    '<div class="flex-grow-1">' +
-                    '<span class="d-block category-label ingredients-label mb-1">Ingredients</span>' +
-                    '<span class="info-text">' + next.ingredients + '</span>' +
-                    '</div>' +
-                    '</div>' +
-
-                    '<div class="d-flex align-items-center mb-1 info-row">' +
-                    '<div class="icon-container me-3 d-flex align-items-center justify-content-center effective-icon">' +
-                    '<i class="bi bi-check-circle-fill"></i>' +
-                    '</div>' +
-                    '<div class="flex-grow-1">' +
-                    '<span class="d-block category-label effective-label mb-1">Effective For</span>' +
-                    '<span class="info-text">' + next.effectiveBodypart + '</span>' +
-                    '</div>' +
-                    '</div>' +
-
-                    '<div class="d-flex align-items-center mb-1 info-row">' +
-                    '<div class="icon-container me-3 d-flex align-items-center justify-content-center side-effects-icon">' +
-                    '<i class="bi bi-exclamation-triangle"></i>' +
-                    '</div>' +
-                    '<div class="flex-grow-1">' +
-                    '<span class="d-block category-label side-effects-label mb-1">Side Effects</span>' +
-                    '<span class="info-text">' + next.sideEffects + '</span>' +
-                    '</div>' +
-                    '</div>' +
-
-                    '<div class="d-flex align-items-center mb-1 info-row">' +
-                    '<div class="icon-container me-3 d-flex align-items-center justify-content-center effective-icon">' +
-                    '<i class="bi bi-check-circle-fill"></i>' +
-                    '</div>' +
-                    '<div class="flex-grow-1">' +
-                    '<span class="d-block category-label warnings-label mb-1">Warnings</span>' +
-                    '<span class="info-text">' + next.warnings + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="added-formats p-3">' +
-                    '<button ' +
-                    'class="format-button  w-100 mt-1 " ' +
-                    // 'style="background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" ' +
-                    'type="button" ' +
-                    'data-bs-toggle="collapse" ' +
-                    'data-bs-target="#collapse_format_' + next.medicineId + '" ' +
-                    'aria-expanded="false" ' +
-                    'aria-controls="collapse_format_' + next.medicineId + '" ' +
-                    'onclick="toggleFormatIcon(' + next.medicineId + ')" ' +
-                '>' +
-                    '<span><i class="fas fa-pills me-2"></i> Available Formats</span>' +
-                    '<i id="format-icon-' + next.medicineId + '" class="fas fa-chevron-down"></i>' +
-                '</button>' +
-                    // '<h6 class="fw-bold  mb-2">Available Formats:</h6>' +
-                    '<div id="format_list_' + next.medicineId + '" >' +
-                    '<!-- Formats will be added dynamically here as badges -->' +
-                    '</div>' +
-                    '</div>' +
-
-
-                    // Footer with button
-                    '<div class="card-footer border-0 bg-transparent d-flex justify-content-center p-2 pt-1">' +
-                    '<button id="' + next.medicineId + '" data-medicine-id="' + next.medicineId + '" class="details-btn btn fw-bold px-4 py-1 w-100 position-relative overflow-hidden btn-79" data-bs-toggle="modal" data-bs-target="#add_format_modal" >' +
-                    '<span class="z-index-1 position-relative">' +
-                    '<i class="bi bi-info-circle-fill me-2"></i> Add Formats' +
-                    '</span>' +
-                    '<span class="position-absolute top-0 start-0 w-100 h-100 opacity-0 hover-effect"></span>' +
-                    '</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                showAllMedicinesFormats(next.medicineId);
-
-            }
-            all_medicines.addEventListener('click', (ev) => {
-                let elm = ev.target.closest('.btn-79')
-                if (elm) {
-                    add_format_title.innerText = document.getElementById('t_' + elm.id).innerText;
-                    medicine_id_hidden.value = elm.id;
-                }
-            });
+            medicineDataGlobal = data; // save for filtering
+            renderMedicineCards(data); // render full list
         }
         else {
-            window.location('index.do')
+            console.log("medicines not fetched properly");
+            
         }
     }).catch((err) => {
         console.log(err);
     });
 }
 
+
+const renderMedicineCards = (data) => {
+    all_medicines.innerHTML = '<div class="mb-3"><h4> All medicines </h4></div>';
+
+    for (let next of data) {
+        all_medicines.innerHTML += `
+        <div class="col-md-4 d-flex justify-content-center mb-4">
+            <div class="card medicine-card border-0 shadow-lg rounded-4 overflow-hidden text-white" id="card_${next.medicineId}">
+                <div class="d-flex align-items-center p-2 pb-2">
+                    <div class="position-relative me-3 img-container">
+                        <div class="position-absolute top-0 start-0 w-80 h-50 rounded-circle glow-effect"></div>
+                        <img src="static/media/images/medicine.png" alt="${next.name}" class="medicine-icon">
+                    </div>
+                    <h5 id="t_${next.medicineId}" class="card-title fw-bold mb-0 flex-grow-1 medicine-title">${next.name}</h5>
+                    <span class="badge med-badge px-3 py-2 rounded-pill shadow-sm">RX-2023</span>
+                </div>
+                <hr class="divider my-0">
+                <div class="card-body pt-2">
+                    <p class="card-text mb-2 lh-base medicine-description">${next.description}</p>
+                    <div class="info-container p-2 rounded-3 mb-1">
+                        <div class="d-flex align-items-center mb-1 info-row">
+                            <div class="icon-container me-3 d-flex align-items-center justify-content-center ingredients-icon">
+                                <i class="bi bi-capsule-pill"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="d-block category-label ingredients-label mb-1">Ingredients</span>
+                                <span class="info-text">${next.ingredients}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-1 info-row">
+                            <div class="icon-container me-3 d-flex align-items-center justify-content-center effective-icon">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="d-block category-label effective-label mb-1">Effective For</span>
+                                <span class="info-text">${next.effectiveBodypart}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-1 info-row">
+                            <div class="icon-container me-3 d-flex align-items-center justify-content-center side-effects-icon">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="d-block category-label side-effects-label mb-1">Side Effects</span>
+                                <span class="info-text">${next.sideEffects}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-1 info-row">
+                            <div class="icon-container me-3 d-flex align-items-center justify-content-center effective-icon">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="d-block category-label warnings-label mb-1">Warnings</span>
+                                <span class="info-text">${next.warnings}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="added-formats p-3">
+                    <button class="format-button w-100 mt-1"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse_format_${next.medicineId}"
+                        aria-expanded="false"
+                        aria-controls="collapse_format_${next.medicineId}"
+                        onclick="toggleFormatIcon(${next.medicineId})">
+                        <span><i class="fas fa-pills me-2"></i> Available Formats</span>
+                        <i id="format-icon-${next.medicineId}" class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="format_list_${next.medicineId}"></div>
+                </div>
+                <div class="card-footer border-0 bg-transparent d-flex justify-content-center p-2 pt-1">
+                    <button id="${next.medicineId}" data-medicine-id="${next.medicineId}"
+                        class="details-btn btn fw-bold px-4 py-1 w-100 position-relative overflow-hidden btn-79"
+                        data-bs-toggle="modal" data-bs-target="#add_format_modal">
+                        <span class="z-index-1 position-relative">
+                            <i class="bi bi-info-circle-fill me-2"></i> Add Formats
+                        </span>
+                        <span class="position-absolute top-0 start-0 w-100 h-100 opacity-0 hover-effect"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+
+        showAllMedicinesFormats(next.medicineId);
+    }
+
+    all_medicines.addEventListener('click', (ev) => {
+        let elm = ev.target.closest('.btn-79');
+        if (elm) {
+            add_format_title.innerText = document.getElementById('t_' + elm.id).innerText;
+            medicine_id_hidden.value = elm.id;
+        }
+    });
+};
+
 showAllMedicines();
+
+document.getElementById("searchMedicineInput").addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+    const filtered = medicineDataGlobal.filter(med =>
+        med.name.toLowerCase().includes(keyword)
+    );
+    renderMedicineCards(filtered);
+});
+
 function toggleFormatIcon(medicineId) {
     let icon = document.getElementById("format-icon-" + medicineId);
     if (!icon) return;
